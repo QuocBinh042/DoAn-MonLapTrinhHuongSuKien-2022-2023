@@ -120,6 +120,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		lblMoTa.setPreferredSize(lblLoai.getPreferredSize());
 		lblGiaPhong.setPreferredSize(lblLoai.getPreferredSize());
 
+            txtMoTa.setPreferredSize(new Dimension(70,90));
+
+
 		b.add(b5 = Box.createVerticalBox());
 		b.add(Box.createVerticalStrut(15));
 
