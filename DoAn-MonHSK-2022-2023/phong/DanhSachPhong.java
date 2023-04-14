@@ -43,7 +43,7 @@ public class DanhSachPhong {
 	
 	public boolean capNhatTinhTrangPhong(Phong ph) {
 		for (int i = 0; i < list.size(); i++)
-			if (list.get(i).getTinhTrang().equalsIgnoreCase(ph.getTinhTrang())) {
+			if (list.get(i).getMaPhong().equalsIgnoreCase(ph.getMaPhong())) {
 				return false;
 			}
 		list.add(ph);
