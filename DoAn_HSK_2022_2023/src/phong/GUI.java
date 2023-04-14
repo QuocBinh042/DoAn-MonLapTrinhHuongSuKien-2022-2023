@@ -25,7 +25,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private DanhSachPhong ds;
 	private JTable table;
-	private JTextField txtMaPhong, txtTen, txtLoai, txtMoTa, txtGiaPhong,txtTim;
+	private JTextField txtMaPhong, txtTen, txtLoai, txtGiaPhong, txtMoTa, txtTim;
 	private JRadioButton radTrong, radDaDat;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim;
 	private DefaultTableModel tableModel;
@@ -65,7 +65,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		Box b = Box.createVerticalBox();
 
 		Box b1, b2, b3, b4, b5;
-		JLabel lblMaPhong, lblTen, lblLoai, lblMoTa, lblGiaPhong, lblTinhTrang;
+		JLabel lblMaPhong, lblTen, lblLoai, lblGiaPhong,lblMoTa, lblTinhTrang;
 		lblMaPhong = new JLabel("Mã phòng: ");
 		lblTen = new JLabel("Tên phòng: ");
 		lblLoai = new JLabel("Loại phòng: ");
@@ -98,8 +98,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 		b.add(b4 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b4.add(lblMoTa);
-		b4.add(txtMoTa);
+		b4.add(lblGiaPhong);
+		b4.add(txtGiaPhong);
 	
 
 		ButtonGroup bg = new ButtonGroup();
@@ -112,8 +112,8 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 		b.add(b4 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b4.add(lblGiaPhong);
-		b4.add(txtGiaPhong);
+		b4.add(lblMoTa);
+		b4.add(txtMoTa);
 
 		lblMaPhong.setPreferredSize(lblLoai.getPreferredSize());
 		lblTen.setPreferredSize(lblLoai.getPreferredSize());
@@ -123,7 +123,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		b.add(b5 = Box.createVerticalBox());
 		b.add(Box.createVerticalStrut(15));
 
-		String[] headers = "Mã phòng;Tên;Loại phòng;Tình trạng; Mô tả; Giá phòng".split(";");
+		String[] headers = "Mã phòng;Tên;Loại phòng;Tình trạng; Giá phòng; Mô tả".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -185,7 +185,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (o.equals(btnLuu))
 			try {
 				JOptionPane.showMessageDialog(this, "Lưu thành công");
-				databasee.writeNV("Phòng.txt", ds);
+				databasee.write_P("Phòng.txt", ds);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -208,10 +208,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		int pos = ds.timPhong(txtTim.getText());
 		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Tồn tại nhân viên có mã số này");
+			JOptionPane.showMessageDialog(null, "Tồn tại phòng có mã số này");
 			table.setRowSelectionInterval(pos, pos);
 		} else
-			JOptionPane.showMessageDialog(null, "Không tồn tại nhân viên có mã số này");
+			JOptionPane.showMessageDialog(null, "Không tồn tại phòng có mã số này");
 	}
 
 	public void xoaActions() throws Exception {
@@ -222,10 +222,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				ds.xoaPhong(r);
 				tableModel.removeRow(r);
 				xoaTrangActions();
-				databasee.writeNV("Phòng.txt", ds);
+				databasee.write_P("Phòng.txt", ds);
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên muốn xoá!");
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng muốn xoá!");
 		}
 	}
 
@@ -235,9 +235,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 			String maP = txtMaPhong.getText();
 			String ten = txtTen.getText();
 			String loai = txtLoai.getText();
+			double luong = Double.parseDouble(txtGiaPhong.getText());
 			String mota = txtMoTa.getText();
 			String tinhtrang = "";
-			double luong = Double.parseDouble(txtGiaPhong.getText());
+			
 			if (radTrong.isSelected())
 				tinhtrang = radTrong.getText();
 			if (radDaDat.isSelected())
@@ -249,7 +250,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 				xoaTrangActions();
 				JOptionPane.showMessageDialog(null, "Thêm thành công");
 			} else {
-				JOptionPane.showMessageDialog(null, "Trùng mã nhân viên");
+				JOptionPane.showMessageDialog(null, "Trùng mã phòng");
 				txtMaPhong.selectAll();
 				txtMaPhong.requestFocus();
 			}
@@ -262,7 +263,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 	public void loadData() {
 		try {
-			ds = databasee.read_NV("Phòng.txt");
+			ds = databasee.read_P("Phòng.txt");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -270,9 +271,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (ds == null) {
 			ds = new DanhSachPhong();
 		} else {
-			for (Phong nv : ds.getList()) {
-				String[] row = { nv.getMaPhong(), nv.getTenPhong(), nv.getLoaiPhong(), nv.getMoTa(), nv.getGiaPhong() + "",
-						nv.getTinhTrang() + "" };
+			for (Phong ph : ds.getList()) {
+				String[] row = { ph.getMaPhong(), ph.getTenPhong(), ph.getLoaiPhong(), ph.getMoTa(), ph.getGiaPhong() + "",
+						ph.getTinhTrang() + "" };
 				tableModel.addRow(row);
 			}
 		}
@@ -285,15 +286,15 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		txtMaPhong.setText(table.getValueAt(row, 0).toString());
 		txtTen.setText(table.getValueAt(row, 1).toString());
 		txtLoai.setText(table.getValueAt(row, 2).toString());
-		if (tableModel.getValueAt(row, 3).toString().equalsIgnoreCase("Trống")) {
+		if (tableModel.getValueAt(row, 5).toString().equalsIgnoreCase("Trống")) {
 			radTrong.setSelected(true);
 			radDaDat.setSelected(false);
 		} else {
 			radTrong.setSelected(false);
 			radDaDat.setSelected(true);
 		}
-		txtMoTa.setText(table.getValueAt(row, 4).toString());
-		txtGiaPhong.setText(table.getValueAt(row, 5).toString());
+		txtMoTa.setText(table.getValueAt(row, 3).toString());
+		txtGiaPhong.setText(table.getValueAt(row, 4).toString());
 	}
 
 	@Override
