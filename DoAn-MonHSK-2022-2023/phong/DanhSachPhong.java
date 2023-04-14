@@ -8,6 +8,14 @@ public class DanhSachPhong {
 	public DanhSachPhong() {
 		list = new ArrayList<Phong>();
 	}
+	
+	
+	public String LayDanhSachPhong() {
+		String s = "";
+		for(Phong ph: list)
+			s += ph + "\n";
+		return s;
+	}
  
 	public boolean themPhong(Phong ph) {
 		for (int i = 0; i < list.size(); i++)
@@ -18,7 +26,7 @@ public class DanhSachPhong {
 		return true;
 	}
 
-	public boolean xoaViTri(int index) {
+	public boolean xoaPhong(int index) {
 		if (index >= 0 && index <= list.size() - 1) {
 			list.remove(index);
 			return true;
@@ -32,12 +40,23 @@ public class DanhSachPhong {
 				return i;
 		return -1;
 	}
+	
+	public boolean capNhatTinhTrangPhong(Phong ph) {
+		for (int i = 0; i < list.size(); i++)
+			if (list.get(i).getTinhTrang().equalsIgnoreCase(ph.getTinhTrang())) {
+				return false;
+			}
+		list.add(ph);
+		return true;
+	}
+
+	
  
 	public ArrayList<Phong> getList() {
 		return list;
 	}
 
-	public int soLuongNV() {
+	public int LayDSPhong() {
 		return list.size();
 	}
 }
