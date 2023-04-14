@@ -1,4 +1,4 @@
-package nhanvien;
+package phong;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,17 +23,17 @@ import javax.swing.table.DefaultTableModel;
 
 public class GUI extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private DanhSachNhanVien ds;
+	private DanhSachPhong ds;
 	private JTable table;
-	private JTextField txtMaNV, txtHoTen, txtCMThu, txtSDThoai, txtGmail,txtTim;
-	private JRadioButton radQLy, radLeTan;
+	private JTextField txtMaPhong, txtTen, txtLoai, txtMoTa, txtGiaPhong,txtTim;
+	private JRadioButton radTrong, radDaDat;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim;
 	private DefaultTableModel tableModel;
 	private Database databasee;
 
 	public GUI() {
 		databasee = new Database();
-		ds = new DanhSachNhanVien();
+		ds = new DanhSachPhong();
 		gui();
 		try {
 			loadData();
@@ -55,9 +55,9 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
-		JLabel lblTieuDe = new JLabel("THÔNG TIN NHÂN VIÊN");
+		JLabel lblTieuDe = new JLabel("THÔNG TIN PHÒNG");
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 20));
-		lblTieuDe.setForeground(Color.blue);
+		lblTieuDe.setForeground(Color.red);
 		pnlNorth.add(lblTieuDe);
 
 		// CENTER
@@ -65,66 +65,65 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		Box b = Box.createVerticalBox();
 
 		Box b1, b2, b3, b4, b5;
-		JLabel lblMaNV, lblTen, lblCMThu, lblSDThoai, lblGmail, lblChucVu;
-		lblMaNV = new JLabel("Mã nhân viên: ");
-		lblTen = new JLabel("Họ tên: ");
-		lblCMThu = new JLabel("Chứng minh thư: ");
-		lblSDThoai = new JLabel("Số điện thoại: ");
-		lblGmail = new JLabel("Gmail: ");
-		lblChucVu = new JLabel("Chức vụ: ");
-		txtMaNV = new JTextField();
-		txtHoTen = new JTextField();
-		txtCMThu = new JTextField();
-		txtSDThoai = new JTextField();
-		txtGmail = new JTextField();
+		JLabel lblMaPhong, lblTen, lblLoai, lblMoTa, lblGiaPhong, lblTinhTrang;
+		lblMaPhong = new JLabel("Mã phòng: ");
+		lblTen = new JLabel("Tên phòng: ");
+		lblLoai = new JLabel("Loại phòng: ");
+		lblMoTa = new JLabel("Mô tả: ");
+		lblGiaPhong = new JLabel("Giá phòng: ");
+		lblTinhTrang = new JLabel("Tình trạng: ");
+		txtMaPhong = new JTextField();
+		txtTen = new JTextField();
+		txtLoai = new JTextField();
+		txtMoTa = new JTextField();
+		txtGiaPhong = new JTextField();
 
 
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b1.add(lblMaNV);
-		b1.add(txtMaNV);
+		b1.add(lblMaPhong);
+		b1.add(txtMaPhong);
 
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
 		b2.add(lblTen);
-		b2.add(txtHoTen);
+		b2.add(txtTen);
 		
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b3.add(lblCMThu);
-		b3.add(txtCMThu);
-		b3.add(lblChucVu);
+		b3.add(lblLoai);
+		b3.add(txtLoai);
+		b3.add(lblTinhTrang);
 	
 
 		b.add(b4 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b4.add(lblSDThoai);
-		b4.add(txtSDThoai);
+		b4.add(lblMoTa);
+		b4.add(txtMoTa);
 	
 
 		ButtonGroup bg = new ButtonGroup();
-		radQLy = new JRadioButton("Quản lý");
-		radLeTan = new JRadioButton("Lễ tân");
-		bg.add(radQLy);
-		bg.add(radLeTan);
-		b3.add(radQLy);
-		b3.add(radLeTan);
+		radTrong = new JRadioButton("Trống");
+		radDaDat = new JRadioButton("Đã đặt");
+		bg.add(radTrong);
+		bg.add(radDaDat);
+		b3.add(radTrong);
+		b3.add(radDaDat);
 
 		b.add(b4 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b4.add(lblGmail);
-		b4.add(txtGmail);
+		b4.add(lblGiaPhong);
+		b4.add(txtGiaPhong);
 
-		lblMaNV.setPreferredSize(lblCMThu.getPreferredSize());
-		lblTen.setPreferredSize(lblCMThu.getPreferredSize());
-		lblSDThoai.setPreferredSize(lblCMThu.getPreferredSize());
-		lblGmail.setPreferredSize(lblCMThu.getPreferredSize());
-		
+		lblMaPhong.setPreferredSize(lblLoai.getPreferredSize());
+		lblTen.setPreferredSize(lblLoai.getPreferredSize());
+		lblMoTa.setPreferredSize(lblLoai.getPreferredSize());
+		lblGiaPhong.setPreferredSize(lblLoai.getPreferredSize());
 
 		b.add(b5 = Box.createVerticalBox());
 		b.add(Box.createVerticalStrut(15));
 
-		String[] headers = "Mã nhân viên;Họ tên;Chứng minh thư ;SĐT;Gmail ;Chức vụ;".split(";");
+		String[] headers = "Mã phòng;Tên;Loại phòng;Tình trạng; Mô tả; Giá phòng".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -142,7 +141,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		split.add(pnlRight);
 
 
-		pnlLeft.add(new JLabel("Nhập mã nhân viên cần tìm: "));
+		pnlLeft.add(new JLabel("Nhập mã phòng cần tìm: "));
 		txtTim = new JTextField(10);
 		btnTim = new JButton("Tìm");
 		btnThem = new JButton("Thêm");
@@ -186,7 +185,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (o.equals(btnLuu))
 			try {
 				JOptionPane.showMessageDialog(this, "Lưu thành công");
-				databasee.writeNV("Nhân viên.txt", ds);
+				databasee.writeNV("Phòng.txt", ds);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -194,20 +193,20 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void xoaTrangActions() {
-		txtMaNV.setText("");
-		txtHoTen.setText("");
-		txtCMThu.setText("");
-		txtSDThoai.setText("");
+		txtMaPhong.setText("");
+		txtTen.setText("");
+		txtLoai.setText("");
+		txtMoTa.setText("");
 		txtTim.setText("");
-		txtGmail.setText("");
-		radQLy.setSelected(false);
-		radLeTan.setSelected(false);
-		txtMaNV.requestFocus();
+		txtGiaPhong.setText("");
+		radTrong.setSelected(false);
+		radDaDat.setSelected(false);
+		txtMaPhong.requestFocus();
 	}
 
 	private void timActions() {
 		// TODO Auto-generated method stub
-		int pos = ds.timNV(txtTim.getText());
+		int pos = ds.timPhong(txtTim.getText());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Tồn tại nhân viên có mã số này");
 			table.setRowSelectionInterval(pos, pos);
@@ -220,10 +219,10 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaNV(r);
+				ds.xoaPhong(r);
 				tableModel.removeRow(r);
 				xoaTrangActions();
-				databasee.writeNV("Nhân viên.txt", ds);
+				databasee.writeNV("Phòng.txt", ds);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên muốn xoá!");
@@ -233,26 +232,26 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	private void themActions() {
 		try {
 			
-			String manv = txtMaNV.getText();
-			String ten = txtHoTen.getText();
-			String cmthu = txtCMThu.getText();
-			String sdt = txtSDThoai.getText();
-			String chucvu = "";
-			String gmail = txtGmail.getText();
-			if (radQLy.isSelected())
-				chucvu = radQLy.getText();
-			if (radLeTan.isSelected())
-				chucvu = radLeTan.getText();
-			NhanVien nv = new NhanVien(manv, ten, cmthu, sdt, chucvu, gmail);
-			if (ds.themNhanVien(nv)) {
-				String[] row = { manv, ten, cmthu, sdt, chucvu, gmail + "" };
+			String maP = txtMaPhong.getText();
+			String ten = txtTen.getText();
+			String loai = txtLoai.getText();
+			String mota = txtMoTa.getText();
+			String tinhtrang = "";
+			double luong = Double.parseDouble(txtGiaPhong.getText());
+			if (radTrong.isSelected())
+				tinhtrang = radTrong.getText();
+			if (radDaDat.isSelected())
+				tinhtrang = radDaDat.getText();
+			Phong ph = new Phong(maP, ten, loai, mota, luong, tinhtrang );
+			if (ds.themPhong(ph)) {
+				String[] row = { maP, ten, loai, tinhtrang, Double.toString(luong) + "" };
 				tableModel.addRow(row);
 				xoaTrangActions();
 				JOptionPane.showMessageDialog(null, "Thêm thành công");
 			} else {
 				JOptionPane.showMessageDialog(null, "Trùng mã nhân viên");
-				txtMaNV.selectAll();
-				txtMaNV.requestFocus();
+				txtMaPhong.selectAll();
+				txtMaPhong.requestFocus();
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
@@ -263,17 +262,17 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 
 	public void loadData() {
 		try {
-			ds = databasee.read_NV("Nhân viên.txt");
+			ds = databasee.read_NV("Phòng.txt");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (ds == null) {
-			ds = new DanhSachNhanVien();
+			ds = new DanhSachPhong();
 		} else {
-			for (NhanVien nv : ds.getList()) {
-				String[] row = { nv.getMaNV(), nv.getHoTen(), nv.getCMThu(), nv.getSdthoai(), nv.getGmail() + "",
-						nv.getChucVu() + "" };
+			for (Phong nv : ds.getList()) {
+				String[] row = { nv.getMaPhong(), nv.getTenPhong(), nv.getLoaiPhong(), nv.getMoTa(), nv.getGiaPhong() + "",
+						nv.getTinhTrang() + "" };
 				tableModel.addRow(row);
 			}
 		}
@@ -283,18 +282,18 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
-		txtMaNV.setText(table.getValueAt(row, 0).toString());
-		txtHoTen.setText(table.getValueAt(row, 1).toString());
-		txtCMThu.setText(table.getValueAt(row, 2).toString());
-		if (tableModel.getValueAt(row, 3).toString().equalsIgnoreCase("Quản lý")) {
-			radQLy.setSelected(true);
-			radLeTan.setSelected(false);
+		txtMaPhong.setText(table.getValueAt(row, 0).toString());
+		txtTen.setText(table.getValueAt(row, 1).toString());
+		txtLoai.setText(table.getValueAt(row, 2).toString());
+		if (tableModel.getValueAt(row, 3).toString().equalsIgnoreCase("Trống")) {
+			radTrong.setSelected(true);
+			radDaDat.setSelected(false);
 		} else {
-			radQLy.setSelected(false);
-			radLeTan.setSelected(true);
+			radTrong.setSelected(false);
+			radDaDat.setSelected(true);
 		}
-		txtSDThoai.setText(table.getValueAt(row, 4).toString());
-		txtGmail.setText(table.getValueAt(row, 5).toString());
+		txtMoTa.setText(table.getValueAt(row, 4).toString());
+		txtGiaPhong.setText(table.getValueAt(row, 5).toString());
 	}
 
 	@Override
