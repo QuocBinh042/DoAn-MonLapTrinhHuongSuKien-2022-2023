@@ -17,7 +17,7 @@ public class Database implements Serializable {
 	}
 
 	 
-	public DanhSachPhong read_NV(String part) throws Exception {
+	public DanhSachPhong read_P(String part) throws Exception {
 		DanhSachPhong ds = new DanhSachPhong();
 		File f = new File(part);
 		if (f.exists()) {
@@ -37,7 +37,7 @@ public class Database implements Serializable {
 	}
 
 	
-	public void writeNV(String part, DanhSachPhong ds) throws Exception {
+	public void write_P(String part, DanhSachPhong ds) throws Exception {
 		try {
 			PrintWriter out = new PrintWriter(new FileOutputStream(part), true); 
 			for (Phong ph : ds.getList()) {
