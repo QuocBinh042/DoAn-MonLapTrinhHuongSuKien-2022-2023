@@ -123,7 +123,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		b.add(b5 = Box.createVerticalBox());
 		b.add(Box.createVerticalStrut(15));
 
-		String[] headers = "Mã phòng;Tên;Loại;Mô tả;Giá;Tình trạng;".split(";");
+		String[] headers = "Mã phòng;Tên;Loại phòng;Tình trạng; Mô tả; Giá phòng".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -219,7 +219,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaViTri(r);
+				ds.xoaPhong(r);
 				tableModel.removeRow(r);
 				xoaTrangActions();
 				databasee.writeNV("Phòng.txt", ds);
@@ -285,7 +285,7 @@ public class GUI extends JFrame implements ActionListener, MouseListener {
 		txtMaPhong.setText(table.getValueAt(row, 0).toString());
 		txtTen.setText(table.getValueAt(row, 1).toString());
 		txtLoai.setText(table.getValueAt(row, 2).toString());
-		if (tableModel.getValueAt(row, 3).toString().equalsIgnoreCase("Phòng trống")) {
+		if (tableModel.getValueAt(row, 3).toString().equalsIgnoreCase("Trống")) {
 			radTrong.setSelected(true);
 			radDaDat.setSelected(false);
 		} else {
