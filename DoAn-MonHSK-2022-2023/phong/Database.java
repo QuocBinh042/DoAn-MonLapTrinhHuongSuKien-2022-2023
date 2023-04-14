@@ -40,8 +40,8 @@ public class Database implements Serializable {
 	public void writeNV(String part, DanhSachPhong ds) throws Exception {
 		try {
 			PrintWriter out = new PrintWriter(new FileOutputStream(part), true); 
-			for (Phong nv : ds.getList()) {
-				String data = nv.getMaPhong() + "," + nv.getTenPhong() + "," + nv.getLoaiPhong() + "," + nv.getMoTa() + "," + nv.getGiaPhong() + "," + nv.getTinhTrang();
+			for (Phong ph : ds.getList()) {
+				String data = ph.getMaPhong() + "," + ph.getTenPhong() + "," + ph.getLoaiPhong() + "," + ph.getMoTa() + "," + ph.getGiaPhong() + "," + ph.getTinhTrang();
 				out.println(data);
 			}
 		}catch (Exception e) {
