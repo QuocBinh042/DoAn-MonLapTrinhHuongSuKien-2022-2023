@@ -6,9 +6,9 @@ public class DichVu {
 	private String maDichVu;
 	private String tenDichVu;
 	private String loaiDichVu;
-	private String giaDichVu;
+	private Double giaDichVu;
 
-	public DichVu(String maDichVu, String tenDichVu, String loaiDichVu, String giaDichVu) {
+	public DichVu(String maDichVu, String tenDichVu, String loaiDichVu, Double giaDichVu) {
 		this.maDichVu = maDichVu;
 		this.tenDichVu = tenDichVu;
 		this.loaiDichVu = loaiDichVu;
@@ -56,11 +56,11 @@ public class DichVu {
 		this.loaiDichVu = loaiDichVu;
 	}
 
-	public String getGiaDichVu() {
+	public Double getGiaDichVu() {
 		return giaDichVu;
 	}
 
-	public void setGiaDichVu(String giaDichVu) {
+	public void setGiaDichVu(Double giaDichVu) {
 		this.giaDichVu = giaDichVu;
 	}
 

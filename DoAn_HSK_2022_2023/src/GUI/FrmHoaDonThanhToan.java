@@ -5,13 +5,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Calendar;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -27,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import DanhSach.DanhSachHoaDonThanhToan;
 import Entity.HoaDonThanhToan;
 
-public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseListener {
+public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseListener, ItemListener {
 	private DanhSachHoaDonThanhToan ds = new DanhSachHoaDonThanhToan();
 	private JTable table;
 	private JTextField txtMaHoaDon, txtNgayThanhToan, txtHinhThucThanhToan, txtTongThanhToan, txtTim;
@@ -35,15 +39,11 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
 	private JTextField txtMess;
+	private Calendar dDate = Calendar.getInstance();
+	private JComboBox yYear, mMonth, dDay;
 
 	public FrmHoaDonThanhToan() {
-		setTitle("Quản lý hoá đơn thanh toán");
-		setSize(1000, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		createGUI();
-
 	}
 
 	public static void main(String[] args) {
@@ -51,13 +51,16 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	}
 
 	private void createGUI() {
-		// TODO Auto-generated method stub
+		setTitle("Quản lý hoá đơn thanh toán");
+		setSize(1000, 650);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
 		JLabel lblTieuDe = new JLabel("QUẢN LÝ HOÁ ĐƠN THANH TOÁN");
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 25));
-		lblTieuDe.setForeground(Color.blue);
+		lblTieuDe.setForeground(Color.red);
 		pnlNorth.add(lblTieuDe);
 
 		// CENTER
@@ -73,8 +76,19 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b2.add(lblNgayThanhToan = new JLabel("Ngày thanh toán: "));
-		b2.add(txtNgayThanhToan = new JTextField());
-
+//		b2.add(txtNgayThanhToan = new JTextField());
+		yYear = new JComboBox();
+		buildYearsList(yYear);
+		yYear.setSelectedIndex(5);
+		mMonth = new JComboBox();
+		buildMonthsList(mMonth);
+		mMonth.setSelectedIndex(dDate.get(Calendar.MONTH));
+		dDay = new JComboBox();
+		buildDaysList(dDate, dDay, mMonth);
+		dDay.setSelectedItem(Integer.toString(dDate.get(Calendar.DATE)));
+		b2.add(dDay);
+		b2.add(mMonth);
+		b2.add(yYear);
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b3.add(lblHinhThucThanhToan = new JLabel("Hình thức thanh toán: "));
@@ -132,7 +146,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		pnlRight.add(btnXoaTrang = new JButton("Xoá trắng"));
 		pnlRight.add(btnXoa = new JButton("Xoá"));
 		pnlRight.add(btnLuu = new JButton("Lưu"));
-
+		pnlRight.add(btnThoat = new JButton("Thoát"));
 		// ĐĂNG KÝ SỰ KIỆN
 		btnTim.addActionListener(this);
 		btnThem.addActionListener(this);
@@ -140,7 +154,31 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		btnXoaTrang.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnSua.addActionListener(this);
+		btnThoat.addActionListener(this);
 		table.addMouseListener(this);
+	}
+
+	private void buildMonthsList(JComboBox monthsList) {
+		monthsList.removeAllItems();
+		for (int monthCount = 1; monthCount <= 12; monthCount++)
+			monthsList.addItem(monthCount);
+
+	}
+
+	private void buildDaysList(Calendar dateIn, JComboBox daysList, JComboBox monthsList) {
+
+		daysList.removeAllItems();
+		dateIn.set(Calendar.MONTH, monthsList.getSelectedIndex());
+		int lastDay = dDate.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+		for (int dayCount = 1; dayCount <= lastDay; dayCount++)
+			daysList.addItem(Integer.toString(dayCount));
+	}
+
+	private void buildYearsList(JComboBox yearsList) {
+		int currentYear = dDate.get(Calendar.YEAR);
+		for (int yearCount = currentYear - 5; yearCount <= currentYear + 5; yearCount++)
+			yearsList.addItem(Integer.toString(yearCount));
 	}
 
 	@Override
@@ -164,7 +202,13 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			TimHoaDonThanhToan();
 		} else if (o.equals(btnLuu)) {
 			Luu();
-		}
+		} else if (o.equals(btnThoat))
+			System.exit(0);
+	}
+
+	private void showMessage(String message, JTextField txt) {
+		txt.requestFocus();
+		txtMess.setText(message);
 	}
 
 	private void Luu() {
@@ -338,6 +382,12 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent e) {
 		// TODO Auto-generated method stub
 
 	}

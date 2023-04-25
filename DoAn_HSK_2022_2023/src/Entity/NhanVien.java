@@ -10,8 +10,10 @@ public class NhanVien implements Serializable {
 	private String Sdthoai;
 	private String Gmail;
 	private String chucVu;
+	private String gioiTinh;
+	private String diaChi;
 
-	public NhanVien(String maNV, String hoTen, String cMThu, String sdthoai, String gmail, String chucVu) {
+	public NhanVien(String maNV, String hoTen, String cMThu, String sdthoai, String gmail, String chucVu, String gioiTinh, String diaChi) {
 		super();
 		this.maNV = maNV;
 		this.hoTen = hoTen;
@@ -19,10 +21,12 @@ public class NhanVien implements Serializable {
 		this.Sdthoai = sdthoai;
 		this.Gmail = gmail;
 		this.chucVu = chucVu;
+		this.gioiTinh = gioiTinh;
+		this.diaChi = diaChi;
 	}
 
 	public NhanVien() {
-		this("", "", "", "", "", "");
+		this("", "", "", "", "", "", "", "");
 	}
 
 	@Override
@@ -89,11 +93,28 @@ public class NhanVien implements Serializable {
 	public void setChucVu(String chucVu) {
 		this.chucVu = chucVu;
 	}
+	
+	public String getGioiTinh() {
+		return gioiTinh;
+	}
+
+	public void setGioiTinh(String gioiTinh) {
+		this.gioiTinh = gioiTinh;
+	}
+
+	public String getDiaChi() {
+		return diaChi;
+	}
+
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
+	}
 
 	@Override
 	public String toString() {
 		return "NhanVien [maNV=" + maNV + ", hoTen=" + hoTen + ", CMThu=" + CMThu + ", Sdthoai=" + Sdthoai + ", Gmail="
-				+ Gmail + ", chucVu=" + chucVu + "]";
+				+ Gmail + ", chucVu=" + chucVu + ", gioiTinh=" + gioiTinh + ", diaChi=" + diaChi + "]";
 	}
 
+	
 }
