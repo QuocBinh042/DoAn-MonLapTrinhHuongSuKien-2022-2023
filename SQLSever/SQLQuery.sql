@@ -94,3 +94,18 @@ create table PhieuDatPhong(
 	CONSTRAINT fk_kh FOREIGN KEY (IDNguoiDatPhong) REFERENCES KhachHang(MaKhachHang),
 	CONSTRAINT fk_hd FOREIGN KEY (MaHoaDon) REFERENCES HoaDonThanhToan(MaHoaDon)
 )
+
+--INSERT DATA
+--DICH VU
+INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
+values(N'DV001',N'Nước khoáng lavie 350ml',3500)
+INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
+values(N'DV002',N'Nước suối Aquafina 500ml',6000)
+INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
+values(N'DV003',N'Nước ngọt 7 Up 330ml',8500)
+INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
+values(N'DV004',N'Nước ngọt Pepsi 320ml',10600)
+INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
+values(N'DV005',N'Nước ngọt Cocacola Zero 600ml',10000)
+INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
+values(N'DV006',N'Khăn giấy',3000)
