@@ -1,3 +1,8 @@
-/Entity/
+/.classpath
+/.project
+/DAO/
 /DanhSach/
+/Entity/
 /GUI/
+/IMG/
+/connectDB/

@@ -17,19 +17,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import DanhSach.DanhSachDichVu;
-import Entity.DichVu;
+import DanhSach.DanhSachHoaDonDichVuPhong;
+import Entity.HoaDonDichVuPhong;
 
 public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTable table;
-	private JTextField txtMaDichVu, txtTenDichVu, txtLoaiDichVu, txtGiaDichVu, txtTimMa, txtTimTen, txtMess;
-	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTimMa, btnTimTen, btnSua, btnThoat;
+	private JTextField txtMaDichVu, txtMaPhong, txtSoLuong, txtThanhTienDichVu, txtMess;
+	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
-	private DanhSachDichVu ds = new DanhSachDichVu();
+	private DanhSachHoaDonDichVuPhong ds;
 
 	public FrmHoaDonDichVuPhong() {
 		createGUI();
@@ -42,6 +45,9 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		setResizable(false);
 		setLocationRelativeTo(null);
 
+		ds = new DanhSachHoaDonDichVuPhong();
+		
+		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
@@ -52,29 +58,25 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 
 		Box b = Box.createVerticalBox();
 		Box bb = Box.createHorizontalBox();
-		Box b1, b2, b3, b4, b5, b6, b7, bTimMa, bTimTen;
-		JLabel lblMaDichVu, lblLoaiDichVu, lblTenDichVu, lblGiaDichVu;
+		Box b1, b2, b3, b5, b6;
+		JLabel lblMaDichVu, lblMaPhong, lblSoLuong;
 
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b.setBorder(BorderFactory.createTitledBorder("Dịch vụ"));
-		b1.add(lblMaDichVu = new JLabel("Mã dịch vụ: "));
-		b1.add(txtMaDichVu = new JTextField(20));
+		b.setBorder(BorderFactory.createTitledBorder("Dịch vụ phòng"));
+		b1.add(lblMaPhong = new JLabel("Mã phòng: "));
+		b1.add(txtMaPhong = new JTextField(20));
 
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b2.add(lblTenDichVu = new JLabel("Tên dịch vụ: "));
-		b2.add(txtTenDichVu = new JTextField(20));
-
+		b2.add(lblMaDichVu = new JLabel("Mã dịch vụ: "));
+		b2.add(txtMaDichVu = new JTextField(20));
+		
+		
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b3.add(lblLoaiDichVu = new JLabel("Loại dịch vụ: "));
-		b3.add(txtLoaiDichVu = new JTextField(20));
-
-		b.add(b4 = Box.createHorizontalBox());
-		b.add(Box.createVerticalStrut(10));
-		b4.add(lblGiaDichVu = new JLabel("Giá dịch vụ: "));
-		b4.add(txtGiaDichVu = new JTextField(20));
+		b3.add(lblSoLuong = new JLabel("Số lượng: "));
+		b3.add(txtSoLuong = new JTextField(20));
 
 		b.add(Box.createHorizontalStrut(5));
 		b.add(b5 = Box.createHorizontalBox());
@@ -94,43 +96,27 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		b6.add(Box.createHorizontalStrut(10));
 		b6.add(btnXoaTrang = new JButton("Xoá trắng"));
 
-		b.add(Box.createVerticalStrut(70));
-		b.add(b7 = Box.createVerticalBox());
-		b.add(Box.createVerticalStrut(50));
-		b7.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
-		b7.add(Box.createVerticalStrut(10));
-		b7.add(bTimMa = Box.createHorizontalBox());
-		bTimMa.add(new JLabel("Mã dịch vụ:  "));
-		bTimMa.add(txtTimMa = new JTextField(10));
-		bTimMa.add(btnTimMa = new JButton("Tìm"));
-		b7.add(Box.createVerticalStrut(20));
-		b7.add(bTimTen = Box.createHorizontalBox());
-		bTimTen.add(new JLabel("Tên dịch vụ: "));
-		bTimTen.add(txtTimTen = new JTextField(10));
-		bTimTen.add(btnTimTen = new JButton("Tìm"));
-		b7.add(Box.createVerticalStrut(10));
-		b.add(Box.createVerticalStrut(200));
+		b.add(Box.createVerticalStrut(300));
 		add(bb, BorderLayout.CENTER);
 
-		lblMaDichVu.setPreferredSize(lblLoaiDichVu.getPreferredSize());
-		lblGiaDichVu.setPreferredSize(lblLoaiDichVu.getPreferredSize());
-		lblTenDichVu.setPreferredSize(lblLoaiDichVu.getPreferredSize());
+		lblMaPhong.setPreferredSize(lblMaDichVu.getPreferredSize());
+		lblSoLuong.setPreferredSize(lblMaDichVu.getPreferredSize());
 
 		add(b, BorderLayout.WEST);
 		b.add(Box.createVerticalGlue());
 		add(bb, BorderLayout.CENTER);
 
-		bb.setBorder(BorderFactory.createTitledBorder("Danh sách dịch vụ"));
-		String[] headers = "Mã dịch vụ;Tên dịch vụ;Loại dịch vụ;Giá dịch vụ;".split(";");
+		bb.setBorder(BorderFactory.createTitledBorder("Danh sách dịch vụ phòng"));
+		String[] headers = "Mã phòng;Mã dịch vụ;Số lượng;Giá;Thành tiền".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
-		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setViewportView(table = new JTable(tableModel));
 		table.setRowHeight(25);
 		table.setAutoCreateRowSorter(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
 
+		//South
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
 		pnlSouth.add(btnXoa = new JButton("Xoá"));
@@ -143,8 +129,8 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
 
-		btnTimMa.addActionListener(this);
-		btnTimTen.addActionListener(this);
+		TXTedit_false();
+		
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
 		btnXoa.addActionListener(this);
@@ -163,35 +149,37 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(btnThem)) {
-			themPhieuDatPhong();
+			TXTedit_true();
 		} else if (o.equals(btnSua)) {
-			SuaDichVu();
-		} else if (o.equals(btnXoaTrang))
+//			TXTedit_true();
+//			btnSua.setText("Huỷ");
+//			if(btnSua.getText().equals("Hoàn tất")) {
+//				//SuaDichVu();
+//				System.out.println("done");
+//			}
+		} else if (o.equals(btnXoaTrang)) {
 			xoaTrang();
-		else if (o.equals(btnXoa)) {
+		} else if (o.equals(btnXoa)) {
 			try {
 				XoaDichVu();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (o.equals(btnTimMa)) {
-			TimDichVu();
 		} else if (o.equals(btnLuu)) {
-			Luu();
+			saveData();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
-
-	private void Luu() {
-		// TODO Auto-generated method stub
-		try {
-			JOptionPane.showMessageDialog(this, "Lưu thành công");
-
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	private void TXTedit_false() {
+		txtMaDichVu.setEditable(false);
+		txtMaPhong.setEditable(false);
+		txtSoLuong.setEditable(false);
+	}
+	private void TXTedit_true() {
+		txtMaDichVu.setEditable(true);
+		txtMaPhong.setEditable(true);
+		txtSoLuong.setEditable(true);
 	}
 
 	private void showMessage(String message, JTextField txt) {
@@ -200,29 +188,25 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	}
 
 	private void SuaDichVu() {
-		// TODO Auto-generated method stub
-		String maDV = txtMaDichVu.getText();
-		String tenDichVu = txtTenDichVu.getText();
-		String loaiDichVu = txtLoaiDichVu.getText();
-		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
-		DichVu dv = new DichVu(loaiDichVu, tenDichVu, loaiDichVu, giaDichVu);
-		if (ds.suaDichVu(dv)) {
-			int index = ds.getList().indexOf(dv);
-			tableModel.setValueAt(tenDichVu, index, 1);
-			tableModel.setValueAt(loaiDichVu, index, 2);
-			tableModel.setValueAt(giaDichVu, index, 3);
-			JOptionPane.showMessageDialog(null, "Sửa thành công");
+		int r = table.getSelectedRow();
+		if (r != -1) {	
+			String maPhong = txtMaPhong.getText();
+			String maDichVu = txtMaDichVu.getText();
+			String soLuong = txtSoLuong.getText();
+			String thanhTien = txtThanhTienDichVu.getText();
+			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong), Float.parseFloat(thanhTien));
+			if (ds.suaDichVu(dvp)) {
+				int index = ds.getList().indexOf(dvp);
+				tableModel.setValueAt(maPhong, index, 1);
+				tableModel.setValueAt(maDichVu, index, 2);
+				tableModel.setValueAt(soLuong, index, 3);
+				JOptionPane.showMessageDialog(null, "Sửa thành công");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
 		}
-	}
-
-	private void TimDichVu() {
 		// TODO Auto-generated method stub
-		int pos = ds.timDichVuTheoMa(txtTimMa.getText());
-		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Tồn tại dịch vụ có mã số này");
-			table.setRowSelectionInterval(pos, pos);
-		} else
-			JOptionPane.showMessageDialog(null, "Không tồn tại dịch vụ có mã số này");
+		
 	}
 
 	private void XoaDichVu() throws Exception {
@@ -231,48 +215,44 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaDichVu(r);
+				ds.xoaDichVuPhong(r);
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá thành công!");
 				xoaTrang();
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ muốn xoá!");
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
 		}
 	}
 
-	private void themPhieuDatPhong() {
+	private void saveData() {
 		// TODO Auto-generated method stub
+		String maPhong = txtMaPhong.getText();
+		String maDichVu = txtMaDichVu.getText();
+		String soLuong = txtSoLuong.getText();
+		float thanhTien = Integer.parseInt(soLuong) * 3000;
+		float gia = 3000;
 		try {
-			String maDV = txtMaDichVu.getText();
-			String tenDichVu = txtTenDichVu.getText();
-			String loaiDichVu = txtLoaiDichVu.getText();
-			Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
-			DichVu dv = new DichVu(loaiDichVu, tenDichVu, loaiDichVu, giaDichVu);
-
-			if (ds.themDichVu(dv)) {
-				String[] row = { loaiDichVu, tenDichVu, loaiDichVu, String.valueOf(giaDichVu) };
+			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong), thanhTien);
+			
+			if (ds.themDichVuPhong(dvp)) {
+				String[] row = {maPhong,maDichVu,soLuong,String.valueOf(gia),String.valueOf(thanhTien)};
 				tableModel.addRow(row);
 				xoaTrang();
 				JOptionPane.showMessageDialog(null, "Thêm thành công");
-			} else {
-				JOptionPane.showMessageDialog(null, "Trùng mã dịch vụ");
-				txtMaDichVu.selectAll();
-				txtMaDichVu.requestFocus();
+				
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
-			return;
+			
 		}
 	}
 
 	private void xoaTrang() {
 		// TODO Auto-generated method stub
 		txtMaDichVu.setText("");
-		txtLoaiDichVu.setText("");
-		txtGiaDichVu.setText("");
-		txtTenDichVu.setText("");
-		txtTimMa.setText("");
+		txtMaPhong.setText("");
+		txtSoLuong.setText("");
 		txtMaDichVu.setEnabled(true);
 		txtMaDichVu.requestFocus();
 	}
@@ -281,11 +261,10 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
-		txtMaDichVu.setEnabled(false);
+		TXTedit_false();
 		txtMaDichVu.setText(table.getValueAt(row, 0).toString());
-		txtTenDichVu.setText(table.getValueAt(row, 1).toString());
-		txtLoaiDichVu.setText(table.getValueAt(row, 2).toString());
-		txtGiaDichVu.setText(table.getValueAt(row, 3).toString());
+		txtMaPhong.setText(table.getValueAt(row, 1).toString());
+		txtSoLuong.setText(table.getValueAt(row, 2).toString());
 
 	}
 
