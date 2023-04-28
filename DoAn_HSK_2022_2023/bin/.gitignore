@@ -1,8 +1,5 @@
-/.classpath
-/.project
-/DAO/
-/DanhSach/
-/Entity/
-/GUI/
-/IMG/
 /connectDB/
+/DAO/
+/Entity/
+/DanhSach/
+/GUI/

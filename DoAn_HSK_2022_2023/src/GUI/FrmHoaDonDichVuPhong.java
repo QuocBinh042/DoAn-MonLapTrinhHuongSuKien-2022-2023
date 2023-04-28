@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -20,8 +21,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.DAOHoaDonDichVuPhong;
 import DanhSach.DanhSachHoaDonDichVuPhong;
 import Entity.HoaDonDichVuPhong;
+import connectDB.ConnectDB;
 
 public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, MouseListener {
 	/**
@@ -33,9 +36,15 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
 	private DanhSachHoaDonDichVuPhong ds;
-
-	public FrmHoaDonDichVuPhong() {
-		createGUI();
+	private DAOHoaDonDichVuPhong DAO_dvp;
+	public FrmHoaDonDichVuPhong(){
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		createGUI();	
 	}
 
 	private void createGUI() {
@@ -44,14 +53,14 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		setSize(1000, 650);
 		setResizable(false);
 		setLocationRelativeTo(null);
-
+		
 		ds = new DanhSachHoaDonDichVuPhong();
 		
 		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
-		JLabel lblTieuDe = new JLabel("QUẢN LÝ DỊCH VỤ");
+		JLabel lblTieuDe = new JLabel("HÓA ĐƠN DỊCH VỤ PHÒNG");
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 25));
 		lblTieuDe.setForeground(Color.red);
 		pnlNorth.add(lblTieuDe);
@@ -115,7 +124,8 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		table.setAutoCreateRowSorter(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
-
+		//Load Data
+		loadData();
 		//South
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
@@ -142,7 +152,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		table.addMouseListener(this);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		new FrmHoaDonDichVuPhong().setVisible(true);
 	}
 
@@ -187,6 +197,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			}
 			else {
 				TXTedit_false();
+				btnThem.setEnabled(true);
 				btnXoaTrang.setEnabled(false);
 				SuaDichVu();
 				btnSua.setText("Sửa");
@@ -204,6 +215,14 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			saveData();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
+	}
+	public void loadData() {
+		//Load data
+		DAO_dvp = new DAOHoaDonDichVuPhong();
+		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
+			Object row[] = {dvp.getMaPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
+			tableModel.addRow(row);
+		}
 	}
 	private void TXTedit_false() {
 		txtMaDichVu.setEditable(false);

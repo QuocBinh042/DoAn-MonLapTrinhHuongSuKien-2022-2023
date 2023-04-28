@@ -141,3 +141,4 @@ INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV004'
 --INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P003',N'DV006',11)
 --INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P004',N'DV005',23)
 --INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P004',N'DV003',15)
+--select MaPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu

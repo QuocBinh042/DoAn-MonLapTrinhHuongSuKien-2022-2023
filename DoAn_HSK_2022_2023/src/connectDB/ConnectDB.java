@@ -13,30 +13,27 @@ public class ConnectDB {
 		return instance;
 	}
 	
-	public static Connection getConnection() {
-		return connection;
-	}
+//	public static Connection getConnection() {
+//		return connection;
+//	}
 	
 	//test connect sql
-	public static void connect() {
-        try {
-            String URL = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyKhachSan;";
-            String user = "sa";
-            String pass = "sapassword";
-            connection = DriverManager.getConnection(URL, user, pass);
-            if (connection != null) {
-                DatabaseMetaData dm = (DatabaseMetaData) connection.getMetaData();
-                System.out.println("Tên Driver: " + dm.getDriverName());
-                System.out.println("Phiên bản Driver: " + dm.getDriverVersion());
-                System.out.println("Tên Cơ sở dữ liệu: " + dm.getDatabaseProductName());
-                System.out.println("Phiên bản Cơ sở dữ liệu: " + dm.getDatabaseProductVersion());
-            }               
+	public void connect() throws SQLException {
 
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } 
+        String URL = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyKhachSan;";
+        String user = "sa";
+        String pass = "sapassword";
+        connection = DriverManager.getConnection(URL, user, pass);
+        if (connection != null) {
+            DatabaseMetaData dm = (DatabaseMetaData) connection.getMetaData();
+            System.out.println("Tên Driver: " + dm.getDriverName());
+            System.out.println("Phiên bản Driver: " + dm.getDriverVersion());
+            System.out.println("Tên Cơ sở dữ liệu: " + dm.getDatabaseProductName());
+            System.out.println("Phiên bản Cơ sở dữ liệu: " + dm.getDatabaseProductVersion());
+        }               
+
     }
-	public static void disconect() {
+	public void disconect() {
 		if(connection!=null) {
 			try {
 				connection.close();
@@ -47,9 +44,9 @@ public class ConnectDB {
 			}
 		}
 	}
-	//test
-//	public static void main(String[] args) {
-//		connect();
-//		disconect();
-//	}
+	public static Connection getConnection() {
+		return connection;
+	}
+
+
 }
