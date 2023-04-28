@@ -24,7 +24,7 @@ create table Phong(
 create table HoaDonDichVuPhong(
 	MaPhong nvarchar(50) not null,
 	MaDichVu nvarchar(50) not null,
-	SoLuong int default 0,
+	SoLuong int,
 	-------------------------
 	--Thành tiền dịch vụ = SUM(Gia*SoLuong)
 	--Giá(DichVu)
@@ -109,3 +109,35 @@ INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
 values(N'DV005',N'Nước ngọt Cocacola Zero 600ml',10000)
 INSERT INTO DichVu (MaDichVu,TenDichVu,Gia)
 values(N'DV006',N'Khăn giấy',3000)
+
+--HOA DON DICH VU PHONG
+--create trigger insert
+go
+CREATE TRIGGER trigger_hddvphong on HoaDonDichVuPhong
+after insert
+as 
+	--khai báo biến giá và mã dv
+	declare @gia float, @madv varchar(50), @map varchar(50)
+	--lấy dữ liệu từ insert
+	select @madv = MaDichVu, @map = MaPhong
+	from inserted 
+	--lấy dữ liệu từ bảng Dịch vụ
+	select @gia = Gia 
+	from DichVu
+	where MaDichVu like @madv
+
+	UPDATE HoaDonDichVuPhong
+	set ThanhTienDichVu = @gia * SoLuong
+	where MaDichVu = @madv and MaPhong = @map
+go
+
+INSERT INTO Phong (MaPhong) values(N'P001')
+INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV001',1)
+INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV003',5)
+INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV004',7)
+--INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P002',N'DV004',4)
+--INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P002',N'DV002',9)
+--INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P002',N'DV003',3)
+--INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P003',N'DV006',11)
+--INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P004',N'DV005',23)
+--INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P004',N'DV003',15)

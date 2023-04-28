@@ -29,7 +29,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-	private JTextField txtMaDichVu, txtMaPhong, txtSoLuong, txtThanhTienDichVu, txtMess;
+	private JTextField txtMaDichVu, txtMaPhong, txtSoLuong, txtMess;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
 	private DanhSachHoaDonDichVuPhong ds;
@@ -130,6 +130,8 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		btnThoat.setForeground(Color.WHITE);
 
 		TXTedit_false();
+		btnLuu.setEnabled(false);
+		btnXoaTrang.setEnabled(false);
 		
 		btnThem.addActionListener(this);
 		btnSua.addActionListener(this);
@@ -149,14 +151,46 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(btnThem)) {
-			TXTedit_true();
+			if(btnThem.getText().equals("Thêm")) {
+				TXTedit_true();
+				btnXoaTrang.setEnabled(true);
+				btnThem.setText("Hủy");
+				btnSua.setEnabled(false);
+				btnLuu.setEnabled(true);
+			}
+			else {
+				xoaTrang();
+				TXTedit_false();
+				//btnThem.setEnabled(false);
+				btnThem.setText("Thêm");
+				btnSua.setEnabled(true);
+				btnLuu.setEnabled(false);
+			}
+			
 		} else if (o.equals(btnSua)) {
-//			TXTedit_true();
-//			btnSua.setText("Huỷ");
-//			if(btnSua.getText().equals("Hoàn tất")) {
-//				//SuaDichVu();
-//				System.out.println("done");
-//			}
+			btnThem.setEnabled(false);
+			if(btnSua.getText().equals("Sửa")) {
+				try {
+					int r = table.getSelectedRow();
+					if(r!=-1) {
+						btnSua.setText("Hoàn tất");
+						txtSoLuong.setEditable(true);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				}
+				
+			}
+			else {
+				TXTedit_false();
+				btnXoaTrang.setEnabled(false);
+				SuaDichVu();
+				btnSua.setText("Sửa");
+			}
 		} else if (o.equals(btnXoaTrang)) {
 			xoaTrang();
 		} else if (o.equals(btnXoa)) {
@@ -193,13 +227,12 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			String maPhong = txtMaPhong.getText();
 			String maDichVu = txtMaDichVu.getText();
 			String soLuong = txtSoLuong.getText();
-			String thanhTien = txtThanhTienDichVu.getText();
-			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong), Float.parseFloat(thanhTien));
+			float thanhTien = Integer.parseInt(soLuong) * 3000;
+			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong),thanhTien);
+			System.out.println(ds.suaDichVu(dvp));
 			if (ds.suaDichVu(dvp)) {
-				int index = ds.getList().indexOf(dvp);
-				tableModel.setValueAt(maPhong, index, 1);
-				tableModel.setValueAt(maDichVu, index, 2);
-				tableModel.setValueAt(soLuong, index, 3);
+				tableModel.setValueAt(soLuong, r, 2);
+				tableModel.setValueAt(thanhTien, r, 4);
 				JOptionPane.showMessageDialog(null, "Sửa thành công");
 			}
 		} else {
@@ -227,12 +260,13 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 
 	private void saveData() {
 		// TODO Auto-generated method stub
-		String maPhong = txtMaPhong.getText();
-		String maDichVu = txtMaDichVu.getText();
-		String soLuong = txtSoLuong.getText();
-		float thanhTien = Integer.parseInt(soLuong) * 3000;
-		float gia = 3000;
+		
 		try {
+			String maPhong = txtMaPhong.getText();
+			String maDichVu = txtMaDichVu.getText();
+			String soLuong = txtSoLuong.getText();
+			float thanhTien = Integer.parseInt(soLuong) * 3000;
+			float gia = 3000;
 			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong), thanhTien);
 			
 			if (ds.themDichVuPhong(dvp)) {
@@ -260,18 +294,16 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		int row = table.getSelectedRow();
-		TXTedit_false();
-		txtMaDichVu.setText(table.getValueAt(row, 0).toString());
-		txtMaPhong.setText(table.getValueAt(row, 1).toString());
-		txtSoLuong.setText(table.getValueAt(row, 2).toString());
-
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		int row = table.getSelectedRow();
+		System.out.println(row);
+		txtMaPhong.setText(table.getValueAt(row, 0).toString());
+		txtMaDichVu.setText(table.getValueAt(row, 1).toString());
+		txtSoLuong.setText(table.getValueAt(row, 2).toString());
 	}
 
 	@Override
