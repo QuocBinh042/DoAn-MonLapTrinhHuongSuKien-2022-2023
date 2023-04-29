@@ -1,6 +1,7 @@
 package DAO;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -9,11 +10,10 @@ import java.util.ArrayList;
 import Entity.HoaDonDichVuPhong;
 import connectDB.ConnectDB;
 
-public class DAOHoaDonDichVuPhong implements DAOInterface<HoaDonDichVuPhong>{
+public class DAOHoaDonDichVuPhong{
 
-	@Override
 	public ArrayList<HoaDonDichVuPhong> getAll() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stubArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
 		ArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
@@ -31,26 +31,48 @@ public class DAOHoaDonDichVuPhong implements DAOInterface<HoaDonDichVuPhong>{
 		return dsDVP;
 	}
 
-	@Override
-	public void add(HoaDonDichVuPhong t) {
+	public void add(HoaDonDichVuPhong dvp) {
 		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(HoaDonDichVuPhong t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(HoaDonDichVuPhong t) {
-		// TODO Auto-generated method stub
-		
-	}
-	public static void main(String[] args) {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
-		System.out.println(con);
+		PreparedStatement stm = null;
+		String sql = "INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong)"+"values(?,?,?)";
+		System.out.println(sql);
+		try {
+			stm = con.prepareStatement(sql);
+			stm.setString(1, dvp.getMaPhong());
+			stm.setString(2, dvp.getMaDichVu());
+			stm.setInt(3, dvp.getSoLuong());
+			stm.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally {
+			close(stm);
+		}
+	}
+
+
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	public void delete() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void close(PreparedStatement stm) {
+		if(stm!=null) {
+			try {
+				stm.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
 	}
 }

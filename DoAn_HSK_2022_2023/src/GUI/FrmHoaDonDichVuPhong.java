@@ -291,6 +291,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			if (ds.themDichVuPhong(dvp)) {
 				String[] row = {maPhong,maDichVu,soLuong,String.valueOf(gia),String.valueOf(thanhTien)};
 				tableModel.addRow(row);
+				DAO_dvp.add(dvp);
 				xoaTrang();
 				JOptionPane.showMessageDialog(null, "Thêm thành công");
 				
