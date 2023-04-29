@@ -207,6 +207,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		} else if (o.equals(btnXoa)) {
 			try {
 				XoaDichVu();
+				
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -216,7 +217,16 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
+	public void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel)table.getModel();
+		while(dm.getRowCount() > 0)
+		{
+		    dm.removeRow(0);
+		}
+	}
 	public void loadData() {
+		//delete all
+		deleteAllDataJtable();
 		//Load data
 		DAO_dvp = new DAOHoaDonDichVuPhong();
 		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
@@ -246,14 +256,16 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			String maPhong = txtMaPhong.getText();
 			String maDichVu = txtMaDichVu.getText();
 			String soLuong = txtSoLuong.getText();
-			float thanhTien = Integer.parseInt(soLuong) * 3000;
-			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong),thanhTien);
-			System.out.println(ds.suaDichVu(dvp));
-			if (ds.suaDichVu(dvp)) {
-				tableModel.setValueAt(soLuong, r, 2);
-				tableModel.setValueAt(thanhTien, r, 4);
-				JOptionPane.showMessageDialog(null, "Sửa thành công");
-			}
+			//float thanhTien = (float) tableModel.getValueAt(r, 4);
+			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong));
+			//if (ds.suaDichVu(dvp)) {
+			DAO_dvp.updateSoLuong(dvp);
+			DAO_dvp.updateThanhTien(maPhong,maDichVu);
+			tableModel.setValueAt(soLuong, r, 2);
+			//tableModel.setValueAt(thanhTien, r, 4);
+			JOptionPane.showMessageDialog(null, "Sửa thành công");
+			//}
+			loadData();
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
 		}
@@ -268,8 +280,10 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				ds.xoaDichVuPhong(r);
+				DAO_dvp.delete(table.getValueAt(r, 0).toString(), table.getValueAt(r, 1).toString());
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá thành công!");
+				loadData();
 				xoaTrang();
 			}
 		} else {

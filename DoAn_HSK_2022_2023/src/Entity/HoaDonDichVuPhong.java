@@ -7,6 +7,13 @@ public class HoaDonDichVuPhong {
 	 private int soLuong;
 	 private float gia;
 	 private float thanhTienDichVu;
+	 
+	public HoaDonDichVuPhong(String maPhong, String maDichVu, int soLuong) {
+		super();
+		this.maPhong = maPhong;
+		this.maDichVu = maDichVu;
+		this.soLuong = soLuong;
+	}
 	public HoaDonDichVuPhong(String maPhong, String maDichVu, int soLuong, float thanhTienDichVu) {
 		super();
 		this.maPhong = maPhong;
