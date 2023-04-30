@@ -145,32 +145,32 @@ INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV004'
 --UPDATE HoaDonDichVuPhong Set SoLuong = 3 where MaPhong = 'P001' and MaDichVu =  'DV003'
 --select * from HoaDonDichVuPhong
 --DELETE from HoaDonDichVuPhong where MaPhong = ? and MaDichVu = ?
-go
-select * from DichVu
+--go
+--select * from DichVu
 
+--declare @gia float
+--select @gia= Gia from DichVu where MaDichVu = 'DV001'
+--print(@gia)
+--go
+
+--select MaPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu 
+--from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
+
+--go
 declare @gia float
-select @gia= Gia from DichVu where MaDichVu = 'DV001'
-print(@gia)
-go
-
-select MaPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu 
-from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
-
-go
-declare @gia float
-select @gia= Gia from DichVu where MaDichVu =  'DV001'
-print(@gia)
-go
-select Gia from DichVu where MaDichVu = 'DV001'
-go
-UPDATE HoaDonDichVuPhong
-Set SoLuong = 7
-where MaPhong = 'P001' and MaDichVu = 'DV001'
+select @gia=Gia from DichVu where MaDichVu =  'DV001'
+--print(@gia)
+--go
+--select Gia from DichVu where MaDichVu = 'DV001'
+--go
+--UPDATE HoaDonDichVuPhong
+--Set SoLuong = 7
+--where MaPhong = 'P001' and MaDichVu = 'DV001'
 
 UPDATE HoaDonDichVuPhong
-Set ThanhTienDichVu = SoLuong * ?
-where MaPhong = ? and MaDichVu = ?
+Set ThanhTienDichVu = SoLuong * @gia
+where MaPhong = 'P001' and MaDichVu = 'DV003'
 
 
-go
+--go
 
