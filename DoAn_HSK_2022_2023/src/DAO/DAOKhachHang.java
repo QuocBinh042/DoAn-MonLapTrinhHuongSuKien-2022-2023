@@ -1,10 +1,11 @@
 package DAO;
-
-import java.beans.Statement;
+//sai thư viện
+//import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,15 +19,21 @@ public class DAOKhachHang{
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select * KhachHang";
-			Statement statement = (Statement) con.createStatement();
-			ResultSet rs = ((java.sql.Statement) statement).executeQuery(sql);
+			String sql = "select * from KhachHang";
+			Statement statement =con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
 		while(rs.next()) {
 			DanhSachKhachHang.add(new KhachHang(
-					rs.getString("maKHang"),
-					rs.getString("tenKHang"),
-					rs.getString("CMThu"),
-					rs.getString("SDThoai"),
+					//getString phải trùng với tên của các trường trong sql
+//					rs.getString("maKHang");
+//					rs.getString("tenKHang");
+//					rs.getString("CMThu");
+//					rs.getString("SDThoai");
+//					rs.getString("Gmail")));
+					rs.getString("MaKhachHang"),
+					rs.getString("TenKhachHang"),
+					rs.getString("CMT"),
+					rs.getString("SDT"),
 					rs.getString("Gmail")));
 		}
 		}catch (SQLException e) {
@@ -36,7 +43,6 @@ public class DAOKhachHang{
 	}	
 	
 		
-	
 
 	public void add(KhachHang kh) {
 		// TODO Auto-generated method stub
@@ -110,7 +116,14 @@ public class DAOKhachHang{
 	
 	private void close(PreparedStatement stm) {
 		// TODO Auto-generated method stub
-		
+		if(stm!=null) {
+			try {
+				stm.close();
+			} catch (SQLException e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
 	}
 }
 

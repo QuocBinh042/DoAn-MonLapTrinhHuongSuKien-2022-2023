@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -24,8 +25,12 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.DAOHoaDonDichVuPhong;
+import DAO.DAOKhachHang;
 import DanhSach.DanhSachKhachHang;
+import Entity.HoaDonDichVuPhong;
 import Entity.KhachHang;
+import connectDB.ConnectDB;
 
 public class FrmKhachHang extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -34,8 +39,14 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 	private JTextField txtMaKH, txtTenKH, txtCMinhThu, txtSDT, txtGMail, txtTimMa, txtTimTen, txtMess;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnThoat, btnSua;
 	private DefaultTableModel tableModel;
-
+	private DAOKhachHang DAO_KH ;
 	public FrmKhachHang() {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		createGUI();
 	}
 
@@ -141,7 +152,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
 		add(bb, BorderLayout.CENTER);
-
+		loadData();
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
 		pnlSouth.add(btnXoa = new JButton("Xoá"));
@@ -306,7 +317,16 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 			e.printStackTrace();
 		}
 	}
-
+	//add func loadData from SQL
+	public void loadData() {
+		//delete all
+		//Load data
+		DAO_KH = new DAOKhachHang();
+		for(KhachHang kh:DAO_KH.getAll()) {
+			Object row[] = {kh.getMaKHang(),kh.getTenKHang(),kh.getCMThu(),kh.getSDThoai(),kh.getGmail()};
+			tableModel.addRow(row);
+		}
+	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
