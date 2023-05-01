@@ -6,27 +6,30 @@ import java.util.Objects;
 public class NhanVien implements Serializable {
 	private String maNV;
 	private String hoTen;
-	private String CMThu;
-	private String Sdthoai;
-	private String Gmail;
+	private String cmthu;
+	private String sdthoai;
+	private String gmail;
 	private String chucVu;
 	private String gioiTinh;
 	private String diaChi;
+	private String matKhau;
 
-	public NhanVien(String maNV, String hoTen, String cMThu, String sdthoai, String gmail, String chucVu, String gioiTinh, String diaChi) {
+	public NhanVien(String maNV, String hoTen, String cmthu, String sdthoai, String gmail, String chucVu,
+			String gioiTinh, String diaChi, String matKhau) {
 		super();
 		this.maNV = maNV;
 		this.hoTen = hoTen;
-		this.CMThu = cMThu;
-		this.Sdthoai = sdthoai;
-		this.Gmail = gmail;
+		this.cmthu = cmthu;
+		this.sdthoai = sdthoai;
+		this.gmail = gmail;
 		this.chucVu = chucVu;
 		this.gioiTinh = gioiTinh;
 		this.diaChi = diaChi;
+		this.matKhau = matKhau;
 	}
 
 	public NhanVien() {
-		this("", "", "", "", "", "", "", "");
+		this("", "", "", "", "", "", "", "", "");
 	}
 
 	@Override
@@ -62,28 +65,28 @@ public class NhanVien implements Serializable {
 		this.hoTen = hoTen;
 	}
 
-	public String getCMThu() {
-		return CMThu;
+	public String getCmthu() {
+		return cmthu;
 	}
 
-	public void setCMThu(String cMThu) {
-		CMThu = cMThu;
+	public void setCmthu(String cmthu) {
+		this.cmthu = cmthu;
 	}
 
 	public String getSdthoai() {
-		return Sdthoai;
+		return sdthoai;
 	}
 
 	public void setSdthoai(String sdthoai) {
-		Sdthoai = sdthoai;
+		this.sdthoai = sdthoai;
 	}
 
 	public String getGmail() {
-		return Gmail;
+		return gmail;
 	}
 
 	public void setGmail(String gmail) {
-		Gmail = gmail;
+		this.gmail = gmail;
 	}
 
 	public String getChucVu() {
@@ -93,7 +96,7 @@ public class NhanVien implements Serializable {
 	public void setChucVu(String chucVu) {
 		this.chucVu = chucVu;
 	}
-	
+
 	public String getGioiTinh() {
 		return gioiTinh;
 	}
@@ -110,11 +113,19 @@ public class NhanVien implements Serializable {
 		this.diaChi = diaChi;
 	}
 
-	@Override
-	public String toString() {
-		return "NhanVien [maNV=" + maNV + ", hoTen=" + hoTen + ", CMThu=" + CMThu + ", Sdthoai=" + Sdthoai + ", Gmail="
-				+ Gmail + ", chucVu=" + chucVu + ", gioiTinh=" + gioiTinh + ", diaChi=" + diaChi + "]";
+	public String getMatKhau() {
+		return matKhau;
 	}
 
-	
+	public void setMatKhau(String matKhau) {
+		this.matKhau = matKhau;
+	}
+
+	@Override
+	public String toString() {
+		return "NhanVien [maNV=" + maNV + ", hoTen=" + hoTen + ", cmthu=" + cmthu + ", sdthoai=" + sdthoai + ", gmail="
+				+ gmail + ", chucVu=" + chucVu + ", gioiTinh=" + gioiTinh + ", diaChi=" + diaChi + ", matKhau="
+				+ matKhau + "]";
+	}
+
 }
