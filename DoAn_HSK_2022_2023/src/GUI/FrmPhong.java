@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -25,7 +26,14 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import DanhSach.DanhSachPhong;
+import Entity.KhachHang;
 import Entity.Phong;
+import DAO.DAOKhachHang;
+import DAO.DAOPhong;
+import connectDB.ConnectDB;
+import Entity.HoaDonDichVuPhong;
+import DAO.DAOHoaDonDichVuPhong;
+
 
 public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +43,15 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	private JRadioButton radTrong, radDaDat;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnThoat, btnSua;
 	private DefaultTableModel tableModel;
+	private DAOPhong DAO_Phong ;
 
 	public FrmPhong() {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		createGUI();
 	}
 
@@ -80,26 +95,48 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		b3.add(lblLoai = new JLabel("Loại phòng: "));
 		b3.add(txtLoai = new JTextField());
 
+//		b.add(b4 = Box.createHorizontalBox());
+//		b.add(Box.createVerticalStrut(15));
+//		b4.add(lblTinhTrang = new JLabel("Tình trạng: "));
+//		b4.add(Box.createHorizontalStrut(50));
+//		ButtonGroup bg = new ButtonGroup();
+//		bg.add(radTrong = new JRadioButton("Còn trống"));
+//		bg.add(radDaDat = new JRadioButton("Đã đặt"));
+//		b4.add(radTrong);
+//		b4.add(Box.createHorizontalStrut(50));
+//		b4.add(radDaDat);
+//
+//		b.add(b5 = Box.createHorizontalBox());
+//		b.add(Box.createVerticalStrut(15));
+//		b5.add(lblGiaPhong = new JLabel("Giá phòng: "));
+//		b5.add(txtGiaPhong = new JTextField());
+//
+//		b.add(b6 = Box.createHorizontalBox());
+//		b.add(Box.createVerticalStrut(15));
+//		b6.add(lblMoTa = new JLabel("Mô tả: "));
+//		b6.add(txtMoTa = new JTextField());
+		
+
 		b.add(b4 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b4.add(lblTinhTrang = new JLabel("Tình trạng: "));
-		b4.add(Box.createHorizontalStrut(50));
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(radTrong = new JRadioButton("Còn trống"));
-		bg.add(radDaDat = new JRadioButton("Đã đặt"));
-		b4.add(radTrong);
-		b4.add(Box.createHorizontalStrut(50));
-		b4.add(radDaDat);
+		b4.add(lblGiaPhong = new JLabel("Giá phòng: "));
+		b4.add(txtGiaPhong = new JTextField());
 
 		b.add(b5 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b5.add(lblGiaPhong = new JLabel("Giá phòng: "));
-		b5.add(txtGiaPhong = new JTextField());
-
+		b5.add(lblMoTa = new JLabel("Mô tả: "));
+		b5.add(txtMoTa = new JTextField());
+		
 		b.add(b6 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
-		b6.add(lblMoTa = new JLabel("Mô tả: "));
-		b6.add(txtMoTa = new JTextField());
+		b6.add(lblTinhTrang = new JLabel("Tình trạng: "));
+		b6.add(Box.createHorizontalStrut(50));
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(radTrong = new JRadioButton("Còn trống"));
+		bg.add(radDaDat = new JRadioButton("Đã đặt"));
+		b6.add(radTrong);
+		b6.add(Box.createHorizontalStrut(50));
+		b6.add(radDaDat);
 
 		lblMaPhong.setPreferredSize(lblLoai.getPreferredSize());
 		lblTen.setPreferredSize(lblLoai.getPreferredSize());
@@ -140,7 +177,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		b.add(Box.createVerticalStrut(200));
 
 		bb.setBorder(BorderFactory.createTitledBorder("Danh sách phòng"));
-		String[] headers = "Mã phòng;Tên;Loại phòng;Tình trạng; Giá phòng; Mô tả".split(";");
+		String[] headers = "Mã phòng;Tên;Loại phòng; Giá phòng; Mô tả;Tình trạng".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -152,6 +189,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		add(bb, BorderLayout.CENTER);
 
 		// SOUTH
+		loadData();
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
 		pnlSouth.add(btnXoa = new JButton("Xoá"));
@@ -299,11 +337,11 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			tinhTrang = radTrong.getText();
 		if (radDaDat.isSelected())
 			tinhTrang = radDaDat.getText();
-		Phong ph = new Phong(maphong, tenphong, loaip, tinhTrang, giaP, mota);
+		Phong ph = new Phong(maphong, tenphong, loaip, mota, giaP,tinhTrang);
 		try {
 			if (validData() == true) {
 				if (ds.themPhong(ph)) {
-					String[] row = { maphong, tenphong, loaip, tinhTrang, Double.toString(giaP) + "", mota };
+					String[] row = { maphong, tenphong, loaip, Double.toString(giaP) + "", mota,tinhTrang };
 					tableModel.addRow(row);
 					xoaTrangActions();
 					JOptionPane.showMessageDialog(null, "Thêm thành công");
@@ -324,6 +362,16 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			e.printStackTrace();
 		}
 	}
+	//add func loadData from SQL
+		public void loadData() {
+			//delete all
+			//Load data
+			DAO_Phong = new DAOPhong();
+			for(Phong phong : DAO_Phong.getAll()) {
+				Object row[] = {phong.getMaPhong(),phong.getTenPhong(),phong.getLoaiPhong(),phong.getGiaPhong(),phong.getMoTa(),phong.getTinhTrang()};
+				tableModel.addRow(row);
+			}
+		}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
