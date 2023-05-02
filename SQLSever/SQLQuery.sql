@@ -171,8 +171,14 @@ INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV004'
 
 ------------------------
 --Khach Hang
---select * from KhachHang
+select * from KhachHang
 INSERT INTO KhachHang values(N'KH001',N'Nguyễn Đức Vương','12345678910','0799558911','vuongnguyen221203@gmail.com')
+INSERT INTO KhachHang values(N'KH002',N'Nguyễn Thu Sương ','11125367881','0258104791','thusuong120402@gmail.com')
+INSERT INTO KhachHang values(N'KH003',N'Nguyễn Đức Nhật','17655899012','0491228491','nhatnguyen121103@gmail.com')
+INSERT INTO KhachHang values(N'KH004',N'Trần Lê Quốc Bình','13456788990','0309445891','quocbinh230603@gmail.com')
+INSERT INTO KhachHang values(N'KH005',N'Nguyễn Trần Hải Đăng','12344465879','0907021740','haidang080703@gmail.com')
+--INSERT INTO KhachHang values(N'KH006',N'Lê Thu Thủy','11143567781','0760912287','thuthuy300401@gmail.com')
+
 
 
 -- InsertData Phong
