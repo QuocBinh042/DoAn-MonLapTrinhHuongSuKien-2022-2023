@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -20,13 +21,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+
+
 import DanhSach.DanhSachNhanVien;
 import Entity.NhanVien;
+import DAO.DAONhanVien;
+import connectDB.ConnectDB;
+
 
 public class FrmNhanVien extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -36,9 +42,16 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 	private JComboBox<Object> cbChucVu;
 	private JRadioButton radNam, radNu;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnThoat, btnSua;
+	private DAONhanVien DAO_NV;
 	private DefaultTableModel tableModel;
 
 	public FrmNhanVien() {
+		try {
+			ConnectDB.getInstance().connect();
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		createGUI();
 	}
 
@@ -174,6 +187,8 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
 		add(bb, BorderLayout.CENTER);
+		loadData();
+		
 		// SOUTH
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
@@ -225,6 +240,17 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		radNam.setEnabled(true);
 		radNu.setEnabled(true);
 		cbChucVu.setEnabled(true);
+	}
+	
+	public void loadData() {
+		// delete all
+		// Load data
+		DAO_NV = new DAONhanVien();
+		for (NhanVien nv : DAO_NV.getAll()) {
+			Object row[] = { nv.getMaNV(), nv.getHoTen(), nv.getMatKhau(), nv.getChucVu(), nv.getGioiTinh(),
+					nv.getCmthu(), nv.getChucVu(), nv.getGmail(), nv.getDiaChi()};
+			tableModel.addRow(row);
+		}
 	}
 	
 	@Override
