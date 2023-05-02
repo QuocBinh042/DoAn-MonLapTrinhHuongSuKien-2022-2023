@@ -10,15 +10,14 @@ public class DanhSachPhong {
 	public DanhSachPhong() {
 		list = new ArrayList<Phong>();
 	}
-	
-	
+
 	public String LayDanhSachPhong() {
 		String s = "";
-		for(Phong ph: list)
+		for (Phong ph : list)
 			s += ph + "\n";
 		return s;
 	}
- 
+
 	public boolean themPhong(Phong ph) {
 		for (int i = 0; i < list.size(); i++)
 			if (list.get(i).getMaPhong().equalsIgnoreCase(ph.getMaPhong())) {
@@ -36,24 +35,33 @@ public class DanhSachPhong {
 			return false;
 	}
 
-	public int timPhong(String manv) {
+	public int timPhongTheoMa(String maPhong) {
 		for (int i = 0; i < list.size(); i++)
-			if (list.get(i).getMaPhong().equalsIgnoreCase(manv))
+			if (list.get(i).getMaPhong().equalsIgnoreCase(maPhong))
 				return i;
 		return -1;
 	}
-	
-	public boolean capNhatTinhTrangPhong(Phong ph) {
+
+	public int timPhongTheoTen(String tenPhong) {
 		for (int i = 0; i < list.size(); i++)
-			if (list.get(i).getMaPhong().equalsIgnoreCase(ph.getMaPhong())) {
-				return false;
-			}
-		list.add(ph);
-		return true;
+			if (list.get(i).getTenPhong().equalsIgnoreCase(tenPhong))
+				return i;
+		return -1;
 	}
 
-	
- 
+	public boolean capNhatThongTinPhong(Phong ph) {
+		for (int i = 0; i < list.size(); i++)
+			if (list.get(i).getMaPhong().equalsIgnoreCase(ph.getMaPhong())) {
+				list.get(i).setTenPhong(ph.getTenPhong());
+				list.get(i).setLoaiPhong(ph.getLoaiPhong());
+				list.get(i).setGiaPhong(ph.getGiaPhong());
+				list.get(i).setMoTa(ph.getMoTa());
+				list.get(i).setTinhTrang(ph.getTinhTrang());
+				return true;
+			}
+		return false;
+	}
+
 	public ArrayList<Phong> getList() {
 		return list;
 	}
