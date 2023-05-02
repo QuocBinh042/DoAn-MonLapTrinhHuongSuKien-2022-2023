@@ -86,7 +86,7 @@ public class DAOKhachHang{
 			stm.setString(2, kh.getTenKHang());
 			stm.setString(3, kh.getCMThu());
 			stm.setString(4, kh.getSDThoai());
-			stm.setString(4, kh.getGmail());
+			stm.setString(5, kh.getGmail());
 			
 			stm.executeUpdate();
 		} catch (SQLException e) {
