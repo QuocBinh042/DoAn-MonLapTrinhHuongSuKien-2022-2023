@@ -34,19 +34,20 @@ import connectDB.ConnectDB;
 
 public class FrmKhachHang extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private DanhSachKhachHang ds;
+	private DanhSachKhachHang dsKH;
 	private JTable table;
 	private JTextField txtMaKH, txtTenKH, txtCMinhThu, txtSDT, txtGMail, txtTimMa, txtTimTen, txtMess;
-	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnThoat, btnSua;
+	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTimMa, btnTimTen, btnThoat, btnSua;
 	private DefaultTableModel tableModel;
-	private DAOKhachHang DAO_KH ;
+	private DAOKhachHang DAO_KH;
+
 	public FrmKhachHang() {
-		try {
-			ConnectDB.getInstance().connect();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			ConnectDB.getInstance().connect();
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		createGUI();
 	}
 
@@ -56,20 +57,17 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 
 	public void createGUI() {
 		setTitle("Quản lý thông tin khách hàng");
-		setSize(1000, 650);
+		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		ds = new DanhSachKhachHang();
+		dsKH = new DanhSachKhachHang();
 
-		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
 		JLabel lblTieuDe = new JLabel("THÔNG TIN KHÁCH HÀNG");
 		lblTieuDe.setFont(new Font("Arial", Font.BOLD, 25));
 		lblTieuDe.setForeground(Color.red);
 		pnlNorth.add(lblTieuDe);
-
-		// CENTER
 
 		Box b = Box.createVerticalBox(), bb = Box.createVerticalBox();
 		Box b1, b2, b3, b4, b5, b6, b7, b8, bTimTen, bTimMa;
@@ -130,19 +128,19 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		b8.add(bTimMa = Box.createHorizontalBox());
 		bTimMa.add(new JLabel("Mã khách hàng:  "));
 		bTimMa.add(txtTimMa = new JTextField(10));
-		bTimMa.add(btnTim = new JButton("Tìm"));
+		bTimMa.add(btnTimMa = new JButton("Tìm"));
 		b8.add(Box.createVerticalStrut(20));
 		b8.add(bTimTen = Box.createHorizontalBox());
 		bTimTen.add(new JLabel("Tên khách hàng: "));
 		bTimTen.add(txtTimTen = new JTextField(10));
-		bTimTen.add(btnTim = new JButton("Tìm"));
+		bTimTen.add(btnTimTen = new JButton("Tìm"));
 		b8.add(Box.createVerticalStrut(10));
 		b.add(Box.createVerticalStrut(200));
 		add(b, BorderLayout.WEST);
 
 		bb = Box.createVerticalBox();
 		bb.setBorder(BorderFactory.createTitledBorder("Danh sách khách hàng"));
-		String[] headers = "Mã khách hàng;Họ tên;Chứng minh thư ;SĐT;Gmail ;".split(";");
+		String[] headers = "Mã khách hàng;Họ tên khách hàng;Chứng minh thư ;SĐT;Gmail ;".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -152,7 +150,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
 		add(bb, BorderLayout.CENTER);
-		loadData();
+//		loadData();
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
 		pnlSouth.add(btnXoa = new JButton("Xoá"));
@@ -164,9 +162,15 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
-		// ĐĂNG KÝ SỰ KIỆN
-		btnTim.addActionListener(this);
+
+		TXTedit_false();
+		btnLuu.setEnabled(false);
+		btnXoaTrang.setEnabled(false);
+
+		btnTimMa.addActionListener(this);
+		btnTimTen.addActionListener(this);
 		btnThem.addActionListener(this);
+		btnSua.addActionListener(this);
 		btnXoa.addActionListener(this);
 		btnXoaTrang.addActionListener(this);
 		btnLuu.addActionListener(this);
@@ -178,30 +182,79 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
-		if (o.equals(btnThem))
-			themActions();
-		if (o.equals(btnXoa))
+		if (o.equals(btnThem)) {
+			if (btnThem.getText().equals("Thêm")) {
+				TXTedit_true();
+				btnXoaTrang.setEnabled(true);
+				btnThem.setText("Huỷ");
+				btnSua.setEnabled(false);
+				btnLuu.setEnabled(true);
+			} else {
+				xoaTrang();
+				TXTedit_false();
+				btnThem.setText("Thêm");
+				btnSua.setEnabled(true);
+				btnLuu.setEnabled(false);
+				showMessage("", txtMess);
+			}
+		} else if (o.equals(btnSua)) {
+			btnThem.setEnabled(false);
+			if (btnSua.getText().equals("Sửa")) {
+				try {
+					int r = table.getSelectedRow();
+					if (r != -1) {
+						TXTedit_true();
+						txtMaKH.setEditable(false);
+						btnSua.setText("Hoàn tất");
+					} else {
+						JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng muốn xoá!");
+						btnThem.setEnabled(true);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			} else {
+				SuaKhachHang();
+				btnSua.setText("Sửa");
+				btnThem.setEnabled(true);
+				TXTedit_false();
+				xoaTrang();
+				showMessage("", txtMess);
+			}
+		} else if (o.equals(btnXoaTrang))
+			xoaTrang();
+		else if (o.equals(btnXoa)) {
 			try {
-				xoaActions();
+				xoaKhachHang();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		if (o.equals(btnXoaTrang))
-			xoaTrangActions();
-		if (o.equals(btnTim))
-			timActions();
-		if (o.equals(btnLuu))
-			try {
-				JOptionPane.showMessageDialog(this, "Lưu thành công");
-
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		if (o.equals(btnThoat))
+		} else if (o.equals(btnTimMa)) {
+			TimKhachHangTheoMa();
+		} else if (o.equals(btnTimTen)) {
+			TimKhachHangTheoTen();
+		} else if (o.equals(btnLuu)) {
+			themKhachHang();
+		} else if (o.equals(btnThoat))
 			System.exit(0);
+	}
 
+	private void TXTedit_true() {
+		// TODO Auto-generated method stub
+		txtMaKH.setEditable(true);
+		txtTenKH.setEditable(true);
+		txtCMinhThu.setEditable(true);
+		txtSDT.setEditable(true);
+		txtGMail.setEditable(true);
+	}
+
+	private void TXTedit_false() {
+		// TODO Auto-generated method stub
+		txtMaKH.setEditable(false);
+		txtTenKH.setEditable(false);
+		txtCMinhThu.setEditable(false);
+		txtSDT.setEditable(false);
+		txtGMail.setEditable(false);
 	}
 
 	private void showMessage(String message, JTextField txt) {
@@ -221,25 +274,21 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 			showMessage("Lỗi mã khách hàng", txtMaKH);
 			return false;
 		}
-
 		Pattern p1 = Pattern.compile("[a-zA-Z]+");
 		if (!(tenKH.length() > 0 && p1.matcher(tenKH).find())) {
 			showMessage("Tên không tồn tại", txtTenKH);
 			return false;
 		}
-
 		Pattern p2 = Pattern.compile("[0-9]{15}");
 		if (!(cmthu.length() > 0 && p2.matcher(cmthu).find())) {
 			showMessage("Chứng minh thư này không tồn tại", txtCMinhThu);
 			return false;
 		}
-
 		Pattern p3 = Pattern.compile("[0-9]{10}");
 		if (!(sdt.length() > 0 && p3.matcher(sdt).find())) {
 			showMessage("Số điện thoại này không tồn tại", txtSDT);
 			return false;
 		}
-
 		Pattern p4 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
 				+ "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
 		if (!(gmail.length() > 0 && p4.matcher(gmail).find())) {
@@ -250,55 +299,30 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		return true;
 	}
 
-	private void xoaTrangActions() {
+	private void xoaTrang() {
 		txtMaKH.setText("");
 		txtTenKH.setText("");
 		txtCMinhThu.setText("");
 		txtSDT.setText("");
 		txtTimMa.setText("");
+		txtTimTen.setText("");
 		txtGMail.setText("");
 		txtMaKH.requestFocus();
 	}
 
-	private void timActions() {
-		// TODO Auto-generated method stub
-		int pos = ds.timKHang(txtTimMa.getText());
-		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Tồn tại khách hàng có mã số này");
-			table.setRowSelectionInterval(pos, pos);
-		} else
-			JOptionPane.showMessageDialog(null, "Không tồn tại khách hàng có mã số này");
-	}
-
-	public void xoaActions() throws Exception {
-		int r = table.getSelectedRow();
-		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
-			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaKHang(r);
-				tableModel.removeRow(r);
-				xoaTrangActions();
-
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng muốn xoá!");
-		}
-	}
-
-	private void themActions() {
+	private void themKhachHang() {
 		String makh = txtMaKH.getText();
 		String ten = txtTenKH.getText();
 		String cmthu = txtCMinhThu.getText();
 		String sdt = txtSDT.getText();
 		String gmail = txtGMail.getText();
-
 		KhachHang kh = new KhachHang(makh, ten, cmthu, sdt, gmail);
 		try {
-			if (validData() == true) {
-				if (ds.themKHang(kh)) {
+			if (validData()) {
+				if (dsKH.themKHang(kh)) {
 					String[] row = { makh, ten, cmthu, sdt, gmail };
 					tableModel.addRow(row);
-					xoaTrangActions();
+					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm thành công");
 					showMessage("Thêm thành công", txtMaKH);
 				} else {
@@ -313,22 +337,84 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 			}
 
 		} catch (Exception e) {
-			// JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
+			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
 			e.printStackTrace();
 		}
 	}
-	//add func loadData from SQL
+
+	private void SuaKhachHang() {
+		// TODO Auto-generated method stub
+		String makh = txtMaKH.getText();
+		String tenkh = txtTenKH.getText();
+		String cmthu = txtCMinhThu.getText();
+		String sdt = txtSDT.getText();
+		String gmail = txtGMail.getText();
+		KhachHang kh = new KhachHang(makh, tenkh, cmthu, sdt, gmail);
+		if (validData()) {
+			if (dsKH.capNhatThongTinKhachHang(kh)) {
+				int index = dsKH.getList().indexOf(kh);
+				tableModel.setValueAt(tenkh, index, 1);
+				tableModel.setValueAt(cmthu, index, 2);
+				tableModel.setValueAt(sdt, index, 3);
+				tableModel.setValueAt(gmail, index, 4);
+				showMessage("Sửa thành công", txtMess);
+				JOptionPane.showMessageDialog(null, "Sửa thành công");
+			}
+		}
+
+	}
+
+	private void TimKhachHangTheoMa() {
+		// TODO Auto-generated method stub
+		int pos = dsKH.timKhachHangTheoMa(txtTimMa.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Khách hàng này có trong danh sách");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Khách hàng này không có trong danh sách");
+		txtTimTen.setText("");
+		showMessage("", txtMess);
+	}
+
+	private void TimKhachHangTheoTen() {
+		// TODO Auto-generated method stub
+		int pos = dsKH.timKhachHangTheoTen(txtTimTen.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Khách hàng này có trong danh sách");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Khách hàng này không có trong danh sách");
+		txtTimMa.setText("");
+		showMessage("", txtMess);
+	}
+
+	public void xoaKhachHang() throws Exception {
+		int r = table.getSelectedRow();
+		if (r != -1) {
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				dsKH.xoaKHang(r);
+				tableModel.removeRow(r);
+				xoaTrang();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng muốn xoá!");
+		}
+	}
+
+	// add func loadData from SQL
 	public void loadData() {
-		//delete all
-		//Load data
+		// delete all
+		// Load data
 		DAO_KH = new DAOKhachHang();
-		for(KhachHang kh:DAO_KH.getAll()) {
-			Object row[] = {kh.getMaKHang(),kh.getTenKHang(),kh.getCMThu(),kh.getSDThoai(),kh.getGmail()};
+		for (KhachHang kh : DAO_KH.getAll()) {
+			Object row[] = { kh.getMaKHang(), kh.getTenKHang(), kh.getCMThu(), kh.getSDThoai(), kh.getGmail() };
 			tableModel.addRow(row);
 		}
 	}
+
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
 		txtMaKH.setText(table.getValueAt(row, 0).toString());
@@ -339,6 +425,11 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 	}
 
 	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 
@@ -346,12 +437,6 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
