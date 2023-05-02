@@ -26,7 +26,6 @@ public class DAODichVu {
 				danhSachDichVu.add(new DichVu(
 						rs.getString("MaDichVu"),
 						rs.getString("TenDichVu"),
-						rs.getString("LoaiDichVu"),
 						rs.getDouble("Gia")));
 			}
 		} catch (SQLException e) {
@@ -41,14 +40,13 @@ public class DAODichVu {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "INSERT INTO DichVu (MaDichVu,TenDichVu,Gia,LoaiDichVu) "
-				+ "values(?,?,?,?)";
+		String sql = "INSERT INTO DichVu (MaDichVu,TenDichVu,Gia) "
+				+ "values(?,?,?)";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, dv.getMaDichVu());
 			stm.setString(2, dv.getTenDichVu());
 			stm.setDouble(3, dv.getGiaDichVu());
-			stm.setString(4, dv.getLoaiDichVu());
 			System.out.println(stm);
 			stm.executeUpdate();
 		} catch (Exception e) {
@@ -68,15 +66,12 @@ public class DAODichVu {
 		String sql = "UPDATE DichVu "
 				+ " MaDichVu = ? "
 				+ " TenDichVu = ? "
-				+ " Gia = ? "
-				+ " LoaiDichVu = ?";
+				+ " Gia = ? ";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, dv.getMaDichVu());
 			stm.setString(2, dv.getTenDichVu());
 			stm.setDouble(3, dv.getGiaDichVu());
-			stm.setString(4, dv.getLoaiDichVu());
-			
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception

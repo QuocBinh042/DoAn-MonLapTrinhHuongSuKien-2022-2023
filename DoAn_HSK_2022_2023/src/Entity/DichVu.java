@@ -5,14 +5,17 @@ import java.util.Objects;
 public class DichVu {
 	private String maDichVu;
 	private String tenDichVu;
-	private String loaiDichVu;
 	private Double giaDichVu;
 
-	public DichVu(String maDichVu, String tenDichVu, String loaiDichVu, Double giaDichVu) {
+	public DichVu(String maDichVu, String tenDichVu, Double giaDichVu) {
+		super();
 		this.maDichVu = maDichVu;
 		this.tenDichVu = tenDichVu;
-		this.loaiDichVu = loaiDichVu;
 		this.giaDichVu = giaDichVu;
+	}
+
+	public DichVu() {
+		this("", "", 0.0);
 	}
 
 	@Override
@@ -48,14 +51,6 @@ public class DichVu {
 		this.tenDichVu = tenDichVu;
 	}
 
-	public String getLoaiDichVu() {
-		return loaiDichVu;
-	}
-
-	public void setLoaiDichVu(String loaiDichVu) {
-		this.loaiDichVu = loaiDichVu;
-	}
-
 	public Double getGiaDichVu() {
 		return giaDichVu;
 	}
@@ -66,8 +61,7 @@ public class DichVu {
 
 	@Override
 	public String toString() {
-		return "DichVu [maDichVu=" + maDichVu + ", tenDichVu=" + tenDichVu + ", loaiDichVu=" + loaiDichVu
-				+ ", giaDichVu=" + giaDichVu + "]";
+		return "DichVu [maDichVu=" + maDichVu + ", tenDichVu=" + tenDichVu + ", giaDichVu=" + giaDichVu + "]";
 	}
 
 }

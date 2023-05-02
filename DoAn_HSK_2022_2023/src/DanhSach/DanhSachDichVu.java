@@ -12,7 +12,7 @@ public class DanhSachDichVu {
 	
 	public Boolean themDichVu(DichVu dv) {
 		for (DichVu p: ds ) {
-			if (p.getMaDichVu().equals(dv.getMaDichVu()));
+			if (p.getMaDichVu().equals(dv.getMaDichVu()))
 				return false;
 		}
 		ds.add(dv);
@@ -33,13 +33,20 @@ public class DanhSachDichVu {
 				return i;
 		}
 		return -1;
-		
 	}
+	
+	public int timDichVuTheoTen(String tenDichVu) {
+		for (int i = 0; i<ds.size(); i++ ) {
+			if (ds.get(i).getTenDichVu().equals(tenDichVu))
+				return i;
+		}
+		return -1;
+	}
+	
 	public boolean suaDichVu(DichVu dv) {
 		for (int i = 0; i < ds.size(); i++)
 			if (ds.get(i).getMaDichVu().equalsIgnoreCase(dv.getMaDichVu())) {
 				ds.get(i).setTenDichVu(dv.getTenDichVu());
-				ds.get(i).setLoaiDichVu(dv.getLoaiDichVu());
 				ds.get(i).setGiaDichVu(dv.getGiaDichVu());
 				return true;
 			}

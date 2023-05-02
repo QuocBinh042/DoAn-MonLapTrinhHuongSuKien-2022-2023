@@ -33,12 +33,12 @@ import connectDB.ConnectDB;
 public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private JTable table;
-	private JTextField txtMaDichVu, txtTenDichVu, txtLoaiDichVu, txtGiaDichVu, txtTimMa, txtTimTen, txtMess;
+	private JTextField txtMaDichVu, txtTenDichVu, txtGiaDichVu, txtTimMa, txtTimTen, txtMess;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTimMa, btnTimTen, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
-	private DanhSachDichVu ds = new DanhSachDichVu();
-	private DAODichVu DAO_DV ;
-	private DanhSachDichVu dsDV;
+	private DanhSachDichVu dsDV = new DanhSachDichVu();
+	private DAODichVu DAO_DV;
+
 	public FrmDichVu() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -52,10 +52,9 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 	private void createGUI() {
 		// TODO Auto-generated method stub
 		setTitle("Quản lý dịch vụ");
-		setSize(1000, 650);
+		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		dsDV = new DanhSachDichVu();
 
 		// NORTH
 		JPanel pnlNorth = new JPanel();
@@ -67,12 +66,12 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 
 		Box b = Box.createVerticalBox();
 		Box bb = Box.createHorizontalBox();
-		Box b1, b2, b3, b4, b5, b6, b7, bTimMa, bTimTen;
-		JLabel lblMaDichVu, lblLoaiDichVu, lblTenDichVu, lblGiaDichVu;
+		Box b1, b2, b3, b4, b5, b6, bTimMa, bTimTen;
+		JLabel lblMaDichVu, lblTenDichVu, lblGiaDichVu;
 
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b.setBorder(BorderFactory.createTitledBorder("Dịch vụ"));
+		b.setBorder(BorderFactory.createTitledBorder("Dịch vụ phòng"));
 		b1.add(lblMaDichVu = new JLabel("Mã dịch vụ: "));
 		b1.add(txtMaDichVu = new JTextField(20));
 
@@ -83,19 +82,12 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b3.add(lblLoaiDichVu = new JLabel("Loại dịch vụ: "));
-		b3.add(txtLoaiDichVu = new JTextField(20));
-
-		b.add(b4 = Box.createHorizontalBox());
-		b.add(Box.createVerticalStrut(10));
-		b4.add(lblGiaDichVu = new JLabel("Giá dịch vụ: "));
-		b4.add(txtGiaDichVu = new JTextField(20));
-		
-		
+		b3.add(lblGiaDichVu = new JLabel("Giá dịch vụ: "));
+		b3.add(txtGiaDichVu = new JTextField(20));
 
 		b.add(Box.createHorizontalStrut(5));
-		b.add(b5 = Box.createHorizontalBox());
-		b5.add(txtMess = new JTextField());
+		b.add(b4 = Box.createHorizontalBox());
+		b4.add(txtMess = new JTextField());
 		txtMess.setEditable(false);
 		txtMess.setBorder(null);
 		txtMess.setForeground(Color.red);
@@ -103,42 +95,41 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		b.add(Box.createVerticalStrut(10));
 		b.add(Box.createHorizontalStrut(100));
 
-		b.add(b6 = Box.createHorizontalBox());
-		b6.add(Box.createHorizontalStrut(75));
-		b6.add(btnThem = new JButton("Thêm"));
-		b6.add(Box.createHorizontalStrut(10));
-		b6.add(btnSua = new JButton("Sửa"));
-		b6.add(Box.createHorizontalStrut(10));
-		b6.add(btnXoaTrang = new JButton("Xoá trắng"));
+		b.add(b5 = Box.createHorizontalBox());
+		b5.add(Box.createHorizontalStrut(75));
+		b5.add(btnThem = new JButton("Thêm"));
+		b5.add(Box.createHorizontalStrut(10));
+		b5.add(btnSua = new JButton("Sửa"));
+		b5.add(Box.createHorizontalStrut(10));
+		b5.add(btnXoaTrang = new JButton("Xoá trắng"));
 
 		b.add(Box.createVerticalStrut(70));
-		b.add(b7 = Box.createVerticalBox());
+		b.add(b6 = Box.createVerticalBox());
 		b.add(Box.createVerticalStrut(50));
-		b7.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
-		b7.add(Box.createVerticalStrut(10));
-		b7.add(bTimMa = Box.createHorizontalBox());
+		b6.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
+		b6.add(Box.createVerticalStrut(10));
+		b6.add(bTimMa = Box.createHorizontalBox());
 		bTimMa.add(new JLabel("Mã dịch vụ:  "));
 		bTimMa.add(txtTimMa = new JTextField(10));
 		bTimMa.add(btnTimMa = new JButton("Tìm"));
-		b7.add(Box.createVerticalStrut(20));
-		b7.add(bTimTen = Box.createHorizontalBox());
+		b6.add(Box.createVerticalStrut(20));
+		b6.add(bTimTen = Box.createHorizontalBox());
 		bTimTen.add(new JLabel("Tên dịch vụ: "));
 		bTimTen.add(txtTimTen = new JTextField(10));
 		bTimTen.add(btnTimTen = new JButton("Tìm"));
-		b7.add(Box.createVerticalStrut(10));
+		b6.add(Box.createVerticalStrut(10));
 		b.add(Box.createVerticalStrut(200));
 		add(bb, BorderLayout.CENTER);
 
-		lblMaDichVu.setPreferredSize(lblLoaiDichVu.getPreferredSize());
-		lblGiaDichVu.setPreferredSize(lblLoaiDichVu.getPreferredSize());
-		lblTenDichVu.setPreferredSize(lblLoaiDichVu.getPreferredSize());
+		lblMaDichVu.setPreferredSize(lblTenDichVu.getPreferredSize());
+		lblGiaDichVu.setPreferredSize(lblTenDichVu.getPreferredSize());
 
 		add(b, BorderLayout.WEST);
 		b.add(Box.createVerticalGlue());
 		add(bb, BorderLayout.CENTER);
 
-		bb.setBorder(BorderFactory.createTitledBorder("Danh sách dịch vụ"));
-		String[] headers = "Mã dịch vụ;Tên dịch vụ;Loại dịch vụ;Giá dịch vụ".split(";");
+		bb.setBorder(BorderFactory.createTitledBorder("Danh sách dịch vụ phòng"));
+		String[] headers = "Mã dịch vụ;Tên dịch vụ;Giá dịch vụ".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -148,6 +139,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
 		loadData();
+
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
 		pnlSouth.add(btnXoa = new JButton("Xoá"));
@@ -159,6 +151,10 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
+
+		TXTedit_false();
+		btnLuu.setEnabled(false);
+		btnXoaTrang.setEnabled(false);
 
 		btnTimMa.addActionListener(this);
 		btnTimTen.addActionListener(this);
@@ -180,99 +176,125 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		Object o = e.getSource();
 		if (o.equals(btnThem)) {
-			themPhieuDatPhong();
+			if (btnThem.getText().equals("Thêm")) {
+				TXTedit_true();
+				btnXoaTrang.setEnabled(true);
+				btnThem.setText("Huỷ");
+				btnSua.setEnabled(false);
+				btnLuu.setEnabled(true);
+			} else {
+				xoaTrang();
+				TXTedit_false();
+				btnThem.setText("Thêm");
+				btnSua.setEnabled(true);
+				btnLuu.setEnabled(false);
+				showMessage("", txtMess);
+			}
 		} else if (o.equals(btnSua)) {
-			SuaDichVu();
+			btnThem.setEnabled(false);
+			if (btnSua.getText().equals("Sửa")) {
+				try {
+					int r = table.getSelectedRow();
+					if (r != -1) {
+						TXTedit_true();
+						txtMaDichVu.setEditable(false);
+						btnSua.setText("Hoàn tất");
+					} else {
+						JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
+						btnThem.setEnabled(true);
+					}
+				} catch (Exception e2) {
+					// TODO: handle exception
+				}
+			} else {
+				SuaDichVu();
+				btnSua.setText("Sửa");
+				btnThem.setEnabled(true);
+				TXTedit_false();
+				xoaTrang();
+				showMessage("", txtMess);
+			}
 		} else if (o.equals(btnXoaTrang))
 			xoaTrang();
 		else if (o.equals(btnXoa)) {
 			try {
 				XoaDichVu();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else if (o.equals(btnTimMa)) {
-			TimDichVu();
+			TimDichVuTheoMa();
+		} else if (o.equals(btnTimTen)) {
+			TimDichVuTheoTen();
 		} else if (o.equals(btnLuu)) {
-			Luu();
+			themDichVu();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
 
-	private void Luu() {
-		// TODO Auto-generated method stub
-		try {
-			JOptionPane.showMessageDialog(this, "Lưu thành công");
+	private void TXTedit_false() {
+		txtMaDichVu.setEditable(false);
+		txtTenDichVu.setEditable(false);
+		txtGiaDichVu.setEditable(false);
+	}
 
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	private void TXTedit_true() {
+		txtMaDichVu.setEditable(true);
+		txtTenDichVu.setEditable(true);
+		txtGiaDichVu.setEditable(true);
 	}
 
 	private void showMessage(String message, JTextField txt) {
 		txt.requestFocus();
 		txtMess.setText(message);
 	}
-	
-	/**
-	 * Xử lí nhập liệu
-	 */
-	private boolean validData() {
-		
-		String maDichvu = txtMaDichVu.getText().trim();
-		String tenDichvu = txtTenDichVu.getText().trim();
-		String loaiDichvu = txtLoaiDichVu.getText().trim();
-		double giaDichvu = Double.parseDouble(txtGiaDichVu.getText());
-		
-		Pattern p = Pattern.compile("(DV)[0-9]{3}$");
-		if(!(maDichvu.length()> 0 && p.matcher(maDichvu).find())) {
-			showMessage("Lỗi mã dịch vụ", txtMaDichVu);
-			return false;
-		}
-		Pattern p1 = Pattern.compile("[a-zA-z0-9]+");
-		if(!(tenDichvu.length()> 0 && p1.matcher(tenDichvu).find())) {
-			showMessage("Lỗi tên dịch vụ", txtTenDichVu);
-			return false;
-		}
-		Pattern p2 = Pattern.compile("[a-zA-z]+[0-9]{3}");
-		if(!(loaiDichvu.length()> 0 && p2.matcher(loaiDichvu).find())) {
-			showMessage("Lỗi loại dịch vụ", txtLoaiDichVu);
-			return false;
-		}
-		if(!(giaDichvu > 0)) {
-			showMessage("Lỗi giá dịch vụ", txtGiaDichVu);
-			return false;
-		}
-		
 
+	private boolean validData() {
+		String maDichVu = txtMaDichVu.getText().trim();
+		String tenDichVu = txtTenDichVu.getText().trim();
+		String giaDichVu = txtGiaDichVu.getText().trim();
+
+		Pattern p1 = Pattern.compile("^(DV)[0-9]{3}$");
+		if (!(maDichVu.length() > 0 && p1.matcher(maDichVu).find())) {
+			showMessage("Lỗi mã dịch vụ", txtMaDichVu);
+			return false;
+		}
+		Pattern p2 = Pattern.compile("^(.)+");
+		if (!(tenDichVu.length() > 0 && p2.matcher(tenDichVu).find())) {
+			showMessage("Lỗi tên dịch vụ", txtTenDichVu);
+			return false;
+		}
+		Double gia = Double.valueOf(giaDichVu);
+		if (!(giaDichVu.length() > 0 && (gia >= 0))) {
+			showMessage("Lỗi giá dịch vụ", txtGiaDichVu);
+			return false;
+		}
 		return true;
 	}
-	private void SuaDichVu() {
+
+	private void xoaTrang() {
 		// TODO Auto-generated method stub
-		String maDV = txtMaDichVu.getText();
-		String tenDichVu = txtTenDichVu.getText();
-		String loaiDichVu = txtLoaiDichVu.getText();
-		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
-		DichVu dv = new DichVu(loaiDichVu, tenDichVu, loaiDichVu, giaDichVu);
-		if (ds.suaDichVu(dv)) {
-			int index = ds.getList().indexOf(dv);
-			tableModel.setValueAt(tenDichVu, index, 1);
-			tableModel.setValueAt(loaiDichVu, index, 2);
-			tableModel.setValueAt(giaDichVu, index, 3);
-			JOptionPane.showMessageDialog(null, "Sửa thành công");
-		}
+		txtMaDichVu.setText("");
+		txtGiaDichVu.setText("");
+		txtTenDichVu.setText("");
+		txtTimMa.setText("");
+		txtTimTen.setText("");
+		txtMaDichVu.requestFocus();
 	}
 
-	private void TimDichVu() {
+	private void SuaDichVu() {
 		// TODO Auto-generated method stub
-		int pos = ds.timDichVuTheoMa(txtTimMa.getText());
-		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Tồn tại dịch vụ có mã số này");
-			table.setRowSelectionInterval(pos, pos);
-		} else
-			JOptionPane.showMessageDialog(null, "Không tồn tại dịch vụ có mã số này");
+		String maDichVu = txtMaDichVu.getText();
+		String tenDichVu = txtTenDichVu.getText();
+		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
+		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
+		if (dsDV.suaDichVu(dv)) {
+			int index = dsDV.getList().indexOf(dv);
+			tableModel.setValueAt(tenDichVu, index, 1);
+			tableModel.setValueAt(giaDichVu, index, 2);
+			showMessage("Sửa thành công", txtMess);
+			JOptionPane.showMessageDialog(null, "Sửa thành công");
+		}
 	}
 
 	private void XoaDichVu() throws Exception {
@@ -281,64 +303,71 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaDichVu(r);
+				dsDV.xoaDichVu(r);
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá thành công!");
 				xoaTrang();
+				showMessage("Xoá thành công", txtMess);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ muốn xoá!");
 		}
 	}
 
-	private void themPhieuDatPhong() {
+	private void themDichVu() {
 		// TODO Auto-generated method stub
-		try {
-			String maDV = txtMaDichVu.getText();
-			String tenDichVu = txtTenDichVu.getText();
-			String loaiDichVu = txtLoaiDichVu.getText();
-			Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
-			DichVu dv = new DichVu(loaiDichVu, tenDichVu, loaiDichVu, giaDichVu);
-
-			if(validData()) {
-				if (ds.themDichVu(dv)) {
-					String[] row = { loaiDichVu, tenDichVu, loaiDichVu, String.valueOf(giaDichVu) };
-					tableModel.addRow(row);
-					xoaTrang();
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-				} else {
-					JOptionPane.showMessageDialog(null, "Trùng mã dịch vụ");
-					txtMaDichVu.selectAll();
-					txtMaDichVu.requestFocus();
-				}
-			}else {
-				JOptionPane.showMessageDialog(null, "Thêm không thành công");
+		String maDichVu = txtMaDichVu.getText();
+		String tenDichVu = txtTenDichVu.getText();
+		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
+		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
+		showMessage("", txtMess);
+		if (validData()) {
+			if (dsDV.themDichVu(dv)) {
+				String[] row = { maDichVu, tenDichVu, String.valueOf(giaDichVu) };
+				tableModel.addRow(row);
+				xoaTrang();
+				showMessage("Thêm thành công", txtMess);
+			} else {
+				JOptionPane.showMessageDialog(null, "Trùng mã dịch vụ");
 				txtMaDichVu.selectAll();
 				txtMaDichVu.requestFocus();
 			}
-			
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
-			return;
+		} else {
+			txtMaDichVu.selectAll();
+			txtMaDichVu.requestFocus();
 		}
 	}
 
-	private void xoaTrang() {
+	private void TimDichVuTheoMa() {
 		// TODO Auto-generated method stub
-		txtMaDichVu.setText("");
-		txtLoaiDichVu.setText("");
-		txtGiaDichVu.setText("");
-		txtTenDichVu.setText("");
-		txtTimMa.setText("");
-		txtMaDichVu.setEnabled(true);
-		txtMaDichVu.requestFocus();
+		int pos = dsDV.timDichVuTheoMa(txtTimMa.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Dịch vụ này không có trong danh sách");
+		txtTimTen.setText("");
+		showMessage("", txtMess);
 	}
+
+	private void TimDichVuTheoTen() {
+		// TODO Auto-generated method stub
+		int pos = dsDV.timDichVuTheoTen(txtTimTen.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Dịch vụ này không có trong danh sách");
+		txtTimMa.setText("");
+		showMessage("", txtMess);
+	}
+
 	public void loadData() {
-		//delete all
-		//Load data
+		// delete all
+		// Load data
 		DAO_DV = new DAODichVu();
-		for(DichVu dv : DAO_DV.getAll()) {
-			Object row[] = {dv.getMaDichVu(),dv.getTenDichVu(),dv.getLoaiDichVu(),dv.getGiaDichVu()};
+		for (DichVu dv : DAO_DV.getAll()) {
+			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), dv.getGiaDichVu() };
 			tableModel.addRow(row);
 		}
 	}
@@ -346,19 +375,15 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		int row = table.getSelectedRow();
-		txtMaDichVu.setEnabled(false);
-		txtMaDichVu.setText(table.getValueAt(row, 0).toString());
-		txtTenDichVu.setText(table.getValueAt(row, 1).toString());
-		txtLoaiDichVu.setText(table.getValueAt(row, 2).toString());
-		txtGiaDichVu.setText(table.getValueAt(row, 3).toString());
-
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		int row = table.getSelectedRow();
+		txtMaDichVu.setText(table.getValueAt(row, 0).toString());
+		txtTenDichVu.setText(table.getValueAt(row, 1).toString());
+		txtGiaDichVu.setText(table.getValueAt(row, 2).toString());
 	}
 
 	@Override
