@@ -173,3 +173,33 @@ INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) values(N'P001',N'DV004'
 --Khach Hang
 --select * from KhachHang
 INSERT INTO KhachHang values(N'KH001',N'Nguyễn Đức Vương','12345678910','0799558911','vuongnguyen221203@gmail.com')
+
+
+-- InsertData Phong
+--MaPhong nvarchar(50) not null primary key,
+--	TenPhong nvarchar(50),
+--	LoaiPhong nvarchar(50),
+--	GiaPhong float,
+--	MoTa nvarchar(200),
+--	Tinh trạng còn trống hay đã đặt phòng
+--	0: còn trống
+--	1: đã đặt
+--	TinhTrang bit default 0
+INSERT INTO Phong values(N'P001',N'A001',N'VIP0001',10000000,N'Phòng có view biển',0)
+INSERT INTO Phong values(N'P002',N'A002',N'Single0001',10000000,N'Phòng đơn',0)
+INSERT INTO Phong values(N'P003',N'A003',N'Double0001',10000000,N'Phòng giành cho cặp đôi',0)
+INSERT INTO Phong values(N'P004',N'A004',N'Triple0001',10000000,N'Phòng giành cho bạn bè',0)
+INSERT INTO Phong values(N'P005',N'A005',N'VIP0001',10000000,N'Phòng có view biển',0)
+--DELETE from Phong where MaPhong = 'P001'
+
+go
+select *from Phong
+go
+-- InsertData DichVu
+select *from DichVu
+-----InsertData DichVu
+INSERT INTO DichVu values(N'DV001',N'Khăn giấy',3000)
+INSERT INTO DichVu values(N'DV002',N'Nước ngọt 7 Up 330ml',10000)
+INSERT INTO DichVu values(N'DV003',N'Khăn ướt',4000)
+INSERT INTO DichVu values(N'DV004',N'Nước suối Aquafina 500ml',3000)
+INSERT INTO DichVu values(N'DV005',N'Coca cola',8000)
