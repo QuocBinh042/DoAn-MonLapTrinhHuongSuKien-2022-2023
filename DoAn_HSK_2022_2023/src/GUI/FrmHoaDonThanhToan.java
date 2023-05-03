@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
@@ -23,15 +24,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.DAOHoaDonThanhToan;
 import DanhSach.DanhSachHoaDonThanhToan;
 import Entity.HoaDonThanhToan;
+import connectDB.ConnectDB;
 
 public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseListener, ItemListener {
 	private static final long serialVersionUID = 1L;
@@ -45,8 +47,15 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private JTextField txtMess;
 	private Calendar dDate = Calendar.getInstance();
 	private JComboBox yearTT, monthTT, dayTT, cbMaPhieuDatPhong, cbMaDichVu;
+	private DAOHoaDonThanhToan DAO_hd;
 
 	public FrmHoaDonThanhToan() {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		createGUI();
 	}
 
@@ -261,6 +270,25 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	}
 
+	public void loadData() {
+		// delete all
+		deleteAllDataJtable();
+		// Load data
+		DAO_hd = new DAOHoaDonThanhToan();
+		for (HoaDonThanhToan hd : DAO_hd.getAll()) {
+			Object row[] = { hd.getMaHoaDon(), hd.getNgayThanhToan(), hd.getHinhThucThanhToan(), hd.getThanhTienPhong(),
+					hd.getTongThanhToan(), hd.getGhiChu() };
+			tableModel.addRow(row);
+		}
+	}
+
+	public void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel) table.getModel();
+		while (dm.getRowCount() > 0) {
+			dm.removeRow(0);
+		}
+	}
+
 	private void buildMonthsList(JComboBox monthsList) {
 		monthsList.removeAllItems();
 		for (int monthCount = 1; monthCount <= 12; monthCount++)
@@ -347,6 +375,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 				tableModel.setValueAt(thanhTienPhong, index, 3);
 				tableModel.setValueAt(tongTT, index, 4);
 				tableModel.setValueAt(ghiChu, index, 5);
+				DAO_hd.updateHoaDonThanhToan(hd);
 				showMessage("Cập nhật thành công", txtMess);
 				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
 			}
@@ -374,6 +403,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				ds.xoaHoaDon(r);
+				DAO_hd.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá hoá đơn thành công!");
 				xoaTrang();
@@ -404,6 +434,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					String[] row = { maHDTT, ngayTT, hinhThucTT, String.valueOf(thanhTienPhong), String.valueOf(tongTT),
 							ghiChu };
 					tableModel.addRow(row);
+					DAO_hd.add(hd);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm thành công");
 				} else {
