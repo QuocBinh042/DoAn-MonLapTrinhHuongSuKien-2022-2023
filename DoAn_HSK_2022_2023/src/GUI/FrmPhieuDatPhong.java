@@ -10,6 +10,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -30,8 +31,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.DAOHoaDonThanhToan;
+import DAO.DAOPhieuDatPhong;
 import DanhSach.DanhSachPhieuDatPhong;
+import Entity.HoaDonThanhToan;
 import Entity.PhieuDatPhong;
+import connectDB.ConnectDB;
 
 public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseListener, ItemListener {
 
@@ -49,8 +54,15 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private JComboBox endYear, endMonth, endDay;
 	private JComboBox bookYear, bookMonth, bookDay;
 	private JComboBox cbMaPhong, cbMaHoaDon, cbMaKhachHang;
+	private DAOPhieuDatPhong DAO_pdp;
 
 	public FrmPhieuDatPhong() {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		dsPDP = new DanhSachPhieuDatPhong();
 		createGUI();
 	}
@@ -378,6 +390,25 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			System.exit(0);
 	}
 
+	public void loadData() {
+		// delete all
+		deleteAllDataJtable();
+		// Load data
+		DAO_pdp = new DAOPhieuDatPhong();
+		for (PhieuDatPhong pdp : DAO_pdp.getAll()) {
+			Object row[] = { pdp.getMaPhieuDatPhong(), pdp.getMaNhanVien(), pdp.getMaPhong(), pdp.getMaKhachHang(),
+					pdp.getMaHoaDon(), pdp.getNgayDatPhong(), pdp.getNgayDen(), pdp.getNgayDi(), pdp.getGhiChu() };
+			tableModel.addRow(row);
+		}
+	}
+
+	public void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel) table.getModel();
+		while (dm.getRowCount() > 0) {
+			dm.removeRow(0);
+		}
+	}
+
 	private boolean validData() {
 		String maDP = txtMaDatPhong.getText().trim();
 		String soNguoi = txtSoNguoi.getText().trim();
@@ -428,6 +459,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 				tableModel.setValueAt(ngayDen, index, 7);
 				tableModel.setValueAt(ngayDi, index, 8);
 				tableModel.setValueAt(ghiChu, index, 9);
+				DAO_pdp.update(p);
 				showMessage("Cập nhật thành công", txtMess);
 				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
 			}
@@ -470,8 +502,10 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				dsPDP.xoaPhieuDatPhong(r);
+				DAO_pdp.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá thành công!");
+				loadData();
 				xoaTrang();
 
 			}
@@ -502,6 +536,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 					String[] row = { maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong,
 							Integer.toString(soNguoi), ngayDen, ngayDi, ghiChu };
 					tableModel.addRow(row);
+					DAO_pdp.add(p);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm thành công");
 				} else {
