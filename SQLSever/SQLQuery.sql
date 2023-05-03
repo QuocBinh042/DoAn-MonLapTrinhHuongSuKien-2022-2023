@@ -180,6 +180,22 @@ INSERT INTO KhachHang values(N'KH005',N'Nguyễn Trần Hải Đăng','123444658
 --INSERT INTO KhachHang values(N'KH006',N'Lê Thu Thủy','11143567781','0760912287','thuthuy300401@gmail.com')
 
 
+--Nhan Vien
+select * from NhanVien
+INSERT INTO NhanVien values(N'NV001', N'Nguyễn Trà My', 'tramy6665', 0, 'Nữ', 12345678801, 0967344087,
+'tramy1234@gmail.com', 'Tinh Tien Giang')
+INSERT INTO NhanVien values(N'NV002', N'Nguyễn Huỳnh Bảo', 'huybao2345', 1, 'Nam', 13598800021, 0134556780,
+'huynhbao4444@gmail.com', 'Tinh Tay Ninh')
+INSERT INTO NhanVien values(N'NV003', N'Lê Trần Thu Hà', 'thuha5699', 1, 'Nữ', 10445689901, 0860012345,
+'thuha5666@gmail.com', 'Tinh An Giang')
+INSERT INTO NhanVien values(N'NV004', N'Phan Đại Nam', 'namphan0123', 0, 'Nam', 14577770124, 0497601223,
+'dainam1111@gmail.com', 'Tinh Ca Mau')
+INSERT INTO NhanVien values(N'NV005', N'Trần Thanh Thúy', 'thuytran2222', 0, 'Nữ', 14378889012, 0403567790,
+'thanhthuy5666@gmail.com', 'Tinh Binh Thuan')
+--INSERT INTO NhanVien values(N'NV006', N'Trần Công Toàn', 'congtoan0000', 1, 'Nam', 17502254891, 0398865341,
+--'congtoan0000@gmail.com', 'Thanh Pho Ho Chi Minh')
+
+
 
 -- InsertData Phong
 --MaPhong nvarchar(50) not null primary key,
