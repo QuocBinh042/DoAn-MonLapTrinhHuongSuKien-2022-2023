@@ -16,7 +16,7 @@ public class PhieuDatPhong implements Serializable {
 	private String ngayDatPhong;
 	private String ghiChu;
 
-	public PhieuDatPhong(String maPhieuDatPhong, String maNhanVien, String maPhong, String maHoaDon, String maKhachHang,
+	public PhieuDatPhong(String maPhieuDatPhong, String maNhanVien, String maPhong, String maKhachHang, String maHoaDon,
 			String ngayDatPhong, int soNguoi, String ngayDen, String ngayDi, String ghiChu) {
 		super();
 		this.maPhieuDatPhong = maPhieuDatPhong;
