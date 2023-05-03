@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -377,6 +378,24 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			System.exit(0);
 	}
 
+	private boolean validData() {
+		String maDP = txtMaDatPhong.getText().trim();
+		String soNguoi = txtSoNguoi.getText().trim();
+		Pattern p1 = Pattern.compile("^(PDP)[0-9]{3}");
+		if (!(maDP.length() > 0 && p1.matcher(maDP).find())) {
+			showMessage("Lỗi mã đặt phòng", txtMaDatPhong);
+			return false;
+		}
+
+		Pattern p2 = Pattern.compile("^[0-9]+");
+		if (!(soNguoi.length() > 0 && p2.matcher(soNguoi).find())) {
+			showMessage("Lỗi số người", txtSoNguoi);
+			return false;
+		}
+
+		return true;
+	}
+
 	private void showMessage(String message, JTextField txt) {
 		txt.requestFocus();
 		txtMess.setText(message);
@@ -397,19 +416,25 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 		PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi, ngayDen,
 				ngayDi, ghiChu);
-		if (dsPDP.suaPhieuDatPhong(p)) {
-			int index = dsPDP.getList().indexOf(p);
-			tableModel.setValueAt(maNV, index, 1);
-			tableModel.setValueAt(maPhong, index, 2);
-			tableModel.setValueAt(maKhachHang, index, 3);
-			tableModel.setValueAt(maHoaDon, index, 4);
-			tableModel.setValueAt(ngayDatPhong, index, 5);
-			tableModel.setValueAt(soNguoi, index, 6);
-			tableModel.setValueAt(ngayDen, index, 7);
-			tableModel.setValueAt(ngayDi, index, 8);
-			tableModel.setValueAt(ghiChu, index, 9);
-			showMessage("Cập nhật thành công", txtMess);
-			JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+		if (validData()) {
+			if (dsPDP.suaPhieuDatPhong(p)) {
+				int index = dsPDP.getList().indexOf(p);
+				tableModel.setValueAt(maNV, index, 1);
+				tableModel.setValueAt(maPhong, index, 2);
+				tableModel.setValueAt(maKhachHang, index, 3);
+				tableModel.setValueAt(maHoaDon, index, 4);
+				tableModel.setValueAt(ngayDatPhong, index, 5);
+				tableModel.setValueAt(soNguoi, index, 6);
+				tableModel.setValueAt(ngayDen, index, 7);
+				tableModel.setValueAt(ngayDi, index, 8);
+				tableModel.setValueAt(ghiChu, index, 9);
+				showMessage("Cập nhật thành công", txtMess);
+				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Cập nhật không thành công");
+			txtMaDatPhong.selectAll();
+			txtMaDatPhong.requestFocus();
 		}
 	}
 
@@ -457,35 +482,39 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 	private void themPhieuDatPhong() {
 		// TODO Auto-generated method stub
-		try {
-			String maDP = txtMaDatPhong.getText();
-			String maNV = txtMaNV.getText();
-			String maPhong = cbMaPhong.getSelectedItem().toString();
-			String maKhachHang = cbMaKhachHang.getSelectedItem().toString();
-			String maHoaDon = cbMaHoaDon.getSelectedItem().toString();
-			int soNguoi = Integer.parseInt(txtSoNguoi.getText());
-			String ngayDen = getStartDate();
-			String ngayDi = getEndDate();
-			String ngayDatPhong = getBookDate();
-			String ghiChu = txtaGhiChu.getText();
+		String maDP = txtMaDatPhong.getText();
+		String maNV = txtMaNV.getText();
+		String maPhong = cbMaPhong.getSelectedItem().toString();
+		String maKhachHang = cbMaKhachHang.getSelectedItem().toString();
+		String maHoaDon = cbMaHoaDon.getSelectedItem().toString();
+		int soNguoi = Integer.parseInt(txtSoNguoi.getText());
+		String ngayDen = getStartDate();
+		String ngayDi = getEndDate();
+		String ngayDatPhong = getBookDate();
+		String ghiChu = txtaGhiChu.getText();
 
-			PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi,
-					ngayDen, ngayDi, ghiChu);
-			if (dsPDP.themPhieuDatPhong(p)) {
-				String[] row = { maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, Integer.toString(soNguoi),
-						ngayDen, ngayDi, ghiChu };
-				tableModel.addRow(row);
-				xoaTrang();
-				JOptionPane.showMessageDialog(null, "Thêm thành công");
-			} else {
-				JOptionPane.showMessageDialog(null, "Trùng mã đặt phòng");
-				txtMaDatPhong.selectAll();
-				txtMaDatPhong.requestFocus();
+		PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi, ngayDen,
+				ngayDi, ghiChu);
+
+		try {
+			if (validData()) {
+				if (dsPDP.themPhieuDatPhong(p)) {
+					String[] row = { maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong,
+							Integer.toString(soNguoi), ngayDen, ngayDi, ghiChu };
+					tableModel.addRow(row);
+					xoaTrang();
+					JOptionPane.showMessageDialog(null, "Thêm thành công");
+				} else {
+					JOptionPane.showMessageDialog(null, "Trùng mã đặt phòng");
+					txtMaDatPhong.selectAll();
+					txtMaDatPhong.requestFocus();
+				}
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
 			return;
 		}
+
 	}
 
 	private void xoaTrang() {
