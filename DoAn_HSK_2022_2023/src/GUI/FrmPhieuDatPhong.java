@@ -34,7 +34,7 @@ import Entity.PhieuDatPhong;
 
 public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseListener, ItemListener {
 
-	private DanhSachPhieuDatPhong ds = new DanhSachPhieuDatPhong();
+	private DanhSachPhieuDatPhong dsPDP;
 	private JTable table;
 	private JTextField txtMaDatPhong, txtMaNV, txtSoNguoi, txtTim;
 	private JTextArea txtaGhiChu;
@@ -50,10 +50,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private JComboBox cbMaPhong, cbMaHoaDon, cbMaKhachHang;
 
 	public FrmPhieuDatPhong() {
-		setTitle("Quản lý phiếu đặt phòng");
-		setSize(1350, 700);
-		setResizable(false);
-		setLocationRelativeTo(null);
+		dsPDP = new DanhSachPhieuDatPhong();
 		createGUI();
 	}
 
@@ -63,7 +60,10 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 	private void createGUI() {
 		// TODO Auto-generated method stub
-
+		setTitle("Quản lý phiếu đặt phòng");
+		setSize(1350, 700);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
@@ -97,16 +97,21 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		b.add(Box.createVerticalStrut(15));
 		b1.add(lblMaPhong = new JLabel("Mã phòng: "));
 		b1.add(cbMaPhong = new JComboBox<>());
+		cbMaPhong.addItem("P001");
+		cbMaPhong.addItem("P002");
 
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
 		b1.add(lblMaKhachHang = new JLabel("Mã khách hàng: "));
 		b1.add(cbMaKhachHang = new JComboBox<>());
-
+		cbMaKhachHang.addItem("KH001");
+		cbMaKhachHang.addItem("KH002");
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
 		b1.add(lblMaHoaDon = new JLabel("Mã hoá đơn: "));
 		b1.add(cbMaHoaDon = new JComboBox<>());
+		cbMaHoaDon.addItem("HD001");
+		cbMaHoaDon.addItem("HD002");
 
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
@@ -205,7 +210,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		lblGhiChu.setPreferredSize(lblNgayDatPhong.getPreferredSize());
 
 		bb.setBorder(BorderFactory.createTitledBorder("Danh sách phiếu đặt phòng"));
-		String[] headers = "Mã đặt phòng; Mã nhân viên; Mã phòng; Mã hoá đơn; Ngày đặt phòng;Số người;Ngày đến;Ngày đi;Ghi chú"
+		String[] headers = "Mã đặt phòng; Mã nhân viên; Mã phòng; Mã khách hàng; Mã hoá đơn; Ngày đặt phòng;Số người;Ngày đến;Ngày đi;Ghi chú"
 				.split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -379,22 +384,33 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 	private void SuaPhieuDatPhong() {
 		// TODO Auto-generated method stub
-//		String maDP = txtMaDatPhong.getText();
-//		int soNguoi = Integer.parseInt(txtSoNguoi.getText());
-//		String ngayDen = txtNgayDen.getText();
-//		String ngayDi = txtNgayDi.getText();
-//		String ngayDatPhong = txtNgayDatPhong.getText();
-//		String ghiChu = txtaGhiChu.getText();
-//		PhieuDatPhong p = new PhieuDatPhong(maDP, soNguoi, ngayDen, ngayDi, ngayDatPhong, ghiChu);
-//		if (ds.suaPhieuDatPhong(p)) {
-//			int index = ds.getList().indexOf(p);
-//			tableModel.setValueAt(soNguoi, index, 1);
-//			tableModel.setValueAt(ngayDen, index, 2);
-//			tableModel.setValueAt(ngayDi, index, 3);
-//			tableModel.setValueAt(ngayDatPhong, index, 5);
-//			tableModel.setValueAt(ghiChu, index, 6);
-//			JOptionPane.showMessageDialog(null, "Sửa thành công");
-//		}
+		String maDP = txtMaDatPhong.getText();
+		String maNV = txtMaNV.getText();
+		String maPhong = cbMaPhong.getSelectedItem().toString();
+		String maKhachHang = cbMaKhachHang.getSelectedItem().toString();
+		String maHoaDon = cbMaHoaDon.getSelectedItem().toString();
+		int soNguoi = Integer.parseInt(txtSoNguoi.getText());
+		String ngayDen = getStartDate();
+		String ngayDi = getEndDate();
+		String ngayDatPhong = getBookDate();
+		String ghiChu = txtaGhiChu.getText();
+
+		PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi, ngayDen,
+				ngayDi, ghiChu);
+		if (dsPDP.suaPhieuDatPhong(p)) {
+			int index = dsPDP.getList().indexOf(p);
+			tableModel.setValueAt(maNV, index, 1);
+			tableModel.setValueAt(maPhong, index, 2);
+			tableModel.setValueAt(maKhachHang, index, 3);
+			tableModel.setValueAt(maHoaDon, index, 4);
+			tableModel.setValueAt(ngayDatPhong, index, 5);
+			tableModel.setValueAt(soNguoi, index, 6);
+			tableModel.setValueAt(ngayDen, index, 7);
+			tableModel.setValueAt(ngayDi, index, 8);
+			tableModel.setValueAt(ghiChu, index, 9);
+			showMessage("Cập nhật thành công", txtMess);
+			JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+		}
 	}
 
 	private String getBookDate() {
@@ -414,7 +430,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 	private void TimPhieuDatPhong() {
 		// TODO Auto-generated method stub
-		int pos = ds.timPhieuDatPhongTheoMa(txtTim.getText());
+		int pos = dsPDP.timPhieuDatPhongTheoMa(txtTim.getText());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Tồn tại phiếu đặt phòng có mã số này");
 			table.setRowSelectionInterval(pos, pos);
@@ -428,7 +444,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaPhieuDatPhong(r);
+				dsPDP.xoaPhieuDatPhong(r);
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá thành công!");
 				xoaTrang();
@@ -453,10 +469,10 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			String ngayDatPhong = getBookDate();
 			String ghiChu = txtaGhiChu.getText();
 
-			PhieuDatPhong p = new PhieuDatPhong(maPhong, maNV, maPhong, maHoaDon, maKhachHang, ngayDatPhong, soNguoi,
+			PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi,
 					ngayDen, ngayDi, ghiChu);
-			if (ds.themPhieuDatPhong(p)) {
-				String[] row = { maPhong, maNV, maPhong, maHoaDon, maKhachHang, ngayDatPhong, Integer.toString(soNguoi),
+			if (dsPDP.themPhieuDatPhong(p)) {
+				String[] row = { maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, Integer.toString(soNguoi),
 						ngayDen, ngayDi, ghiChu };
 				tableModel.addRow(row);
 				xoaTrang();
@@ -485,18 +501,20 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		int row = table.getSelectedRow();
-		txtMaDatPhong.setEnabled(false);
-		txtMaDatPhong.setText(table.getValueAt(row, 0).toString());
-		txtSoNguoi.setText(table.getValueAt(row, 1).toString());
-		
-		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		int row = table.getSelectedRow();
+		txtMaDatPhong.setText(table.getValueAt(row, 0).toString());
+		txtMaNV.setText(table.getValueAt(row, 1).toString());
+		txtSoNguoi.setText(table.getValueAt(row, 6).toString());
+		cbMaHoaDon.setSelectedIndex(cbMaHoaDon.getSelectedIndex());
+		cbMaKhachHang.setSelectedIndex(cbMaKhachHang.getSelectedIndex());
+		cbMaPhong.setSelectedIndex(cbMaPhong.getSelectedIndex());
+		txtaGhiChu.setText(table.getValueAt(row, 9).toString());
 	}
 
 	@Override
