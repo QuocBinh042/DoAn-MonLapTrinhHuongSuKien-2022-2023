@@ -209,3 +209,21 @@ INSERT INTO DichVu values(N'DV002',N'Nước ngọt 7 Up 330ml',10000)
 INSERT INTO DichVu values(N'DV003',N'Khăn ướt',4000)
 INSERT INTO DichVu values(N'DV004',N'Nước suối Aquafina 500ml',3000)
 INSERT INTO DichVu values(N'DV005',N'Coca cola',8000)
+
+
+INSERT INTO HoaDonThanhToan (MaHoaDon,NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
+values(N'HD001','2023/3/22',1, 2000000, 2030000, ''),
+(N'HD002','2023/4/2',0, 3000000, 3050000, ''),
+(N'HD003','2023/4/12',0, 1000000, 1020000, ''),
+(N'HD004','2023/4/12',1, 3000000, 3050000, ''),
+(N'HD005','2023/4/28',1, 1000000, 1060000, '')
+delete from HoaDonThanhToan where MaHoaDon = 'HD001'
+select * from HoaDonThanhToan
+
+INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, MaHoaDon, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
+values(N'PDPD001',N'NV001',N'KH001', N'KH001', N'HD001', '2023/3/16', '2023/3/18', '2023/3/22',2,''),
+(N'PDPD002',N'NV001',N'P002', N'KH002', N'HD002','2023/3/27','2023/3/28', '2023/4/2',2,''),
+(N'PDPD003',N'NV002',N'P003', N'KH003', N'HD003','2023/3/29','2023/4/9', '2023/4/12',2,''),
+(N'PDPD004',N'NV002',N'P004', N'KH004', N'HD004','2023/4/4','2023/4/6', '2023/4/12',2,''),
+(N'PDPD005',N'NV003',N'P001', N'KH005', N'HD005','2023/4/25','2023/4/25', '2023/4/28',1,'')
+select * from PhieuDatPhong
