@@ -60,7 +60,7 @@ create table NhanVien(
 
 create table HoaDonThanhToan(
 	MaHoaDon nvarchar(50) not null primary key,
-	NgayThanhToan datetime,
+	NgayThanhToan date,
 	--Hình thức thanh toán
 	--0: tiền mặt
 	--1: chuyển khoản
@@ -83,9 +83,9 @@ create table PhieuDatPhong(
 	IDNguoiDatPhong nvarchar(50) not null,
 	MaHoaDon nvarchar(50) not null,
 	-----
-	NgayDatPhong datetime,
-	NgayCheckIn datetime,
-	NgayCheckOut datetime,
+	NgayDatPhong date,
+	NgayCheckIn date,
+	NgayCheckOut date,
 	SoNguoi int,
 	GhiChu nvarchar(50)
 
@@ -237,7 +237,7 @@ delete from HoaDonThanhToan where MaHoaDon = 'HD001'
 select * from HoaDonThanhToan
 
 INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, MaHoaDon, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
-values(N'PDPD001',N'NV001',N'KH001', N'KH001', N'HD001', '2023/3/16', '2023/3/18', '2023/3/22',2,''),
+values(N'PDPD001',N'NV001',N'P001', N'KH001', N'HD001', '2023/3/16', '2023/3/18', '2023/3/22',2,''),
 (N'PDPD002',N'NV001',N'P002', N'KH002', N'HD002','2023/3/27','2023/3/28', '2023/4/2',2,''),
 (N'PDPD003',N'NV002',N'P003', N'KH003', N'HD003','2023/3/29','2023/4/9', '2023/4/12',2,''),
 (N'PDPD004',N'NV002',N'P004', N'KH004', N'HD004','2023/4/4','2023/4/6', '2023/4/12',2,''),
