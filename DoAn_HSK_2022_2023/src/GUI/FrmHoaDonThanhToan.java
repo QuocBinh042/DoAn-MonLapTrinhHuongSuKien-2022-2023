@@ -515,8 +515,25 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent e) {
+	public void itemStateChanged(ItemEvent event) {
 		// TODO Auto-generated method stub
-
+		if (event.getSource() == yearTT && event.getStateChange() == ItemEvent.SELECTED) {
+			int year = Integer.parseInt((String) yearTT.getSelectedItem());
+			dDate.set(Calendar.YEAR, year);
+			monthTT.setSelectedIndex(0);
+			dDate.set(Calendar.MONTH, 0);
+			buildDaysList(dDate, dayTT, monthTT);
+			dDate.set(Calendar.DATE, 1);
+		} else if (event.getSource() == monthTT && event.getStateChange() == ItemEvent.SELECTED) {
+			dDate.set(Calendar.MONTH, monthTT.getSelectedIndex());
+			buildDaysList(dDate, dayTT, monthTT);
+			dDate.set(Calendar.DATE, 1);
+		} else if (event.getSource() == dayTT && event.getStateChange() == ItemEvent.SELECTED) {
+			int day = Integer.parseInt((String) dayTT.getSelectedItem());
+			dDate.set(Calendar.DATE, day);
+		}
 	}
+	
+	
 }
+s
