@@ -24,7 +24,7 @@ public class DAOHoaDonThanhToan {
 			while(rs.next()) {
 				DanhSachHoaDonThanhToan.add(new HoaDonThanhToan(
 				rs.getString("MaHoaDon"),
-				rs.getString("NgayThanhToan"),
+				rs.getDate("NgayThanhToan"),
 				rs.getString("HinhThucThanhToan"),
 				rs.getDouble("ThanhTienPhong"),
 				rs.getDouble("TongThanhToan"),
@@ -45,7 +45,7 @@ public class DAOHoaDonThanhToan {
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, hd.getMaHoaDon());
-			stm.setString(2, hd.getNgayThanhToan());
+			stm.setDate(2, hd.getNgayThanhToan());
 			stm.setString(3, hd.getHinhThucThanhToan());
 			stm.setDouble(4, hd.getThanhTienPhong());
 			stm.setDouble(5, hd.getTongThanhToan());
@@ -75,7 +75,7 @@ public class DAOHoaDonThanhToan {
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, hd.getMaHoaDon());
-			stm.setString(2, hd.getNgayThanhToan());
+			stm.setDate(2, hd.getNgayThanhToan());
 			stm.setString(3, hd.getHinhThucThanhToan());
 			stm.setDouble(4, hd.getThanhTienPhong());
 			stm.setDouble(5, hd.getTongThanhToan());

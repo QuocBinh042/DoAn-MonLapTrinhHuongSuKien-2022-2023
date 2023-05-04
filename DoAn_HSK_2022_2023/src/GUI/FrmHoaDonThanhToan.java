@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.regex.Pattern;
@@ -68,7 +69,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		
+
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
@@ -195,8 +196,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
-		
-		//Gọi hàm loadData
+
+		// Gọi hàm loadData
 		loadData();
 
 		// ĐĂNG KÝ SỰ KIỆN
@@ -212,7 +213,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		btnThoat.addActionListener(this);
 		table.addMouseListener(this);
 	}
-	
+
 	private void TXTedit_false() {
 		txtMaHoaDon.setEditable(false);
 		txtThanhTienPhong.setEditable(false);
@@ -236,7 +237,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		yearTT.setEnabled(true);
 		txtaGhiChu.setEditable(true);
 	}
-	
+
 	public void deleteAllDataJtable() {
 		DefaultTableModel dm = (DefaultTableModel) table.getModel();
 		while (dm.getRowCount() > 0) {
@@ -265,15 +266,15 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	}
 
 	private String getNgayTT() {
-		return dayTT.getSelectedItem().toString() + "/" + monthTT.getSelectedItem().toString() + "/"
-				+ yearTT.getSelectedItem().toString();
+		return yearTT.getSelectedItem().toString() + "-" + monthTT.getSelectedItem().toString() + "-"
+				+ dayTT.getSelectedItem().toString();
 	}
-	
+
 	private void showMessage(String message, JTextField txt) {
 		txt.requestFocus();
 		txtMess.setText(message);
 	}
-	
+
 	private boolean validData() {
 		String maHDTT = txtMaHoaDon.getText().trim();
 		String thanhTienPhong = txtThanhTienPhong.getText().trim();
@@ -292,7 +293,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 		return true;
 	}
-	
+
 	public void loadData() {
 		// delete all
 		deleteAllDataJtable();
@@ -364,14 +365,14 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			System.exit(0);
 
 	}
-	
+
 	private void themHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
 		double thanhTienPhong = Double.parseDouble(txtThanhTienPhong.getText());
 		double tongTT = Double.parseDouble(txtTongThanhToan.getText());
 		String ghiChu = txtaGhiChu.getText();
-		String ngayTT = getNgayTT();
+		Date ngayTT = Date.valueOf(getNgayTT());
 		String hinhThucTT = "";
 		if (radChuyenKhoan.isSelected())
 			hinhThucTT = radChuyenKhoan.getText();
@@ -381,8 +382,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		try {
 			if (validData()) {
 				if (ds.themHoaDonThanhToan(hd)) {
-					String[] row = { maHDTT, ngayTT, hinhThucTT, String.valueOf(thanhTienPhong), String.valueOf(tongTT),
-							ghiChu };
+					String[] row = { maHDTT, ngayTT.toString(), hinhThucTT, String.valueOf(thanhTienPhong),
+							String.valueOf(tongTT), ghiChu };
 					tableModel.addRow(row);
 					DAO_hd.add(hd);
 					xoaTrang();
@@ -403,16 +404,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		}
 	}
 
-	private void Luu() {
-		// TODO Auto-generated method stub
-		try {
-			JOptionPane.showMessageDialog(this, "Lưu thành công!");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-	}
-
 	private void TimHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		int pos = ds.timHoaDonTheoMa(txtTim.getText());
@@ -422,14 +413,14 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		} else
 			JOptionPane.showMessageDialog(null, "Không tồn tại hoá đơn có mã số này!");
 	}
-	
+
 	private void SuaHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
 		double thanhTienPhong = Double.parseDouble(txtThanhTienPhong.getText());
 		double tongTT = Double.parseDouble(txtTongThanhToan.getText());
 		String ghiChu = txtaGhiChu.getText();
-		String ngayTT = getNgayTT();
+		Date ngayTT = Date.valueOf(getNgayTT());
 		String hinhThucTT = "";
 		if (radChuyenKhoan.isSelected())
 			hinhThucTT = radChuyenKhoan.getText();
@@ -460,7 +451,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// TODO Auto-generated method stub
 		int r = table.getSelectedRow();
 		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá hóa đơn này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá hóa đơn này không?", "Chú ý!",
+					JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				ds.xoaHoaDon(r);
 				DAO_hd.delete(table.getValueAt(r, 0).toString());
@@ -472,7 +464,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn hoá đơn muốn xoá!");
 		}
 	}
-	
+
 	private void xoaTrang() {
 		// TODO Auto-generated method stub
 		txtMaHoaDon.setText("");
@@ -482,7 +474,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		txtTim.setText("");
 		txtMaHoaDon.requestFocus();
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub

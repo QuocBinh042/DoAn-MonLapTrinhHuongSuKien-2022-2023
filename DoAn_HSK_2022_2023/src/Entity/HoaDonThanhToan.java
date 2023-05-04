@@ -1,16 +1,17 @@
 package Entity;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class HoaDonThanhToan {
 	private String maHoaDon;
-	private String ngayThanhToan;
+	private Date ngayThanhToan;
 	private String hinhThucThanhToan;
 	private double thanhTienPhong;
 	private double tongThanhToan;
 	private String ghiChu;
 
-	public HoaDonThanhToan(String maHoaDon, String ngayThanhToan, String hinhThucThanhToan, double thanhTienPhong,
+	public HoaDonThanhToan(String maHoaDon, Date ngayThanhToan, String hinhThucThanhToan, double thanhTienPhong,
 			double tongThanhToan, String ghiChu) {
 		super();
 		this.maHoaDon = maHoaDon;
@@ -29,11 +30,11 @@ public class HoaDonThanhToan {
 		this.maHoaDon = maHoaDon;
 	}
 
-	public String getNgayThanhToan() {
+	public Date getNgayThanhToan() {
 		return ngayThanhToan;
 	}
 
-	public void setNgayThanhToan(String ngayThanhToan) {
+	public void setNgayThanhToan(Date ngayThanhToan) {
 		this.ngayThanhToan = ngayThanhToan;
 	}
 
