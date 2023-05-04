@@ -247,7 +247,10 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
-
+		
+		//Gọi hàm load data
+		loadData();
+		
 		// ĐĂNG KÝ SỰ KIỆN
 		startYear.addItemListener(this);
 		startMonth.addItemListener(this);
@@ -330,7 +333,63 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		for (int yearCount = currentYear - 5; yearCount <= currentYear + 5; yearCount++)
 			yearsList.addItem(Integer.toString(yearCount));
 	}
+	
+	private String getBookDate() {
+		return bookDay.getSelectedItem().toString() + "/" + bookMonth.getSelectedItem().toString() + "/"
+				+ bookYear.getSelectedItem().toString();
+	}
 
+	private String getStartDate() {
+		return startDay.getSelectedItem().toString() + "/" + startMonth.getSelectedItem().toString() + "/"
+				+ startYear.getSelectedItem().toString();
+	}
+
+	private String getEndDate() {
+		return endDay.getSelectedItem().toString() + "/" + endMonth.getSelectedItem().toString() + "/"
+				+ endYear.getSelectedItem().toString();
+	}
+	
+	public void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel) table.getModel();
+		while (dm.getRowCount() > 0) {
+			dm.removeRow(0);
+		}
+	}
+	
+	private void showMessage(String message, JTextField txt) {
+		txt.requestFocus();
+		txtMess.setText(message);
+	}
+	
+	public void loadData() {
+		// delete all
+		deleteAllDataJtable();
+		// Load data
+		DAO_pdp = new DAOPhieuDatPhong();
+		for (PhieuDatPhong pdp : DAO_pdp.getAll()) {
+			Object row[] = { pdp.getMaPhieuDatPhong(), pdp.getMaNhanVien(), pdp.getMaPhong(), pdp.getMaKhachHang(),
+					pdp.getMaHoaDon(), pdp.getNgayDatPhong(), pdp.getNgayDen(), pdp.getNgayDi(), pdp.getGhiChu() };
+			tableModel.addRow(row);
+		}
+	}
+	
+	private boolean validData() {
+		String maDP = txtMaDatPhong.getText().trim();
+		String soNguoi = txtSoNguoi.getText().trim();
+		Pattern p1 = Pattern.compile("^(PDP)[0-9]{3}");
+		if (!(maDP.length() > 0 && p1.matcher(maDP).find())) {
+			showMessage("Lỗi mã đặt phòng!", txtMaDatPhong);
+			return false;
+		}
+
+		Pattern p2 = Pattern.compile("^[0-9]+");
+		if (!(soNguoi.length() > 0 && p2.matcher(soNguoi).find())) {
+			showMessage("Lỗi số người!", txtSoNguoi);
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -360,7 +419,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 						txtMaDatPhong.setEditable(false);
 						btnSua.setText("Hoàn tất");
 					} else {
-						JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
+						JOptionPane.showMessageDialog(null, "Vui lòng chọn phiếu đặt phòng muốn xoá!");
 						btnThem.setEnabled(true);
 					}
 				} catch (Exception e2) {
@@ -389,49 +448,56 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
+	
+	private void themPhieuDatPhong() {
+		// TODO Auto-generated method stub
+		String maDP = txtMaDatPhong.getText();
+		String maNV = txtMaNV.getText();
+		String maPhong = cbMaPhong.getSelectedItem().toString();
+		String maKhachHang = cbMaKhachHang.getSelectedItem().toString();
+		String maHoaDon = cbMaHoaDon.getSelectedItem().toString();
+		int soNguoi = Integer.parseInt(txtSoNguoi.getText());
+		String ngayDen = getStartDate();
+		String ngayDi = getEndDate();
+		String ngayDatPhong = getBookDate();
+		String ghiChu = txtaGhiChu.getText();
 
-	public void loadData() {
-		// delete all
-		deleteAllDataJtable();
-		// Load data
-		DAO_pdp = new DAOPhieuDatPhong();
-		for (PhieuDatPhong pdp : DAO_pdp.getAll()) {
-			Object row[] = { pdp.getMaPhieuDatPhong(), pdp.getMaNhanVien(), pdp.getMaPhong(), pdp.getMaKhachHang(),
-					pdp.getMaHoaDon(), pdp.getNgayDatPhong(), pdp.getNgayDen(), pdp.getNgayDi(), pdp.getGhiChu() };
-			tableModel.addRow(row);
+		PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi, ngayDen,
+				ngayDi, ghiChu);
+
+		try {
+			if (validData()) {
+				if (dsPDP.themPhieuDatPhong(p)) {
+					String[] row = { maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong,
+							Integer.toString(soNguoi), ngayDen, ngayDi, ghiChu };
+					tableModel.addRow(row);
+					DAO_pdp.add(p);
+					xoaTrang();
+					JOptionPane.showMessageDialog(null, "Thêm thành công phiếu đặt phòng!");
+				} else {
+					JOptionPane.showMessageDialog(null, "Trùng mã phiếu đặt phòng!");
+					txtMaDatPhong.selectAll();
+					txtMaDatPhong.requestFocus();
+				}
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu!");
+			return;
 		}
 	}
 
-	public void deleteAllDataJtable() {
-		DefaultTableModel dm = (DefaultTableModel) table.getModel();
-		while (dm.getRowCount() > 0) {
-			dm.removeRow(0);
-		}
+	
+
+	private void TimPhieuDatPhong() {
+		// TODO Auto-generated method stub
+		int pos = dsPDP.timPhieuDatPhongTheoMa(txtTim.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Tồn tại phiếu đặt phòng có mã số này!");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Không tồn tại phiếu đặt phòng có mã số này!");
 	}
-
-	private boolean validData() {
-		String maDP = txtMaDatPhong.getText().trim();
-		String soNguoi = txtSoNguoi.getText().trim();
-		Pattern p1 = Pattern.compile("^(PDP)[0-9]{3}");
-		if (!(maDP.length() > 0 && p1.matcher(maDP).find())) {
-			showMessage("Lỗi mã đặt phòng", txtMaDatPhong);
-			return false;
-		}
-
-		Pattern p2 = Pattern.compile("^[0-9]+");
-		if (!(soNguoi.length() > 0 && p2.matcher(soNguoi).find())) {
-			showMessage("Lỗi số người", txtSoNguoi);
-			return false;
-		}
-
-		return true;
-	}
-
-	private void showMessage(String message, JTextField txt) {
-		txt.requestFocus();
-		txtMess.setText(message);
-	}
-
+	
 	private void SuaPhieuDatPhong() {
 		// TODO Auto-generated method stub
 		String maDP = txtMaDatPhong.getText();
@@ -460,96 +526,31 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 				tableModel.setValueAt(ngayDi, index, 8);
 				tableModel.setValueAt(ghiChu, index, 9);
 				DAO_pdp.update(p);
-				showMessage("Cập nhật thành công", txtMess);
-				JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+				showMessage("Cập nhật thành công!", txtMess);
+				JOptionPane.showMessageDialog(null, "Cập nhật phiếu đặt phòng thành công!");
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Cập nhật không thành công");
+			JOptionPane.showMessageDialog(null, "Cập nhật phiếu đặt phòng không thành công!");
 			txtMaDatPhong.selectAll();
 			txtMaDatPhong.requestFocus();
 		}
 	}
-
-	private String getBookDate() {
-		return bookDay.getSelectedItem().toString() + "/" + bookMonth.getSelectedItem().toString() + "/"
-				+ bookYear.getSelectedItem().toString();
-	}
-
-	private String getStartDate() {
-		return startDay.getSelectedItem().toString() + "/" + startMonth.getSelectedItem().toString() + "/"
-				+ startYear.getSelectedItem().toString();
-	}
-
-	private String getEndDate() {
-		return endDay.getSelectedItem().toString() + "/" + endMonth.getSelectedItem().toString() + "/"
-				+ endYear.getSelectedItem().toString();
-	}
-
-	private void TimPhieuDatPhong() {
-		// TODO Auto-generated method stub
-		int pos = dsPDP.timPhieuDatPhongTheoMa(txtTim.getText());
-		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Tồn tại phiếu đặt phòng có mã số này");
-			table.setRowSelectionInterval(pos, pos);
-		} else
-			JOptionPane.showMessageDialog(null, "Không tồn tại phiếu đặt phòng có mã số này");
-	}
-
+	
 	private void XoaPhieuDatPhong() throws Exception {
 		// TODO Auto-generated method stub
 		int r = table.getSelectedRow();
 		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá phiếu đặt phòng này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				dsPDP.xoaPhieuDatPhong(r);
 				DAO_pdp.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
-				JOptionPane.showMessageDialog(null, "Xoá thành công!");
-				loadData();
+				JOptionPane.showMessageDialog(null, "Xoá phiếu đặt phòng thành công!");
 				xoaTrang();
-
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn phiếu đặt phòng muốn xoá!");
 		}
-	}
-
-	private void themPhieuDatPhong() {
-		// TODO Auto-generated method stub
-		String maDP = txtMaDatPhong.getText();
-		String maNV = txtMaNV.getText();
-		String maPhong = cbMaPhong.getSelectedItem().toString();
-		String maKhachHang = cbMaKhachHang.getSelectedItem().toString();
-		String maHoaDon = cbMaHoaDon.getSelectedItem().toString();
-		int soNguoi = Integer.parseInt(txtSoNguoi.getText());
-		String ngayDen = getStartDate();
-		String ngayDi = getEndDate();
-		String ngayDatPhong = getBookDate();
-		String ghiChu = txtaGhiChu.getText();
-
-		PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong, soNguoi, ngayDen,
-				ngayDi, ghiChu);
-
-		try {
-			if (validData()) {
-				if (dsPDP.themPhieuDatPhong(p)) {
-					String[] row = { maDP, maNV, maPhong, maKhachHang, maHoaDon, ngayDatPhong,
-							Integer.toString(soNguoi), ngayDen, ngayDi, ghiChu };
-					tableModel.addRow(row);
-					DAO_pdp.add(p);
-					xoaTrang();
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-				} else {
-					JOptionPane.showMessageDialog(null, "Trùng mã đặt phòng");
-					txtMaDatPhong.selectAll();
-					txtMaDatPhong.requestFocus();
-				}
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
-			return;
-		}
-
 	}
 
 	private void xoaTrang() {
@@ -561,13 +562,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		txtMaDatPhong.setEnabled(true);
 		txtMaDatPhong.requestFocus();
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -579,6 +574,12 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		cbMaKhachHang.setSelectedIndex(cbMaKhachHang.getSelectedIndex());
 		cbMaPhong.setSelectedIndex(cbMaPhong.getSelectedIndex());
 		txtaGhiChu.setText(table.getValueAt(row, 9).toString());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

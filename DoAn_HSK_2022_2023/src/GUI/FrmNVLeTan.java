@@ -25,19 +25,20 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class FrmNVLeTan extends JFrame implements ActionListener {
-	private JButton btnDSPhong, btnDSKhachHang, btnDSPhieuDatPhong, btnDSHoaDonThanhToan, btnDichVu, btnThoat;
+	private JButton btnDSPhong, btnDSKhachHang, btnDSPhieuDatPhong, btnDSHoaDonThanhToan,btnHoaDonDichVuPhong, btnDichVu, btnThoat;
 	private JButton btnDSCheckin, btnDSCheckout;
 	private FrmPhieuDatPhong frmPDP = new FrmPhieuDatPhong();
 	private FrmHoaDonThanhToan frmHDTT = new FrmHoaDonThanhToan();
 	private FrmPhong frmDSP = new FrmPhong();
 	private FrmKhachHang frmDSKH = new FrmKhachHang();
 	private FrmDichVu frmDV = new FrmDichVu();
+	private FrmHoaDonDichVuPhong frmHDDVP = new FrmHoaDonDichVuPhong();
 	private DefaultTableModel tableModel;
 	private JTable table;
 
 	public FrmNVLeTan() {
 		setTitle("QUẢN LÝ THÔNG TIN ĐẶT PHÒNG KHÁCH SẠN");
-		setSize(850, 600);
+		setSize(1020, 600);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		createGUI();
@@ -57,22 +58,24 @@ public class FrmNVLeTan extends JFrame implements ActionListener {
 		Box b2 = Box.createVerticalBox();
 		Box b = Box.createHorizontalBox();
 		b1.add(btnDSPhong = new JButton("PHÒNG"));
-		b1.add(Box.createHorizontalStrut(20));
+		b1.add(Box.createHorizontalStrut(10));
 		b1.add(btnDSKhachHang = new JButton("THÔNG TIN KHÁCH HÀNG"));
-		b1.add(Box.createHorizontalStrut(20));
+		b1.add(Box.createHorizontalStrut(10));
 		b1.add(btnDichVu = new JButton("DỊCH VỤ"));
-		b1.add(Box.createHorizontalStrut(20));
+		b1.add(Box.createHorizontalStrut(10));
 		b1.add(btnDSPhieuDatPhong = new JButton("PHIẾU ĐẶT PHÒNG"));
-		b1.add(Box.createHorizontalStrut(20));
+		b1.add(Box.createHorizontalStrut(10));
 		b1.add(btnDSHoaDonThanhToan = new JButton("HOÁ ĐƠN THANH TOÁN"));
-		b1.add(Box.createHorizontalStrut(20));
+		b1.add(Box.createHorizontalStrut(10));
+		b1.add(btnHoaDonDichVuPhong = new JButton("HOÁ ĐƠN DỊCH VỤ PHÒNG"));
+		b1.add(Box.createHorizontalStrut(10));
 		b1.add(btnThoat = new JButton("THOÁT"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
 		bb.add(b1);
 		add(bb, BorderLayout.CENTER);
 		b2.setBorder(BorderFactory.createTitledBorder("Danh sách"));
-		b2.add(btnDSCheckin = new JButton("Danh sách chờ đến  "));
+		b2.add(btnDSCheckin = new JButton("Danh sách chờ đến "));
 		b2.add(btnDSCheckout = new JButton("Danh sách checkout"));
 		b2.add(Box.createVerticalGlue());
 
@@ -94,6 +97,7 @@ public class FrmNVLeTan extends JFrame implements ActionListener {
 		btnDSKhachHang.addActionListener(this);
 		btnDSPhieuDatPhong.addActionListener(this);
 		btnDSHoaDonThanhToan.addActionListener(this);
+		btnHoaDonDichVuPhong.addActionListener(this);
 		btnDichVu.addActionListener(this);
 		btnThoat.addActionListener(this);
 
@@ -121,10 +125,12 @@ public class FrmNVLeTan extends JFrame implements ActionListener {
 		if (o.equals(btnDSHoaDonThanhToan)) {
 			frmHDTT.setVisible(true);
 		}
+		if (o.equals(btnHoaDonDichVuPhong)) {
+			frmHDDVP.setVisible(true);
+		}
 		if (o.equals(btnThoat)) {
 			System.exit(0);
 			;
 		}
-
 	}
 }

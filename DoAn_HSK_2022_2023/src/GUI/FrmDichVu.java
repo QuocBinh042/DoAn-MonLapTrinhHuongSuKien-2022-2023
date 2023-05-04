@@ -55,7 +55,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-
+		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
@@ -138,7 +138,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		table.setAutoCreateRowSorter(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
-		loadData();
+		
 
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
@@ -155,7 +155,13 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		TXTedit_false();
 		btnLuu.setEnabled(false);
 		btnXoaTrang.setEnabled(false);
-
+		
+		//Gọi hàm loadData
+		loadData();
+		
+		/**
+		 * Đăng ký sự kiện
+		 */
 		btnTimMa.addActionListener(this);
 		btnTimTen.addActionListener(this);
 		btnThem.addActionListener(this);
@@ -166,9 +172,59 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		btnThoat.addActionListener(this);
 		table.addMouseListener(this);
 	}
-
+	
 	public static void main(String[] args) {
 		new FrmDichVu().setVisible(true);
+	}
+	
+	private void TXTedit_false() {
+		txtMaDichVu.setEditable(false);
+		txtTenDichVu.setEditable(false);
+		txtGiaDichVu.setEditable(false);
+	}
+
+	private void TXTedit_true() {
+		txtMaDichVu.setEditable(true);
+		txtTenDichVu.setEditable(true);
+		txtGiaDichVu.setEditable(true);
+	}
+	
+	private void showMessage(String message, JTextField txt) {
+		txt.requestFocus();
+		txtMess.setText(message);
+	}
+	
+	private boolean validData() {
+		String maDichVu = txtMaDichVu.getText().trim();
+		String tenDichVu = txtTenDichVu.getText().trim();
+		String giaDichVu = txtGiaDichVu.getText().trim();
+
+		Pattern p1 = Pattern.compile("^(DV)[0-9]{3}$");
+		if (!(maDichVu.length() > 0 && p1.matcher(maDichVu).find())) {
+			showMessage("Lỗi mã dịch vụ", txtMaDichVu);
+			return false;
+		}
+		Pattern p2 = Pattern.compile("^(.)+");
+		if (!(tenDichVu.length() > 0 && p2.matcher(tenDichVu).find())) {
+			showMessage("Lỗi tên dịch vụ", txtTenDichVu);
+			return false;
+		}
+		Double gia = Double.valueOf(giaDichVu);
+		if (!(giaDichVu.length() > 0 && (gia >= 0))) {
+			showMessage("Lỗi giá dịch vụ", txtGiaDichVu);
+			return false;
+		}
+		return true;
+	}
+
+	public void loadData() {
+		// delete all
+		// Load data
+		DAO_DV = new DAODichVu();
+		for (DichVu dv : DAO_DV.getAll()) {
+			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), dv.getGiaDichVu() };
+			tableModel.addRow(row);
+		}
 	}
 
 	@Override
@@ -231,89 +287,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
-
-	private void TXTedit_false() {
-		txtMaDichVu.setEditable(false);
-		txtTenDichVu.setEditable(false);
-		txtGiaDichVu.setEditable(false);
-	}
-
-	private void TXTedit_true() {
-		txtMaDichVu.setEditable(true);
-		txtTenDichVu.setEditable(true);
-		txtGiaDichVu.setEditable(true);
-	}
-
-	private void showMessage(String message, JTextField txt) {
-		txt.requestFocus();
-		txtMess.setText(message);
-	}
-
-	private boolean validData() {
-		String maDichVu = txtMaDichVu.getText().trim();
-		String tenDichVu = txtTenDichVu.getText().trim();
-		String giaDichVu = txtGiaDichVu.getText().trim();
-
-		Pattern p1 = Pattern.compile("^(DV)[0-9]{3}$");
-		if (!(maDichVu.length() > 0 && p1.matcher(maDichVu).find())) {
-			showMessage("Lỗi mã dịch vụ", txtMaDichVu);
-			return false;
-		}
-		Pattern p2 = Pattern.compile("^(.)+");
-		if (!(tenDichVu.length() > 0 && p2.matcher(tenDichVu).find())) {
-			showMessage("Lỗi tên dịch vụ", txtTenDichVu);
-			return false;
-		}
-		Double gia = Double.valueOf(giaDichVu);
-		if (!(giaDichVu.length() > 0 && (gia >= 0))) {
-			showMessage("Lỗi giá dịch vụ", txtGiaDichVu);
-			return false;
-		}
-		return true;
-	}
-
-	private void xoaTrang() {
-		// TODO Auto-generated method stub
-		txtMaDichVu.setText("");
-		txtGiaDichVu.setText("");
-		txtTenDichVu.setText("");
-		txtTimMa.setText("");
-		txtTimTen.setText("");
-		txtMaDichVu.requestFocus();
-	}
-
-	private void SuaDichVu() {
-		// TODO Auto-generated method stub
-		String maDichVu = txtMaDichVu.getText();
-		String tenDichVu = txtTenDichVu.getText();
-		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
-		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
-		if (dsDV.suaDichVu(dv)) {
-			int index = dsDV.getList().indexOf(dv);
-			tableModel.setValueAt(tenDichVu, index, 1);
-			tableModel.setValueAt(giaDichVu, index, 2);
-			showMessage("Sửa thành công", txtMess);
-			JOptionPane.showMessageDialog(null, "Sửa thành công");
-		}
-	}
-
-	private void XoaDichVu() throws Exception {
-		// TODO Auto-generated method stub
-		int r = table.getSelectedRow();
-		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
-			if (tb == JOptionPane.YES_OPTION) {
-				dsDV.xoaDichVu(r);
-				tableModel.removeRow(r);
-				JOptionPane.showMessageDialog(null, "Xoá thành công!");
-				xoaTrang();
-				showMessage("Xoá thành công", txtMess);
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ muốn xoá!");
-		}
-	}
-
+	
 	private void themDichVu() {
 		// TODO Auto-generated method stub
 		String maDichVu = txtMaDichVu.getText();
@@ -326,9 +300,9 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 				String[] row = { maDichVu, tenDichVu, String.valueOf(giaDichVu) };
 				tableModel.addRow(row);
 				xoaTrang();
-				showMessage("Thêm thành công", txtMess);
+				showMessage("Thêm dịch vụ thành công!", txtMess);
 			} else {
-				JOptionPane.showMessageDialog(null, "Trùng mã dịch vụ");
+				JOptionPane.showMessageDialog(null, "Trùng mã dịch vụ!");
 				txtMaDichVu.selectAll();
 				txtMaDichVu.requestFocus();
 			}
@@ -337,15 +311,15 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 			txtMaDichVu.requestFocus();
 		}
 	}
-
+	
 	private void TimDichVuTheoMa() {
 		// TODO Auto-generated method stub
 		int pos = dsDV.timDichVuTheoMa(txtTimMa.getText());
 		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách");
+			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);
 		} else
-			JOptionPane.showMessageDialog(null, "Dịch vụ này không có trong danh sách");
+			JOptionPane.showMessageDialog(null, "Dịch vụ này không có trong danh sách!");
 		txtTimTen.setText("");
 		showMessage("", txtMess);
 	}
@@ -354,29 +328,56 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		int pos = dsDV.timDichVuTheoTen(txtTimTen.getText());
 		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách");
+			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);
 		} else
-			JOptionPane.showMessageDialog(null, "Dịch vụ này không có trong danh sách");
+			JOptionPane.showMessageDialog(null, "Dịch vụ này không có trong danh sách!");
 		txtTimMa.setText("");
 		showMessage("", txtMess);
 	}
-
-	public void loadData() {
-		// delete all
-		// Load data
-		DAO_DV = new DAODichVu();
-		for (DichVu dv : DAO_DV.getAll()) {
-			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), dv.getGiaDichVu() };
-			tableModel.addRow(row);
+	
+	private void SuaDichVu() {
+		// TODO Auto-generated method stub
+		String maDichVu = txtMaDichVu.getText();
+		String tenDichVu = txtTenDichVu.getText();
+		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
+		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
+		if (dsDV.suaDichVu(dv)) {
+			int index = dsDV.getList().indexOf(dv);
+			tableModel.setValueAt(tenDichVu, index, 1);
+			tableModel.setValueAt(giaDichVu, index, 2);
+			showMessage("Cập nhật dịch vụ thành công!", txtMess);
+			JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ thành công!");
 		}
 	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
+	
+	private void xoaTrang() {
 		// TODO Auto-generated method stub
+		txtMaDichVu.setText("");
+		txtGiaDichVu.setText("");
+		txtTenDichVu.setText("");
+		txtTimMa.setText("");
+		txtTimTen.setText("");
+		txtMaDichVu.requestFocus();
 	}
 
+	private void XoaDichVu() throws Exception {
+		// TODO Auto-generated method stub
+		int r = table.getSelectedRow();
+		if (r != -1) {
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá dịch vụ này không!", "Chú ý!", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				dsDV.xoaDichVu(r);
+				tableModel.removeRow(r);
+				JOptionPane.showMessageDialog(null, "Xoá dịch vụ thành công!");
+				xoaTrang();
+				showMessage("Xoá dịch vụ thành công!", txtMess);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ muốn xoá!");
+		}
+	}
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -384,6 +385,11 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		txtMaDichVu.setText(table.getValueAt(row, 0).toString());
 		txtTenDichVu.setText(table.getValueAt(row, 1).toString());
 		txtGiaDichVu.setText(table.getValueAt(row, 2).toString());
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override

@@ -44,12 +44,12 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 	private DefaultTableModel tableModel;
 
 	public FrmNhanVien() {
-//		try {
-//			ConnectDB.getInstance().connect();
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		createGUI();
 	}
 
@@ -63,6 +63,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		setResizable(false);
 		setLocationRelativeTo(null);
 		dsNV = new DanhSachNhanVien();
+		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
@@ -186,8 +187,8 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
 		add(bb, BorderLayout.CENTER);
-//		loadData();
-
+		
+		
 		// SOUTH
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
@@ -200,8 +201,13 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
-
-		// ĐĂNG KÝ SỰ KIỆN
+		
+		//Gọi hàm loadData
+		loadData();
+		
+		/**
+		 * Đăng ký sự kiện
+		 */
 		TXTedit_false();
 		btnLuu.setEnabled(false);
 		btnXoaTrang.setEnabled(false);
@@ -241,6 +247,65 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		radNam.setEnabled(true);
 		radNu.setEnabled(true);
 		cbChucVu.setEnabled(true);
+	}
+	
+	private void showMessage(String message, JTextField txt) {
+		txt.requestFocus();
+		txtMess.setText(message);
+	}
+	
+	private boolean validData() {
+		String maNV = txtMaNV.getText().trim();
+		String tenNV = txtHoTen.getText().trim();
+		String cmthu = txtCMThu.getText().trim();
+		String sdt = txtSDThoai.getText().trim();
+		String gmail = txtGmail.getText().trim();
+		String diachi = txtDiaChi.getText().trim();
+		String matKhau = txtMatKhau.getText().trim();
+
+		Pattern p = Pattern.compile("^(NV)[0-9]{3}");
+		if (!(maNV.length() > 0 && p.matcher(maNV).find())) {
+			showMessage("Lỗi mã nhân viên!", txtMaNV);
+			return false;
+		}
+
+		Pattern p1 = Pattern.compile("[a-zA-Z]+");
+		if (!(tenNV.length() > 0 && p1.matcher(tenNV).find())) {
+			showMessage("Tên không tồn tại!", txtHoTen);
+			return false;
+		}
+
+		Pattern p2 = Pattern.compile("[0-9]{11}");
+		if (!(cmthu.length() > 0 && p2.matcher(cmthu).find())) {
+			showMessage("Chứng minh thư này không tồn tại!", txtCMThu);
+			return false;
+		}
+
+		Pattern p3 = Pattern.compile("[0-9]{10}");
+		if (!(sdt.length() > 0 && p3.matcher(sdt).find())) {
+			showMessage("Số điện thoại này không tồn tại!", txtSDThoai);
+			return false;
+		}
+
+		Pattern p4 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+				+ "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
+		if (!(gmail.length() > 0 && p4.matcher(gmail).find())) {
+			showMessage("GMail này không tồn tại!", txtGmail);
+			return false;
+		}
+
+		Pattern p5 = Pattern.compile("[a-zA-Z0-9]+");
+		if (!(diachi.length() > 0 && p5.matcher(diachi).find())) {
+			showMessage("Địa chỉ này không tồn tại!", txtDiaChi);
+			return false;
+		}
+
+		Pattern p6 = Pattern.compile("(.)+");
+		if (!(matKhau.length() > 0 && p6.matcher(matKhau).find())) {
+			showMessage("Mật khẩu này không tồn tại!", txtMatKhau);
+			return false;
+		}
+		return true;
 	}
 
 	public void loadData() {
@@ -283,7 +348,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 						txtMaNV.setEditable(false);
 						btnSua.setText("Hoàn tất");
 					} else {
-						JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
+						JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên muốn xoá!");
 						btnThem.setEnabled(true);
 					}
 				} catch (Exception e2) {
@@ -314,7 +379,72 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
+	
+	private void themNhanVien() {
+		String maNV = txtMaNV.getText();
+		String tenNV = txtHoTen.getText();
+		String cmthu = txtCMThu.getText();
+		String sdt = txtSDThoai.getText();
+		String gmail = txtGmail.getText();
+		String diaChi = txtDiaChi.getText();
+		String gioiTinh = "";
+		String matKhau = txtMatKhau.getText();
+		if (radNam.isSelected())
+			gioiTinh = radNam.getText();
+		if (radNu.isSelected())
+			gioiTinh = radNu.getText();
+		String chucVu = cbChucVu.getSelectedItem().toString();
 
+		NhanVien nv = new NhanVien(maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau);
+		try {
+			if (!validData()) {
+				if (dsNV.themNhanVien(nv)) {
+					String[] row = { maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau };
+					tableModel.addRow(row);
+					xoaTrang();
+					JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công!");
+					showMessage("Thêm thành công!", txtMaNV);
+				} else {
+					JOptionPane.showMessageDialog(null, "Trùng mã nhân viên!");
+					txtMaNV.selectAll();
+					txtMaNV.requestFocus();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Thêm nhân viên không thành công!");
+				txtMaNV.selectAll();
+				txtMaNV.requestFocus();
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu!");
+			e.printStackTrace();
+		}
+	}
+
+	private void TimNhanVienTheoMa(){
+		// TODO Auto-generated method stub
+		int pos = dsNV.timNhanVienTheoMa(txtTimMa.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Nhân viên này có trong danh sách!");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Nhân viên này không có trong danh sách!");
+		txtTimTen.setText("");
+		showMessage("", txtMess);
+	}
+
+	private void TimNhanVienTheoTen(){
+		// TODO Auto-generated method stub
+		int pos = dsNV.timNhanVienTheoTen(txtTimTen.getText());
+		if (pos != -1) {
+			JOptionPane.showMessageDialog(null, "Nhân viên này có trong danh sách!");
+			table.setRowSelectionInterval(pos, pos);
+		} else
+			JOptionPane.showMessageDialog(null, "Nhân viên này không có trong danh sách!");
+		txtTimMa.setText("");
+		showMessage("", txtMess);
+	}
+	
 	private void CapNhatNhanVien() {
 		// TODO Auto-generated method stub
 		String maNV = txtMaNV.getText();
@@ -341,70 +471,25 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 			tableModel.setValueAt(gioiTinh, index, 6);
 			tableModel.setValueAt(chucVu, index, 7);
 			tableModel.setValueAt(matKhau, index, 8);
-			showMessage("Cập nhật thành công", txtMess);
-			JOptionPane.showMessageDialog(null, "Cập nhật thành công");
+			showMessage("Cập nhật thành công thông tin nhân viên!", txtMess);
+			JOptionPane.showMessageDialog(null, "Cập nhật thành công thông tin nhân viên!");
 		}
 	}
-
-	private void showMessage(String message, JTextField txt) {
-		txt.requestFocus();
-		txtMess.setText(message);
+	
+	public void xoaNhanVien() throws Exception {
+		int r = table.getSelectedRow();
+		if (r != -1) {
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá nhân viên này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				dsNV.xoaNV(r);
+				tableModel.removeRow(r);
+				xoaTrang();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên muốn xoá!");
+		}
 	}
-
-	private boolean validData() {
-		String maNV = txtMaNV.getText().trim();
-		String tenNV = txtHoTen.getText().trim();
-		String cmthu = txtCMThu.getText().trim();
-		String sdt = txtSDThoai.getText().trim();
-		String gmail = txtGmail.getText().trim();
-		String diachi = txtDiaChi.getText().trim();
-		String matKhau = txtMatKhau.getText().trim();
-
-		Pattern p = Pattern.compile("^(NV)[0-9]{3}");
-		if (!(maNV.length() > 0 && p.matcher(maNV).find())) {
-			showMessage("Lỗi mã nhân viên", txtMaNV);
-			return false;
-		}
-
-		Pattern p1 = Pattern.compile("[a-zA-Z]+");
-		if (!(tenNV.length() > 0 && p1.matcher(tenNV).find())) {
-			showMessage("Tên không tồn tại", txtHoTen);
-			return false;
-		}
-
-		Pattern p2 = Pattern.compile("[0-9]{11}");
-		if (!(cmthu.length() > 0 && p2.matcher(cmthu).find())) {
-			showMessage("Chứng minh thư này không tồn tại", txtCMThu);
-			return false;
-		}
-
-		Pattern p3 = Pattern.compile("[0-9]{10}");
-		if (!(sdt.length() > 0 && p3.matcher(sdt).find())) {
-			showMessage("Số điện thoại này không tồn tại", txtSDThoai);
-			return false;
-		}
-
-		Pattern p4 = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
-				+ "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$");
-		if (!(gmail.length() > 0 && p4.matcher(gmail).find())) {
-			showMessage("GMail này không tồn tại", txtGmail);
-			return false;
-		}
-
-		Pattern p5 = Pattern.compile("[a-zA-Z0-9]+");
-		if (!(diachi.length() > 0 && p5.matcher(diachi).find())) {
-			showMessage("Địa chỉ này không tồn tại", txtDiaChi);
-			return false;
-		}
-
-		Pattern p6 = Pattern.compile("(.)+");
-		if (!(matKhau.length() > 0 && p6.matcher(matKhau).find())) {
-			showMessage("Mật khẩu này không tồn tại", txtMatKhau);
-			return false;
-		}
-		return true;
-	}
-
+	
 	private void xoaTrang() {
 		txtMaNV.setText("");
 		txtHoTen.setText("");
@@ -417,84 +502,23 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		txtTimMa.setText("");
 		txtMaNV.requestFocus();
 	}
-
-	private void TimNhanVienTheoMa(){
-		// TODO Auto-generated method stub
-		int pos = dsNV.timNhanVienTheoMa(txtTimMa.getText());
-		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Nhân viên này có trong danh sách");
-			table.setRowSelectionInterval(pos, pos);
-		} else
-			JOptionPane.showMessageDialog(null, "Nhân viên này không có trong danh sách");
-		txtTimTen.setText("");
-		showMessage("", txtMess);
-	}
-
-	private void TimNhanVienTheoTen(){
-		// TODO Auto-generated method stub
-		int pos = dsNV.timNhanVienTheoTen(txtTimTen.getText());
-		if (pos != -1) {
-			JOptionPane.showMessageDialog(null, "Nhân viên này có trong danh sách");
-			table.setRowSelectionInterval(pos, pos);
-		} else
-			JOptionPane.showMessageDialog(null, "Nhân viên này không có trong danh sách");
-		txtTimMa.setText("");
-		showMessage("", txtMess);
-	}
 	
-	public void xoaNhanVien() throws Exception {
-		int r = table.getSelectedRow();
-		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
-			if (tb == JOptionPane.YES_OPTION) {
-				dsNV.xoaNV(r);
-				tableModel.removeRow(r);
-				xoaTrang();
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn nhân viên muốn xoá!");
-		}
-	}
-
-	private void themNhanVien() {
-		String maNV = txtMaNV.getText();
-		String tenNV = txtHoTen.getText();
-		String cmthu = txtCMThu.getText();
-		String sdt = txtSDThoai.getText();
-		String gmail = txtGmail.getText();
-		String diaChi = txtDiaChi.getText();
-		String gioiTinh = "";
-		String matKhau = txtMatKhau.getText();
-		if (radNam.isSelected())
-			gioiTinh = radNam.getText();
-		if (radNu.isSelected())
-			gioiTinh = radNu.getText();
-		String chucVu = cbChucVu.getSelectedItem().toString();
-
-		NhanVien nv = new NhanVien(maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau);
-		try {
-			if (!validData()) {
-				if (dsNV.themNhanVien(nv)) {
-					String[] row = { maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau };
-					tableModel.addRow(row);
-					xoaTrang();
-					JOptionPane.showMessageDialog(null, "Thêm thành công");
-					showMessage("Thêm thành công", txtMaNV);
-				} else {
-					JOptionPane.showMessageDialog(null, "Trùng mã nhân viên");
-					txtMaNV.selectAll();
-					txtMaNV.requestFocus();
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Thêm không thành công");
-				txtMaNV.selectAll();
-				txtMaNV.requestFocus();
-			}
-
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
-			e.printStackTrace();
-		}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		txtMaNV.setText(table.getValueAt(row, 0).toString());
+		txtHoTen.setText(table.getValueAt(row, 1).toString());
+		txtCMThu.setText(table.getValueAt(row, 2).toString());
+		txtSDThoai.setText(table.getValueAt(row, 3).toString());
+		txtGmail.setText(table.getValueAt(row, 4).toString());
+		txtDiaChi.setText(table.getValueAt(row, 5).toString());
+		if (table.getValueAt(row, 6).toString().equalsIgnoreCase("Nam"))
+			radNam.setSelected(true);
+		else
+			radNu.setSelected(true);
+		cbChucVu.setSelectedIndex(cbChucVu.getSelectedIndex());
+		txtMatKhau.setText(table.getValueAt(row, 8).toString());
 	}
 
 	@Override
@@ -513,24 +537,6 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		int row = table.getSelectedRow();
-		txtMaNV.setText(table.getValueAt(row, 0).toString());
-		txtHoTen.setText(table.getValueAt(row, 1).toString());
-		txtCMThu.setText(table.getValueAt(row, 2).toString());
-		txtSDThoai.setText(table.getValueAt(row, 3).toString());
-		txtGmail.setText(table.getValueAt(row, 4).toString());
-		txtDiaChi.setText(table.getValueAt(row, 5).toString());
-		if (table.getValueAt(row, 6).toString().equalsIgnoreCase("Nam"))
-			radNam.setSelected(true);
-		else
-			radNu.setSelected(true);
-		cbChucVu.setSelectedIndex(cbChucVu.getSelectedIndex());
-		txtMatKhau.setText(table.getValueAt(row, 8).toString());
 	}
 
 	@Override

@@ -27,9 +27,6 @@ import Entity.HoaDonDichVuPhong;
 import connectDB.ConnectDB;
 
 public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, MouseListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private JTextField txtMaDichVu, txtMaPhong, txtSoLuong, txtMess;
@@ -50,12 +47,10 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	private void createGUI() {
 		// TODO Auto-generated method stub
 		setTitle("QUẢN LÝ HÓA ĐƠN DỊCH VỤ PHÒNG");
-		setSize(1000, 650);
+		setSize(1150, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		
 		ds = new DanhSachHoaDonDichVuPhong();
-		
 		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
@@ -124,8 +119,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		table.setAutoCreateRowSorter(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		bb.add(scroll);
-		//Load Data
-		loadData();
+		
 		//South
 		JPanel pnlSouth;
 		add(pnlSouth = new JPanel(), BorderLayout.SOUTH);
@@ -138,6 +132,9 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
+		
+		//Gọi hàm loadData
+		loadData();
 
 		TXTedit_false();
 		btnLuu.setEnabled(false);
@@ -156,6 +153,33 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		new FrmHoaDonDichVuPhong().setVisible(true);
 	}
 
+	private void TXTedit_false() {
+		txtMaDichVu.setEditable(false);
+		txtMaPhong.setEditable(false);
+		txtSoLuong.setEditable(false);
+	}
+	private void TXTedit_true() {
+		txtMaDichVu.setEditable(true);
+		txtMaPhong.setEditable(true);
+		txtSoLuong.setEditable(true);
+	}
+	
+	private void showMessage(String message, JTextField txt) {
+		txt.requestFocus();
+		txtMess.setText(message);
+	}
+	
+	public void loadData() {
+		//delete all
+		deleteAllDataJtable();
+		//Load data
+		DAO_dvp = new DAOHoaDonDichVuPhong();
+		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
+			Object row[] = {dvp.getMaPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
+			tableModel.addRow(row);
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -193,7 +217,6 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 					// TODO: handle exception
 					e2.printStackTrace();
 				}
-				
 			}
 			else {
 				TXTedit_false();
@@ -217,80 +240,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
-	public void deleteAllDataJtable() {
-		DefaultTableModel dm = (DefaultTableModel)table.getModel();
-		while(dm.getRowCount() > 0)
-		{
-		    dm.removeRow(0);
-		}
-	}
-	public void loadData() {
-		//delete all
-		deleteAllDataJtable();
-		//Load data
-		DAO_dvp = new DAOHoaDonDichVuPhong();
-		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
-			Object row[] = {dvp.getMaPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
-			tableModel.addRow(row);
-		}
-	}
-	private void TXTedit_false() {
-		txtMaDichVu.setEditable(false);
-		txtMaPhong.setEditable(false);
-		txtSoLuong.setEditable(false);
-	}
-	private void TXTedit_true() {
-		txtMaDichVu.setEditable(true);
-		txtMaPhong.setEditable(true);
-		txtSoLuong.setEditable(true);
-	}
-
-	private void showMessage(String message, JTextField txt) {
-		txt.requestFocus();
-		txtMess.setText(message);
-	}
-
-	private void SuaDichVu() {
-		int r = table.getSelectedRow();
-		if (r != -1) {	
-			String maPhong = txtMaPhong.getText();
-			String maDichVu = txtMaDichVu.getText();
-			String soLuong = txtSoLuong.getText();
-			//float thanhTien = (float) tableModel.getValueAt(r, 4);
-			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong));
-			//if (ds.suaDichVu(dvp)) {
-			DAO_dvp.updateSoLuong(dvp);
-			DAO_dvp.updateThanhTien(maPhong,maDichVu);
-			tableModel.setValueAt(soLuong, r, 2);
-			//tableModel.setValueAt(thanhTien, r, 4);
-			JOptionPane.showMessageDialog(null, "Sửa thành công");
-			//}
-			loadData();
-		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
-		}
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void XoaDichVu() throws Exception {
-		// TODO Auto-generated method stub
-		int r = table.getSelectedRow();
-		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá không", "Chú ý", JOptionPane.YES_NO_OPTION);
-			if (tb == JOptionPane.YES_OPTION) {
-				ds.xoaDichVuPhong(r);
-				DAO_dvp.delete(table.getValueAt(r, 0).toString(), table.getValueAt(r, 1).toString());
-				tableModel.removeRow(r);
-				JOptionPane.showMessageDialog(null, "Xoá thành công!");
-				loadData();
-				xoaTrang();
-			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
-		}
-	}
-
+	
 	private void saveData() {
 		// TODO Auto-generated method stub
 		
@@ -307,12 +257,61 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 				tableModel.addRow(row);
 				DAO_dvp.add(dvp);
 				xoaTrang();
-				JOptionPane.showMessageDialog(null, "Thêm thành công");
+				JOptionPane.showMessageDialog(null, "Thêm dịch vụ phòng thành công!");
 				
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu");
+			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu!");
 			
+		}
+	}
+	
+	private void SuaDichVu() {
+		int r = table.getSelectedRow();
+		if (r != -1) {	
+			String maPhong = txtMaPhong.getText();
+			String maDichVu = txtMaDichVu.getText();
+			String soLuong = txtSoLuong.getText();
+			//float thanhTien = (float) tableModel.getValueAt(r, 4);
+			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong));
+			//if (ds.suaDichVu(dvp)) {
+			DAO_dvp.updateSoLuong(dvp);
+			DAO_dvp.updateThanhTien(maPhong,maDichVu);
+			tableModel.setValueAt(soLuong, r, 2);
+			//tableModel.setValueAt(thanhTien, r, 4);
+			JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ phòng thành công!");
+			//}
+			loadData();
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
+		}
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel)table.getModel();
+		while(dm.getRowCount() > 0)
+		{
+		    dm.removeRow(0);
+		}
+	}
+
+	private void XoaDichVu() throws Exception {
+		// TODO Auto-generated method stub
+		int r = table.getSelectedRow();
+		if (r != -1) {
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá dịch vụ phòng này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
+			if (tb == JOptionPane.YES_OPTION) {
+				ds.xoaDichVuPhong(r);
+				DAO_dvp.delete(table.getValueAt(r, 0).toString(), table.getValueAt(r, 1).toString());
+				tableModel.removeRow(r);
+				JOptionPane.showMessageDialog(null, "Xoá dịch vụ phòng thành công!");
+				loadData();
+				xoaTrang();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
 		}
 	}
 
@@ -326,11 +325,6 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
@@ -338,6 +332,11 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		txtMaPhong.setText(table.getValueAt(row, 0).toString());
 		txtMaDichVu.setText(table.getValueAt(row, 1).toString());
 		txtSoLuong.setText(table.getValueAt(row, 2).toString());
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
 	}
 
 	@Override
