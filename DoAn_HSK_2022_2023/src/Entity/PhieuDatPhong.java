@@ -1,39 +1,40 @@
 package Entity;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class PhieuDatPhong implements Serializable {
-	private String maPhieuDatPhong;
+	private String maDatPhong;
 	private String maNhanVien;
 	private String maPhong;
-	private String maHoaDon;
 	private String maKhachHang;
+	private String maHoaDon;
+	private Date ngayDatPhong;
+	private Date ngayDen;
+	private Date ngayDi;
 	private int soNguoi;
-	private String ngayDen;
-	private String ngayDi;
-	private String ngayDatPhong;
 	private String ghiChu;
 
-	public PhieuDatPhong(String maPhieuDatPhong, String maNhanVien, String maPhong, String maKhachHang, String maHoaDon,
-			String ngayDatPhong, int soNguoi, String ngayDen, String ngayDi, String ghiChu) {
+	public PhieuDatPhong(String maDatPhong, String maNhanVien, String maPhong, String maKhachHang, String maHoaDon,
+			Date ngayDatPhong, Date ngayDen, Date ngayDi, int soNguoi, String ghiChu) {
 		super();
-		this.maPhieuDatPhong = maPhieuDatPhong;
+		this.maDatPhong = maDatPhong;
 		this.maNhanVien = maNhanVien;
 		this.maPhong = maPhong;
-		this.maHoaDon = maHoaDon;
 		this.maKhachHang = maKhachHang;
-		this.soNguoi = soNguoi;
+		this.maHoaDon = maHoaDon;
+		this.ngayDatPhong = ngayDatPhong;
 		this.ngayDen = ngayDen;
 		this.ngayDi = ngayDi;
-		this.ngayDatPhong = ngayDatPhong;
+		this.soNguoi = soNguoi;
 		this.ghiChu = ghiChu;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(maPhieuDatPhong);
+		return Objects.hash(maDatPhong);
 	}
 
 	@Override
@@ -45,15 +46,15 @@ public class PhieuDatPhong implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		PhieuDatPhong other = (PhieuDatPhong) obj;
-		return Objects.equals(maPhieuDatPhong, other.maPhieuDatPhong);
+		return Objects.equals(maDatPhong, other.maDatPhong);
 	}
 
-	public String getMaPhieuDatPhong() {
-		return maPhieuDatPhong;
+	public String getMaDatPhong() {
+		return maDatPhong;
 	}
 
-	public void setMaPhieuDatPhong(String maPhieuDatPhong) {
-		this.maPhieuDatPhong = maPhieuDatPhong;
+	public void setMaDatPhong(String maDatPhong) {
+		this.maDatPhong = maDatPhong;
 	}
 
 	public String getMaNhanVien() {
@@ -72,14 +73,6 @@ public class PhieuDatPhong implements Serializable {
 		this.maPhong = maPhong;
 	}
 
-	public String getMaHoaDon() {
-		return maHoaDon;
-	}
-
-	public void setMaHoaDon(String maHoaDon) {
-		this.maHoaDon = maHoaDon;
-	}
-
 	public String getMaKhachHang() {
 		return maKhachHang;
 	}
@@ -88,36 +81,44 @@ public class PhieuDatPhong implements Serializable {
 		this.maKhachHang = maKhachHang;
 	}
 
+	public String getMaHoaDon() {
+		return maHoaDon;
+	}
+
+	public void setMaHoaDon(String maHoaDon) {
+		this.maHoaDon = maHoaDon;
+	}
+
+	public Date getNgayDatPhong() {
+		return ngayDatPhong;
+	}
+
+	public void setNgayDatPhong(Date ngayDatPhong) {
+		this.ngayDatPhong = ngayDatPhong;
+	}
+
+	public Date getNgayDen() {
+		return ngayDen;
+	}
+
+	public void setNgayDen(Date ngayDen) {
+		this.ngayDen = ngayDen;
+	}
+
+	public Date getNgayDi() {
+		return ngayDi;
+	}
+
+	public void setNgayDi(Date ngayDi) {
+		this.ngayDi = ngayDi;
+	}
+
 	public int getSoNguoi() {
 		return soNguoi;
 	}
 
 	public void setSoNguoi(int soNguoi) {
 		this.soNguoi = soNguoi;
-	}
-
-	public String getNgayDen() {
-		return ngayDen;
-	}
-
-	public void setNgayDen(String ngayDen) {
-		this.ngayDen = ngayDen;
-	}
-
-	public String getNgayDi() {
-		return ngayDi;
-	}
-
-	public void setNgayDi(String ngayDi) {
-		this.ngayDi = ngayDi;
-	}
-
-	public String getNgayDatPhong() {
-		return ngayDatPhong;
-	}
-
-	public void setNgayDatPhong(String ngayDatPhong) {
-		this.ngayDatPhong = ngayDatPhong;
 	}
 
 	public String getGhiChu() {
@@ -130,10 +131,9 @@ public class PhieuDatPhong implements Serializable {
 
 	@Override
 	public String toString() {
-		return "PhieuDatPhong [maPhieuDatPhong=" + maPhieuDatPhong + ", maNhanVien=" + maNhanVien + ", maPhong="
-				+ maPhong + ", maHoaDon=" + maHoaDon + ", maKhachHang=" + maKhachHang + ", soNguoi=" + soNguoi
-				+ ", ngayDen=" + ngayDen + ", ngayDi=" + ngayDi + ", ngayDatPhong=" + ngayDatPhong + ", ghiChu="
-				+ ghiChu + "]";
+		return "PhieuDatPhong [maDatPhong=" + maDatPhong + ", maNhanVien=" + maNhanVien + ", maPhong=" + maPhong
+				+ ", maKhachHang=" + maKhachHang + ", maHoaDon=" + maHoaDon + ", ngayDatPhong=" + ngayDatPhong
+				+ ", ngayDen=" + ngayDen + ", ngayDi=" + ngayDi + ", soNguoi=" + soNguoi + ", ghiChu=" + ghiChu + "]";
 	}
 
 }

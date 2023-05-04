@@ -12,7 +12,7 @@ public class DanhSachPhieuDatPhong {
 	
 	public Boolean themPhieuDatPhong(PhieuDatPhong pdp) {
 		for (int i = 0; i<ds.size(); i++ ) {
-			if (ds.get(i).getMaPhong().equals(pdp.getMaPhieuDatPhong()))
+			if (ds.get(i).getMaDatPhong().equals(pdp.getMaDatPhong()))
 				return false;
 		}
 		ds.add(pdp);
@@ -29,7 +29,7 @@ public class DanhSachPhieuDatPhong {
 	
 	public int timPhieuDatPhongTheoMa(String maDatPhong) {
 		for (int i = 0; i<ds.size(); i++ ) {
-			if (ds.get(i).getMaPhieuDatPhong().equals(maDatPhong))
+			if (ds.get(i).getMaDatPhong().equals(maDatPhong))
 				return i;
 		}
 		return -1;
@@ -37,7 +37,7 @@ public class DanhSachPhieuDatPhong {
 	}
 	public boolean suaPhieuDatPhong(PhieuDatPhong pdp) {
 		for (int i = 0; i < ds.size(); i++)
-			if (ds.get(i).getMaPhieuDatPhong().equalsIgnoreCase(pdp.getMaPhieuDatPhong())) {
+			if (ds.get(i).getMaDatPhong().equalsIgnoreCase(pdp.getMaDatPhong())) {
 				ds.get(i).setMaPhong(pdp.getMaPhong());
 				ds.get(i).setMaNhanVien(pdp.getMaNhanVien());
 				ds.get(i).setMaHoaDon(pdp.getMaHoaDon());
