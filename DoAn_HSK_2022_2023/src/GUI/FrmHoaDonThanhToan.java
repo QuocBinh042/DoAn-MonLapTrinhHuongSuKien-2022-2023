@@ -471,6 +471,10 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		txtTongThanhToan.setText("");
 		txtaGhiChu.setText("");
 		txtThanhTienPhong.setText("");
+		dDate = Calendar.getInstance();
+		yearTT.setSelectedIndex(5);
+		dayTT.setSelectedItem(Integer.toString(dDate.get(Calendar.DATE)));
+		monthTT.setSelectedIndex(dDate.get(Calendar.MONTH));
 		txtTim.setText("");
 		txtMaHoaDon.requestFocus();
 	}
@@ -480,6 +484,10 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
 		txtMaHoaDon.setText(table.getValueAt(row, 0).toString());
+		Date dateTT = Date.valueOf(table.getValueAt(row, 1).toString());
+		dayTT.setSelectedItem(String.valueOf(dateTT.getDate()));
+		monthTT.setSelectedIndex(dateTT.getMonth());
+		yearTT.setSelectedItem(String.valueOf(dateTT.getYear() + 1900));
 		if (tableModel.getValueAt(row, 2).toString().equalsIgnoreCase("Chuyển khoản")) {
 			radChuyenKhoan.setSelected(true);
 		} else {
@@ -536,4 +544,3 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	
 	
 }
-s
