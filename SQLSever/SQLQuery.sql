@@ -1,6 +1,6 @@
 ﻿create database QuanLyKhachSan
 go
---drop database QuanLyKhachSan
+drop database QuanLyKhachSan
 use QuanLyKhachSan
 go
 
@@ -81,6 +81,7 @@ create table HoaDonDichVuPhong(
 
 create table HoaDonThanhToan(
 	MaHoaDon nvarchar(50) not null primary key,
+	MaDatPhong nvarchar(50) not null,
 	NgayThanhToan date,
 	--Hình thức thanh toán
 	--0: tiền mặt
@@ -95,7 +96,7 @@ create table HoaDonThanhToan(
 	---------------------------------------------
 	GhiChu nvarchar(200),
 
-	CONSTRAINT fk_hd FOREIGN KEY (MaHoaDon) REFERENCES PhieuDatPhong(MaDatPhong)
+	CONSTRAINT fk_dp FOREIGN KEY (MaDatPhong) REFERENCES PhieuDatPhong(MaDatPhong)
 )
 
 
@@ -206,26 +207,26 @@ go
 
 ----Phieu Dat Phong-----
 INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
-values(N'PDPD001',N'NV001',N'P001', N'KH001', '2023/3/16', '2023/3/18', '2023/3/22',2,''),
-(N'PDPD003',N'NV002',N'P003', N'KH003','2023/3/29','2023/4/9', '2023/4/12',2,''),
-(N'PDPD004',N'NV002',N'P004', N'KH004','2023/4/4','2023/4/6', '2023/4/12',2,''),
-(N'PDPD002',N'NV001',N'P002', N'KH002','2023/3/27','2023/3/28', '2023/4/2',2,''),
-(N'PDPD005',N'NV003',N'P001', N'KH005','2023/4/25','2023/4/25', '2023/4/28',1,'')
+values(N'PDP001',N'NV001',N'P001', N'KH001', '2023/3/16', '2023/3/18', '2023/3/22',2,''),
+(N'PDP003',N'NV002',N'P003', N'KH003','2023/3/29','2023/4/9', '2023/4/12',2,''),
+(N'PDP004',N'NV002',N'P004', N'KH004','2023/4/4','2023/4/6', '2023/4/12',2,''),
+(N'PDP002',N'NV001',N'P002', N'KH002','2023/3/27','2023/3/28', '2023/4/2',2,''),
+(N'PDP005',N'NV003',N'P001', N'KH005','2023/4/25','2023/4/25', '2023/4/28',1,'')
 --select * from PhieuDatPhong
 ------------------------------------
 --INSERT INTO Phong (MaPhong) values(N'P001')
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD001',N'DV001',9)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD001',N'DV003',5)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD001',N'DV004',7)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD001',N'DV005',3)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD002',N'DV001',5)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD002',N'DV004',15)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD003',N'DV002',10)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD003',N'DV005',4)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD004',N'DV004',8)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD004',N'DV005',20)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD005',N'DV003',10)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD005',N'DV004',6)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV001',9)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV003',5)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV004',7)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV005',3)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP002',N'DV001',5)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP002',N'DV004',15)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP003',N'DV002',10)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP003',N'DV005',4)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV004',8)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV005',20)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV003',10)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV004',6)
 
 --select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
 --UPDATE HoaDonDichVuPhong Set SoLuong = 3 where MaPhong = 'P001' and MaDichVu =  'DV003'
@@ -259,12 +260,12 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDPD005',N'
 
 
 
-INSERT INTO HoaDonThanhToan (MaHoaDon,NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
-values(N'PDPD001','2023/3/22',1, 2000000, 2030000, ''),
-(N'PDPD002','2023/4/2',0, 3000000, 3050000, ''),
-(N'PDPD003','2023/4/12',0, 1000000, 1020000, ''),
-(N'PDPD004','2023/4/12',1, 3000000, 3050000, ''),
-(N'PDPD005','2023/4/28',1, 1000000, 1060000, '')
+INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
+values(N'HD001',N'PDP001','2023/3/22',1, 2000000, 2030000, ''),
+(N'HD002',N'PDP002','2023/4/2',0, 3000000, 3050000, ''),
+(N'HD003',N'PDP003','2023/4/12',0, 1000000, 1020000, ''),
+(N'HD004',N'PDP004','2023/4/12',1, 3000000, 3050000, ''),
+(N'HD005',N'PDP005','2023/4/28',1, 1000000, 1060000, '')
 
 --delete from HoaDonThanhToan where MaHoaDon = 'HD001'
 --select * from HoaDonThanhToan
