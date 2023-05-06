@@ -10,21 +10,19 @@ public class PhieuDatPhong implements Serializable {
 	private String maNhanVien;
 	private String maPhong;
 	private String maKhachHang;
-	private String maHoaDon;
 	private Date ngayDatPhong;
 	private Date ngayDen;
 	private Date ngayDi;
 	private int soNguoi;
 	private String ghiChu;
 
-	public PhieuDatPhong(String maDatPhong, String maNhanVien, String maPhong, String maKhachHang, String maHoaDon,
-			Date ngayDatPhong, Date ngayDen, Date ngayDi, int soNguoi, String ghiChu) {
+	public PhieuDatPhong(String maDatPhong, String maNhanVien, String maPhong, String maKhachHang, Date ngayDatPhong,
+			Date ngayDen, Date ngayDi, int soNguoi, String ghiChu) {
 		super();
 		this.maDatPhong = maDatPhong;
 		this.maNhanVien = maNhanVien;
 		this.maPhong = maPhong;
 		this.maKhachHang = maKhachHang;
-		this.maHoaDon = maHoaDon;
 		this.ngayDatPhong = ngayDatPhong;
 		this.ngayDen = ngayDen;
 		this.ngayDi = ngayDi;
@@ -81,14 +79,6 @@ public class PhieuDatPhong implements Serializable {
 		this.maKhachHang = maKhachHang;
 	}
 
-	public String getMaHoaDon() {
-		return maHoaDon;
-	}
-
-	public void setMaHoaDon(String maHoaDon) {
-		this.maHoaDon = maHoaDon;
-	}
-
 	public Date getNgayDatPhong() {
 		return ngayDatPhong;
 	}
@@ -132,8 +122,8 @@ public class PhieuDatPhong implements Serializable {
 	@Override
 	public String toString() {
 		return "PhieuDatPhong [maDatPhong=" + maDatPhong + ", maNhanVien=" + maNhanVien + ", maPhong=" + maPhong
-				+ ", maKhachHang=" + maKhachHang + ", maHoaDon=" + maHoaDon + ", ngayDatPhong=" + ngayDatPhong
-				+ ", ngayDen=" + ngayDen + ", ngayDi=" + ngayDi + ", soNguoi=" + soNguoi + ", ghiChu=" + ghiChu + "]";
+				+ ", maKhachHang=" + maKhachHang + ", ngayDatPhong=" + ngayDatPhong + ", ngayDen=" + ngayDen
+				+ ", ngayDi=" + ngayDi + ", soNguoi=" + soNguoi + ", ghiChu=" + ghiChu + "]";
 	}
 
 }

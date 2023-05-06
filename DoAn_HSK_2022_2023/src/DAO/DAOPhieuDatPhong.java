@@ -24,10 +24,10 @@ public class DAOPhieuDatPhong {
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {
-				DanhSachPhieuDatPhong.add(new PhieuDatPhong(rs.getString("MaDatPhong"), rs.getString("MaNV"),
-						rs.getString("MaPhong"), rs.getString("IDNguoiDatPhong"), rs.getString("MaHoaDon"),
-						rs.getDate("NgayDatPhong"), rs.getDate("NgayCheckOut"), rs.getDate("NgayCheckIn"),
-						rs.getInt("SoNguoi"), rs.getString("GhiChu")));
+				DanhSachPhieuDatPhong.add(
+						new PhieuDatPhong(rs.getString("MaDatPhong"), rs.getString("MaNV"), rs.getString("MaPhong"),
+								rs.getString("IDNguoiDatPhong"), rs.getDate("NgayDatPhong"), rs.getDate("NgayCheckIn"),
+								rs.getDate("NgayCheckOut"), rs.getInt("SoNguoi"), rs.getString("GhiChu")));
 
 			}
 		} catch (Exception e) {
@@ -41,20 +41,19 @@ public class DAOPhieuDatPhong {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, MaHoaDon, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu)  "
-				+ "values(?,?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu)  "
+				+ "values(?,?,?,?,?,?,?,?,?)";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, pdp.getMaDatPhong());
 			stm.setString(2, pdp.getMaNhanVien());
 			stm.setString(3, pdp.getMaPhong());
 			stm.setString(4, pdp.getMaKhachHang());
-			stm.setString(5, pdp.getMaHoaDon());
-			stm.setDate(6, pdp.getNgayDatPhong());
-			stm.setDate(7, pdp.getNgayDen());
-			stm.setDate(8, pdp.getNgayDi());
-			stm.setInt(9, pdp.getSoNguoi());
-			stm.setString(10, pdp.getGhiChu());
+			stm.setDate(5, pdp.getNgayDatPhong());
+			stm.setDate(6, pdp.getNgayDen());
+			stm.setDate(7, pdp.getNgayDi());
+			stm.setInt(8, pdp.getSoNguoi());
+			stm.setString(9, pdp.getGhiChu());
 			System.out.println(stm);
 			stm.executeUpdate();
 		} catch (Exception e) {
@@ -71,15 +70,14 @@ public class DAOPhieuDatPhong {
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
 		String sql = "UPDATE PhieuDatPhong " + " MaDatPhong = ? " + " MaNV = ? " + " MaPhong = ? "
-				+ " IDNguoiDatPhong = ?" + " MaHoaDon = ? " + " NgayDatPhong = ? " + " NgayCheckIn = ? "
-				+ " NgayCheckOut = ? " + " SoNguoi = ? " + " GhiChu = ? ";
+				+ " IDNguoiDatPhong = ?" + " NgayDatPhong = ? " + " NgayCheckIn = ? " + " NgayCheckOut = ? " 
+				+ " SoNguoi = ? " + " GhiChu = ? ";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, pdp.getMaDatPhong());
 			stm.setString(2, pdp.getMaNhanVien());
 			stm.setString(3, pdp.getMaPhong());
 			stm.setString(4, pdp.getMaKhachHang());
-			stm.setString(5, pdp.getMaHoaDon());
 			stm.setDate(6, pdp.getNgayDatPhong());
 			stm.setDate(7, pdp.getNgayDen());
 			stm.setDate(8, pdp.getNgayDi());

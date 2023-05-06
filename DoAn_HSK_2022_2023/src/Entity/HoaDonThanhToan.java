@@ -5,16 +5,18 @@ import java.util.Objects;
 
 public class HoaDonThanhToan {
 	private String maHoaDon;
+	private String maDatPhong;
 	private Date ngayThanhToan;
 	private String hinhThucThanhToan;
 	private double thanhTienPhong;
 	private double tongThanhToan;
 	private String ghiChu;
 
-	public HoaDonThanhToan(String maHoaDon, Date ngayThanhToan, String hinhThucThanhToan, double thanhTienPhong,
-			double tongThanhToan, String ghiChu) {
+	public HoaDonThanhToan(String maHoaDon, String maDatPhong, Date ngayThanhToan, String hinhThucThanhToan,
+			double thanhTienPhong, double tongThanhToan, String ghiChu) {
 		super();
 		this.maHoaDon = maHoaDon;
+		this.maDatPhong = maDatPhong;
 		this.ngayThanhToan = ngayThanhToan;
 		this.hinhThucThanhToan = hinhThucThanhToan;
 		this.thanhTienPhong = thanhTienPhong;
@@ -28,6 +30,14 @@ public class HoaDonThanhToan {
 
 	public void setMaHoaDon(String maHoaDon) {
 		this.maHoaDon = maHoaDon;
+	}
+
+	public String getMaDatPhong() {
+		return maDatPhong;
+	}
+
+	public void setMaDatPhong(String maDatPhong) {
+		this.maDatPhong = maDatPhong;
 	}
 
 	public Date getNgayThanhToan() {
@@ -89,9 +99,9 @@ public class HoaDonThanhToan {
 
 	@Override
 	public String toString() {
-		return "HoaDonThanhToan [maHoaDon=" + maHoaDon + ", ngayThanhToan=" + ngayThanhToan + ", hinhThucThanhToan="
-				+ hinhThucThanhToan + ", thanhTienPhong=" + thanhTienPhong + ", tongThanhToan=" + tongThanhToan
-				+ ", ghiChu=" + ghiChu + "]";
+		return "HoaDonThanhToan [maHoaDon=" + maHoaDon + ", maDatPhong=" + maDatPhong + ", ngayThanhToan="
+				+ ngayThanhToan + ", hinhThucThanhToan=" + hinhThucThanhToan + ", thanhTienPhong=" + thanhTienPhong
+				+ ", tongThanhToan=" + tongThanhToan + ", ghiChu=" + ghiChu + "]";
 	}
 
 }

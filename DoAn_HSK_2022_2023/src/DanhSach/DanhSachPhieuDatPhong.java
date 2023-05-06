@@ -40,7 +40,6 @@ public class DanhSachPhieuDatPhong {
 			if (ds.get(i).getMaDatPhong().equalsIgnoreCase(pdp.getMaDatPhong())) {
 				ds.get(i).setMaPhong(pdp.getMaPhong());
 				ds.get(i).setMaNhanVien(pdp.getMaNhanVien());
-				ds.get(i).setMaHoaDon(pdp.getMaHoaDon());
 				ds.get(i).setMaKhachHang(pdp.getMaKhachHang());
 				ds.get(i).setSoNguoi(pdp.getSoNguoi());
 				ds.get(i).setNgayDen(pdp.getNgayDen());

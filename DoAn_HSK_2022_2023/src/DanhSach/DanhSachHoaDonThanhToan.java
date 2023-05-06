@@ -37,8 +37,10 @@ public class DanhSachHoaDonThanhToan {
 	public boolean suaHoaDon(HoaDonThanhToan hd) {
 		for (int i = 0; i < ds.size(); i++)
 			if (ds.get(i).getMaHoaDon().equalsIgnoreCase(hd.getMaHoaDon())) {
+				ds.get(i).setMaDatPhong(hd.getMaDatPhong());
 				ds.get(i).setHinhThucThanhToan(hd.getHinhThucThanhToan());
 				ds.get(i).setNgayThanhToan(hd.getNgayThanhToan());
+				ds.get(i).setThanhTienPhong(hd.getThanhTienPhong());
 				ds.get(i).setTongThanhToan(hd.getTongThanhToan());
 				ds.get(i).setGhiChu(hd.getGhiChu());
 				return true;

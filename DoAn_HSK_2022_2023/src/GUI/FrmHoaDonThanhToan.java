@@ -11,7 +11,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -31,24 +34,37 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.DAOHoaDonDichVuPhong;
 import DAO.DAOHoaDonThanhToan;
+import DAO.DAOPhieuDatPhong;
+import DAO.DAOPhong;
 import DanhSach.DanhSachHoaDonThanhToan;
+import DanhSach.DanhSachPhieuDatPhong;
+import Entity.HoaDonDichVuPhong;
 import Entity.HoaDonThanhToan;
+import Entity.PhieuDatPhong;
+import Entity.Phong;
 import connectDB.ConnectDB;
 
 public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseListener, ItemListener {
 	private static final long serialVersionUID = 1L;
 	private DanhSachHoaDonThanhToan ds = new DanhSachHoaDonThanhToan();
 	private JTable table;
-	private JTextField txtMaHoaDon, txtTongThanhToan, txtTim, txtThanhTienPhong;
+	private JTextField txtMaHoaDon, txtTongThanhToan, txtTim, txtThanhTienPhong, txtTienDichVu;
 	private JTextArea txtaGhiChu;
 	private JRadioButton radChuyenKhoan, radTienMat;
-	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat;
+	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat, btnTongTT;
 	private DefaultTableModel tableModel;
 	private JTextField txtMess;
 	private Calendar dDate = Calendar.getInstance();
-	private JComboBox yearTT, monthTT, dayTT, cbMaPhieuDatPhong, cbMaDichVu;
-	private DAOHoaDonThanhToan DAO_hd;
+	private JComboBox yearTT, monthTT, dayTT, cbMaDatPhong, cbMaDichVu;
+	private DAOHoaDonThanhToan DAO_hoaDon;
+	private DAOPhieuDatPhong DAO_phieudDatPhong;
+	private DAOPhong DAO_Phong = new DAOPhong();
+	private List<Phong> dsPhong;
+	private DAOHoaDonDichVuPhong DAO_DichVuPhong = new DAOHoaDonDichVuPhong();
+	private List<HoaDonDichVuPhong> dsDVP;
+	private ArrayList<PhieuDatPhong> dsPDP;
 
 	public FrmHoaDonThanhToan() {
 		try {
@@ -82,17 +98,33 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		Box b = Box.createVerticalBox();
 		Box bb = Box.createVerticalBox();
 		Box b1, b2, b3, b4, b5, b6, b7, b8, b9, bTimMa;
-		JLabel lblMaHoaDon, lblThanhTienPhong, lblNgayThanhToan, lblHinhThucThanhToan, lblTongThanhToan, lblGhiChu;
+		JLabel lblMaHoaDon, lblThanhTienPhong, lblNgayThanhToan, lblHinhThucThanhToan, lblTongThanhToan, lblGhiChu,
+				lblMaDatPhong, lblTienDichVu;
 
 		b.setBorder(BorderFactory.createTitledBorder("Hoá đơn thanh toán"));
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b1.add(lblMaHoaDon = new JLabel("Mã hoá đơn: "));
+		b1.add(Box.createHorizontalStrut(5));
 		b1.add(txtMaHoaDon = new JTextField());
 
+		b.add(b1 = Box.createHorizontalBox());
+		b.add(Box.createVerticalStrut(15));
+		b1.add(lblMaDatPhong = new JLabel("Mã đặt phòng: "));
+		b1.add(Box.createHorizontalStrut(5));
+		b1.add(cbMaDatPhong = new JComboBox<>());
+		DAO_phieudDatPhong = new DAOPhieuDatPhong();
+		dsPDP = DAO_phieudDatPhong.getAll();
+		for (PhieuDatPhong pdp : dsPDP) {
+			cbMaDatPhong.addItem(pdp.getMaDatPhong());
+		}
+
+		dsPhong = DAO_Phong.getAll();
+		dsDVP = DAO_DichVuPhong.getAll();
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b2.add(lblNgayThanhToan = new JLabel("Ngày thanh toán: "));
+		b2.add(Box.createHorizontalStrut(5));
 		yearTT = new JComboBox();
 		buildYearsList(yearTT);
 		yearTT.setSelectedIndex(5);
@@ -111,27 +143,36 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b3.add(lblHinhThucThanhToan = new JLabel("Hình thức thanh toán: "));
-		b3.add(Box.createHorizontalStrut(40));
+		b3.add(Box.createHorizontalStrut(20));
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(radChuyenKhoan = new JRadioButton("Chuyển khoản"));
 		bg.add(radTienMat = new JRadioButton("Tiền mặt"));
 		b3.add(radTienMat);
-		b3.add(Box.createHorizontalStrut(80));
+		b3.add(Box.createHorizontalStrut(35));
 		b3.add(radChuyenKhoan);
 
 		b.add(b4 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b4.add(lblThanhTienPhong = new JLabel("Thành tiền phòng: "));
+		b4.add(Box.createHorizontalStrut(5));
 		b4.add(txtThanhTienPhong = new JTextField());
+
+		b.add(b4 = Box.createHorizontalBox());
+		b.add(Box.createVerticalStrut(10));
+		b4.add(lblTienDichVu = new JLabel("Phí dịch vụ: "));
+		b4.add(Box.createHorizontalStrut(5));
+		b4.add(txtTienDichVu = new JTextField());
 
 		b.add(b5 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b5.add(lblTongThanhToan = new JLabel("Tổng thanh toán: "));
+		b5.add(btnTongTT = new JButton("Tổng thanh toán"));
+		b5.add(Box.createHorizontalStrut(5));
 		b5.add(txtTongThanhToan = new JTextField());
 
 		b.add(b6 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b6.add(lblGhiChu = new JLabel("Ghi chú: "));
+		b6.add(Box.createHorizontalStrut(5));
 		b6.add(txtaGhiChu = new JTextArea(6, 6));
 		txtaGhiChu.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
@@ -144,14 +185,14 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		txtMess.setFont(new Font("Arial", Font.ITALIC, 12));
 
 		b.add(b8 = Box.createHorizontalBox());
-		b8.add(Box.createHorizontalStrut(130));
+		b8.add(Box.createHorizontalStrut(125));
 		b8.add(btnThem = new JButton("Thêm"));
-		b8.add(Box.createHorizontalStrut(10));
+		b8.add(Box.createHorizontalStrut(5));
 		b8.add(btnSua = new JButton("Sửa"));
-		b8.add(Box.createHorizontalStrut(10));
+		b8.add(Box.createHorizontalStrut(5));
 		b8.add(btnXoaTrang = new JButton("Xoá trắng"));
 
-		b.add(Box.createVerticalStrut(100));
+		b.add(Box.createVerticalStrut(80));
 		b.add(b9 = Box.createVerticalBox());
 
 		b9.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
@@ -161,18 +202,19 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		bTimMa.add(txtTim = new JTextField(10));
 		bTimMa.add(btnTim = new JButton("Tìm"));
 		b9.add(Box.createVerticalStrut(10));
-		b.add(Box.createVerticalStrut(70));
 
 		lblMaHoaDon.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
+		lblTienDichVu.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
+		lblMaDatPhong.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 		lblThanhTienPhong.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 		lblNgayThanhToan.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
-		lblTongThanhToan.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
+
 		lblGhiChu.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 
 		add(b, BorderLayout.WEST);
 
 		bb.setBorder(BorderFactory.createTitledBorder("Danh sách hoá đơn thanh toán"));
-		String[] headers = "Mã hoá đơn; Ngày thanh toán; Hình thức thanh toán; Thành tiền phòng; Tổng thanh toán; Ghi chú"
+		String[] headers = "Mã hoá đơn; Mã đặt phòng; Ngày thanh toán; Hình thức thanh toán; Thành tiền phòng; Tổng thanh toán; Ghi chú"
 				.split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -211,7 +253,12 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		btnXoaTrang.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnThoat.addActionListener(this);
+		btnTongTT.addActionListener(this);
 		table.addMouseListener(this);
+		dayTT.addItemListener(this);
+		monthTT.addItemListener(this);
+		yearTT.addItemListener(this);
+		cbMaDatPhong.addItemListener(this);
 	}
 
 	private void TXTedit_false() {
@@ -219,6 +266,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		txtThanhTienPhong.setEditable(false);
 		txtTongThanhToan.setEditable(false);
 		radChuyenKhoan.setEnabled(false);
+		txtTienDichVu.setEditable(false);
 		radTienMat.setEnabled(false);
 		dayTT.setEnabled(false);
 		monthTT.setEnabled(false);
@@ -228,8 +276,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	private void TXTedit_true() {
 		txtMaHoaDon.setEditable(true);
-		txtThanhTienPhong.setEditable(true);
-		txtTongThanhToan.setEditable(true);
+		txtTienDichVu.setEditable(true);
 		radChuyenKhoan.setEnabled(true);
 		radTienMat.setEnabled(true);
 		dayTT.setEnabled(true);
@@ -298,9 +345,14 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// delete all
 		deleteAllDataJtable();
 		// Load data
-		DAO_hd = new DAOHoaDonThanhToan();
-		for (HoaDonThanhToan hd : DAO_hd.getAll()) {
-			Object row[] = { hd.getMaHoaDon(), hd.getNgayThanhToan(), hd.getHinhThucThanhToan(), hd.getThanhTienPhong(),
+		DAO_hoaDon = new DAOHoaDonThanhToan();
+		String ht;
+		for (HoaDonThanhToan hd : DAO_hoaDon.getAll()) {
+			if (hd.getHinhThucThanhToan().equals("1")) {
+				ht = "Tiên mặt";
+			} else
+				ht = "Chuyển khoản";
+			Object row[] = { hd.getMaHoaDon(), hd.getMaDatPhong(), hd.getNgayThanhToan(), ht, hd.getThanhTienPhong(),
 					hd.getTongThanhToan(), hd.getGhiChu() };
 			tableModel.addRow(row);
 		}
@@ -363,14 +415,21 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			themHoaDonThanhToan();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
+		else if (o.equals(btnTongTT)) {
+			txtTongThanhToan.setText(String.valueOf(
+					Double.parseDouble(txtThanhTienPhong.getText()) + Double.parseDouble(txtTienDichVu.getText())));
+		}
 
 	}
 
 	private void themHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
+		String maDP = cbMaDatPhong.getSelectedItem().toString();
 		double thanhTienPhong = Double.parseDouble(txtThanhTienPhong.getText());
-		double tongTT = Double.parseDouble(txtTongThanhToan.getText());
+		double phiDV = Double.parseDouble(txtTienDichVu.getText());
+		double tongTT = thanhTienPhong + phiDV;
+
 		String ghiChu = txtaGhiChu.getText();
 		Date ngayTT = Date.valueOf(getNgayTT());
 		String hinhThucTT = "";
@@ -378,14 +437,14 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			hinhThucTT = radChuyenKhoan.getText();
 		if (radTienMat.isSelected())
 			hinhThucTT = radTienMat.getText();
-		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, ngayTT, hinhThucTT, thanhTienPhong, tongTT, ghiChu);
+		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, maDP, ngayTT, hinhThucTT, thanhTienPhong, tongTT, ghiChu);
 		try {
 			if (validData()) {
 				if (ds.themHoaDonThanhToan(hd)) {
-					String[] row = { maHDTT, ngayTT.toString(), hinhThucTT, String.valueOf(thanhTienPhong),
-							String.valueOf(tongTT), ghiChu };
+					String[] row = { maHDTT, maDP, ngayTT.toString(), hinhThucTT, String.valueOf(thanhTienPhong),
+							phiDV + "", String.valueOf(tongTT), ghiChu };
 					tableModel.addRow(row);
-					DAO_hd.add(hd);
+					DAO_hoaDon.add(hd);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm hoá đơn thành công!");
 				} else {
@@ -417,8 +476,10 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private void SuaHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
+		String maDP = cbMaDatPhong.getSelectedItem().toString();
 		double thanhTienPhong = Double.parseDouble(txtThanhTienPhong.getText());
-		double tongTT = Double.parseDouble(txtTongThanhToan.getText());
+		double phiDV = Double.parseDouble(txtTienDichVu.getText());
+		double tongTT = thanhTienPhong + phiDV;
 		String ghiChu = txtaGhiChu.getText();
 		Date ngayTT = Date.valueOf(getNgayTT());
 		String hinhThucTT = "";
@@ -426,17 +487,18 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			hinhThucTT = radChuyenKhoan.getText();
 		if (radTienMat.isSelected())
 			hinhThucTT = radTienMat.getText();
+		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, maDP, ngayTT, hinhThucTT, thanhTienPhong, tongTT, ghiChu);
 
-		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, ngayTT, hinhThucTT, thanhTienPhong, tongTT, ghiChu);
 		if (validData()) {
 			if (ds.suaHoaDon(hd)) {
 				int index = ds.getList().indexOf(hd);
-				tableModel.setValueAt(ngayTT, index, 1);
-				tableModel.setValueAt(hinhThucTT, index, 2);
-				tableModel.setValueAt(thanhTienPhong, index, 3);
-				tableModel.setValueAt(tongTT, index, 4);
-				tableModel.setValueAt(ghiChu, index, 5);
-				DAO_hd.updateHoaDonThanhToan(hd);
+				tableModel.setValueAt(maDP, index, 1);
+				tableModel.setValueAt(ngayTT, index, 2);
+				tableModel.setValueAt(hinhThucTT, index, 3);
+				tableModel.setValueAt(thanhTienPhong, index, 4);
+				tableModel.setValueAt(tongTT, index, 5);
+				tableModel.setValueAt(ghiChu, index, 6);
+				DAO_hoaDon.updateHoaDonThanhToan(hd);
 				showMessage("Cập nhật thành công", txtMess);
 				JOptionPane.showMessageDialog(null, "Cập nhật hóa đơn thanh toán thành công!");
 			}
@@ -455,7 +517,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				ds.xoaHoaDon(r);
-				DAO_hd.delete(table.getValueAt(r, 0).toString());
+				DAO_hoaDon.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá hoá đơn thành công!");
 				xoaTrang();
@@ -475,6 +537,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		yearTT.setSelectedIndex(5);
 		dayTT.setSelectedItem(Integer.toString(dDate.get(Calendar.DATE)));
 		monthTT.setSelectedIndex(dDate.get(Calendar.MONTH));
+		txtTienDichVu.setText("");
 		txtTim.setText("");
 		txtMaHoaDon.requestFocus();
 	}
@@ -484,18 +547,20 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
 		txtMaHoaDon.setText(table.getValueAt(row, 0).toString());
-		Date dateTT = Date.valueOf(table.getValueAt(row, 1).toString());
+		Date dateTT = Date.valueOf(table.getValueAt(row, 2).toString());
 		dayTT.setSelectedItem(String.valueOf(dateTT.getDate()));
 		monthTT.setSelectedIndex(dateTT.getMonth());
 		yearTT.setSelectedItem(String.valueOf(dateTT.getYear() + 1900));
-		if (tableModel.getValueAt(row, 2).toString().equalsIgnoreCase("Chuyển khoản")) {
+		if (tableModel.getValueAt(row, 3).toString().equalsIgnoreCase("Chuyển khoản")) {
 			radChuyenKhoan.setSelected(true);
 		} else {
 			radTienMat.setSelected(true);
 		}
-		txtThanhTienPhong.setText(table.getValueAt(row, 3).toString());
-		txtTongThanhToan.setText(table.getValueAt(row, 4).toString());
-		txtaGhiChu.setText(table.getValueAt(row, 5).toString());
+		cbMaDatPhong.setSelectedIndex(cbMaDatPhong.getSelectedIndex());
+		txtThanhTienPhong.setText(table.getValueAt(row, 4).toString());
+//		txtTienDichVu.setText(table.getValueAt(row, ).toString());
+		txtTongThanhToan.setText(table.getValueAt(row, 5).toString());
+		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
 	}
 
 	@Override
@@ -540,7 +605,30 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			int day = Integer.parseInt((String) dayTT.getSelectedItem());
 			dDate.set(Calendar.DATE, day);
 		}
+		if (event.getSource() == cbMaDatPhong) {
+			for (PhieuDatPhong pdp : dsPDP) {
+				if (cbMaDatPhong.getSelectedItem().equals(pdp.getMaDatPhong())) {
+					Date ngayDen = pdp.getNgayDen();
+					Date ngayDi = Date.valueOf(getNgayTT());
+					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayDi.getTime() - ngayDen.getTime()));
+					for (Phong p : dsPhong) {
+						if (p.getMaPhong().equals(pdp.getMaPhong())) {
+							txtThanhTienPhong.setText(soNgay * p.getGiaPhong() + "");
+							break;
+						}
+					}
+					double phiDichVu = 0;
+					for (HoaDonDichVuPhong dvp : dsDVP) {
+						if (pdp.getMaPhong().equals(dvp.getMaDatPhong())) {
+							phiDichVu += dvp.getThanhTienDichVu();
+						}
+					}
+					txtTienDichVu.setText(String.valueOf(phiDichVu));
+					break;
+				}
+			}
+
+		}
 	}
-	
-	
+
 }
