@@ -19,11 +19,11 @@ public class DAOHoaDonDichVuPhong{
 		Connection con = ConnectDB.getConnection();
 		try {
 			//ThanhTienDichVu = SoLuong * Gia
-			String sql = "select MaPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu";
+			String sql = "select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu";
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()) {
-				dsDVP.add(new HoaDonDichVuPhong(rs.getString("MaPhong"), rs.getString("MaDichVu"), rs.getInt("SoLuong"), rs.getFloat("Gia"), rs.getFloat("ThanhTienDichVu")));
+				dsDVP.add(new HoaDonDichVuPhong(rs.getString("MaDatPhong"), rs.getString("MaDichVu"), rs.getInt("SoLuong"), rs.getFloat("Gia"), rs.getFloat("ThanhTienDichVu")));
 			}
 		} catch (SQLException e) {
 			// TODO: handle exception
@@ -37,11 +37,11 @@ public class DAOHoaDonDichVuPhong{
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "INSERT INTO HoaDonDichVuPhong (MaPhong,MaDichVu,SoLuong) "
+		String sql = "INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) "
 				+ "values(?,?,?)";
 		try {
 			stm = con.prepareStatement(sql);
-			stm.setString(1, dvp.getMaPhong());
+			stm.setString(1, dvp.getMaDatPhong());
 			stm.setString(2, dvp.getMaDichVu());
 			stm.setInt(3, dvp.getSoLuong());
 			System.out.println(stm);
@@ -62,12 +62,12 @@ public class DAOHoaDonDichVuPhong{
 		PreparedStatement stm = null;
 		String sql = "UPDATE HoaDonDichVuPhong "
 				+ "Set SoLuong = ? "
-				+ "where MaPhong = ? "
+				+ "where MaDatPhong = ? "
 				+ "and MaDichVu = ? ";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setInt(1, dvp.getSoLuong());
-			stm.setString(2, dvp.getMaPhong());
+			stm.setString(2, dvp.getMaDatPhong());
 			stm.setString(3, dvp.getMaDichVu());
 			
 			stm.executeUpdate();
@@ -86,7 +86,7 @@ public class DAOHoaDonDichVuPhong{
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
 		String sql = "DELETE from HoaDonDichVuPhong "
-				+ "where MaPhong = ? and MaDichVu = ?";
+				+ "where MaDatPhong = ? and MaDichVu = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, maP);
@@ -114,7 +114,7 @@ public class DAOHoaDonDichVuPhong{
 		PreparedStatement stm = null;
 		String sql = "UPDATE HoaDonDichVuPhong "
 				+ "Set ThanhTienDichVu = SoLuong * (select Gia from DichVu where MaDichVu = ?)"
-				+ "where MaPhong = ? "
+				+ "where MaDatPhong = ? "
 				+ "and MaDichVu = ? ";
 		try {
 			stm = con.prepareStatement(sql);

@@ -3,37 +3,42 @@ package Entity;
 import java.util.Objects;
 
 public class HoaDonDichVuPhong {
-	 private String maPhong, maDichVu;
+	 private String maDatPhong, maDichVu;
 	 private int soLuong;
 	 private float gia;
 	 private float thanhTienDichVu;
 	 
-	public HoaDonDichVuPhong(String maPhong, String maDichVu, int soLuong) {
+	
+	public HoaDonDichVuPhong(String maDatPhong, String maDichVu, int soLuong) {
 		super();
-		this.maPhong = maPhong;
+		this.maDatPhong = maDatPhong;
 		this.maDichVu = maDichVu;
 		this.soLuong = soLuong;
 	}
-	public HoaDonDichVuPhong(String maPhong, String maDichVu, int soLuong, float thanhTienDichVu) {
+	
+	public HoaDonDichVuPhong(String maDatPhong, String maDichVu, int soLuong, float thanhTienDichVu) {
 		super();
-		this.maPhong = maPhong;
+		this.maDatPhong = maDatPhong;
 		this.maDichVu = maDichVu;
 		this.soLuong = soLuong;
 		this.thanhTienDichVu = thanhTienDichVu;
 	}
-	public HoaDonDichVuPhong(String maPhong, String maDichVu, int soLuong, float gia, float thanhTienDichVu) {
+
+	
+	public HoaDonDichVuPhong(String maDatPhong, String maDichVu, int soLuong, float gia, float thanhTienDichVu) {
 		super();
-		this.maPhong = maPhong;
+		this.maDatPhong = maDatPhong;
 		this.maDichVu = maDichVu;
 		this.soLuong = soLuong;
 		this.gia = gia;
 		this.thanhTienDichVu = thanhTienDichVu;
 	}
-	public String getMaPhong() {
-		return maPhong;
+
+	public String getMaDatPhong() {
+		return maDatPhong;
 	}
-	public void setMaPhong(String maPhong) {
-		this.maPhong = maPhong;
+	public void setMaDatPhong(String maDatPhong) {
+		this.maDatPhong = maDatPhong;
 	}
 	public String getMaDichVu() {
 		return maDichVu;
@@ -61,7 +66,7 @@ public class HoaDonDichVuPhong {
 	}
 	@Override
 	public int hashCode() {
-		return Objects.hash(gia, maDichVu, maPhong, soLuong, thanhTienDichVu);
+		return Objects.hash(gia, maDatPhong, maDichVu, soLuong, thanhTienDichVu);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -72,10 +77,10 @@ public class HoaDonDichVuPhong {
 		if (getClass() != obj.getClass())
 			return false;
 		HoaDonDichVuPhong other = (HoaDonDichVuPhong) obj;
-		return Float.floatToIntBits(gia) == Float.floatToIntBits(other.gia) && Objects.equals(maDichVu, other.maDichVu)
-				&& Objects.equals(maPhong, other.maPhong) && soLuong == other.soLuong
+		return Float.floatToIntBits(gia) == Float.floatToIntBits(other.gia)
+				&& Objects.equals(maDatPhong, other.maDatPhong) && Objects.equals(maDichVu, other.maDichVu)
+				&& soLuong == other.soLuong
 				&& Float.floatToIntBits(thanhTienDichVu) == Float.floatToIntBits(other.thanhTienDichVu);
 	}
-	 
 	 
 }

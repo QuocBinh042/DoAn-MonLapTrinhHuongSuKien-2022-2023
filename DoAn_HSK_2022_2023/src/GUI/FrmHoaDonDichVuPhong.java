@@ -175,7 +175,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		//Load data
 		DAO_dvp = new DAOHoaDonDichVuPhong();
 		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
-			Object row[] = {dvp.getMaPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
+			Object row[] = {dvp.getMaDatPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
 			tableModel.addRow(row);
 		}
 	}

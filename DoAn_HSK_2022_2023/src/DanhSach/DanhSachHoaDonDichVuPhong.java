@@ -25,7 +25,7 @@ public class DanhSachHoaDonDichVuPhong {
 	
 	public boolean suaDichVu(HoaDonDichVuPhong dvp) {
 		for (int i = 0; i < ds.size(); i++)
-			if ((ds.get(i).getMaDichVu().equals(dvp.getMaDichVu()) && (ds.get(i).getMaPhong().equals(dvp.getMaPhong())))) {
+			if ((ds.get(i).getMaDichVu().equals(dvp.getMaDichVu()) && (ds.get(i).getMaDatPhong().equals(dvp.getMaDatPhong())))) {
 				ds.get(i).setSoLuong(dvp.getSoLuong());
 				ds.get(i).setThanhTienDichVu(dvp.getThanhTienDichVu());
 				return true;
