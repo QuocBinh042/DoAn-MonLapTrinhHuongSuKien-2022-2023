@@ -227,9 +227,9 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'D
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV005',20)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV003',10)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV004',6)
-select ThanhTien = SUM(ThanhTienDichVu)
-from HoaDonDichVuPhong
-where MaDatPhong = 'PDP005' 
+--select ThanhTien = SUM(ThanhTienDichVu)
+--from HoaDonDichVuPhong
+--where MaDatPhong = 'PDP005' 
 --select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
 --UPDATE HoaDonDichVuPhong Set SoLuong = 3 where MaPhong = 'P001' and MaDichVu =  'DV003'
 --select * from HoaDonDichVuPhong

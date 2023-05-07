@@ -108,28 +108,7 @@ public class DAOHoaDonDichVuPhong{
 			close(stm);
 		}
 }
-	
-	public float getTien(String maDP, String maDv) {
-		float thanhTien = 0;
-		
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		try {
-			//ThanhTienDichVu = SoLuong * Gia
-			String sql = "select ThanhTienDichVu from HoaDonDichVuPhong"
-					+ "where MaDatPhong = N'PDP005' and MaDichVu = N'DV003'";
-			System.out.println(sql);
-			Statement statement = con.createStatement();
-			ResultSet rs = statement.executeQuery(sql);
-			while(rs.next()) {
-				System.out.println(rs.getFloat("ThanhTienDichVu"));
-			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return thanhTien;
-	}
+
 	
 	public void delete(String maP, String maDV) {
 		// TODO Auto-generated method stub

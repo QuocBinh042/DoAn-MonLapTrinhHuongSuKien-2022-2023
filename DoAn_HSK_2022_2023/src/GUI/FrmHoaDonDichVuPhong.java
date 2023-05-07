@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -268,8 +267,6 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			if (DAO_dvp.updateSoLuong(dvp)) {
 				ds.suaDichVu(dvp);
 				DAO_dvp.updateThanhTien(maDPhong,maDichVu);
-				Float tt = DAO_dvp.getTien(maDPhong, maDichVu);
-				System.out.println(tt);
 //				tableModel.setValueAt(soLuong, r, 2);
 //				//tableModel.setValueAt(thanhTien, r, 4);
 				loadData();
