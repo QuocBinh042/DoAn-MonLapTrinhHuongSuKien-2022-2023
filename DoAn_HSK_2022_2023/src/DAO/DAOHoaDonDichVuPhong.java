@@ -32,7 +32,7 @@ public class DAOHoaDonDichVuPhong{
 		return dsDVP;
 	}
 	
-	public void add(HoaDonDichVuPhong dvp) {
+	public boolean add(HoaDonDichVuPhong dvp) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
@@ -46,16 +46,18 @@ public class DAOHoaDonDichVuPhong{
 			stm.setInt(3, dvp.getSoLuong());
 			System.out.println(stm);
 			stm.executeUpdate();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
 
-	public void updateSoLuong(HoaDonDichVuPhong dvp) {
+	public boolean updateSoLuong(HoaDonDichVuPhong dvp) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
@@ -74,12 +76,61 @@ public class DAOHoaDonDichVuPhong{
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
-
+	
+	public void updateThanhTien(String maDP, String maDv) {
+		// TODO Auto-generated method stub
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stm = null;
+		String sql = "UPDATE HoaDonDichVuPhong "
+				+ "Set ThanhTienDichVu = SoLuong * (select Gia from DichVu where MaDichVu = ?)"
+				+ "where MaDatPhong = ? "
+				+ "and MaDichVu = ? ";
+		try {
+			stm = con.prepareStatement(sql);
+			stm.setString(1, maDv);
+			stm.setString(2, maDP);
+			stm.setString(3, maDv);
+			
+			stm.executeUpdate();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally {
+			close(stm);
+		}
+}
+	
+	public float getTien(String maDP, String maDv) {
+		float thanhTien = 0;
+		
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		try {
+			//ThanhTienDichVu = SoLuong * Gia
+			String sql = "select ThanhTienDichVu from HoaDonDichVuPhong"
+					+ "where MaDatPhong = N'PDP005' and MaDichVu = N'DV003'";
+			System.out.println(sql);
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while(rs.next()) {
+				System.out.println(rs.getFloat("ThanhTienDichVu"));
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return thanhTien;
+	}
+	
 	public void delete(String maP, String maDV) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
@@ -97,6 +148,7 @@ public class DAOHoaDonDichVuPhong{
 			// TODO: handle exception
 		}
 	}
+	
 	public void close(PreparedStatement stm) {
 		if(stm!=null) {
 			try {
@@ -107,53 +159,5 @@ public class DAOHoaDonDichVuPhong{
 			}
 		}
 	}
-	public void updateThanhTien(String maP, String maDv) {
-		// TODO Auto-generated method stub
-		ConnectDB.getInstance();
-		Connection con = ConnectDB.getConnection();
-		PreparedStatement stm = null;
-		String sql = "UPDATE HoaDonDichVuPhong "
-				+ "Set ThanhTienDichVu = SoLuong * (select Gia from DichVu where MaDichVu = ?)"
-				+ "where MaDatPhong = ? "
-				+ "and MaDichVu = ? ";
-		try {
-			stm = con.prepareStatement(sql);
-			stm.setString(1, maDv);
-			stm.setString(2, maP);
-			stm.setString(3, maDv);
-			
-			stm.executeUpdate();
-		} catch (SQLException e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		finally {
-			close(stm);
-		}
-}
 	
-//	public float getGiaFromMaDV(String maDV) {
-//	// TODO Auto-generated method stubArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
-//	float gia = -1;		
-//	ConnectDB.getInstance();
-//	Connection con = ConnectDB.getConnection();
-//	String sql = "select Gia from DichVu where MaDichVu = \'" + maDV+"\'";
-//	System.out.println(sql);
-//	try {
-//		Statement statement = con.createStatement();
-//		ResultSet rs = statement.executeQuery(sql);
-//		while (rs.next()) {
-//			gia = rs.getInt("Gia");
-//			System.out.println(gia);
-//		}
-//	} catch (SQLException e) {
-//		// TODO: handle exception
-//		e.printStackTrace();
-//	}
-//	return gia;
-//}
-//
-
-
-
 }

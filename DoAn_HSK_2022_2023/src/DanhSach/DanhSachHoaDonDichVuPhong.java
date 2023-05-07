@@ -10,8 +10,8 @@ public class DanhSachHoaDonDichVuPhong {
 		ds = new ArrayList<HoaDonDichVuPhong>();
 	}
 	
-	public Boolean themDichVuPhong(HoaDonDichVuPhong dv) {
-		ds.add(dv);
+	public Boolean themDichVuPhong(HoaDonDichVuPhong dvp) {
+		ds.add(dvp);
 		return true;
 	}
 	
@@ -27,12 +27,15 @@ public class DanhSachHoaDonDichVuPhong {
 		for (int i = 0; i < ds.size(); i++)
 			if ((ds.get(i).getMaDichVu().equals(dvp.getMaDichVu()) && (ds.get(i).getMaDatPhong().equals(dvp.getMaDatPhong())))) {
 				ds.get(i).setSoLuong(dvp.getSoLuong());
-				ds.get(i).setThanhTienDichVu(dvp.getThanhTienDichVu());
+//				ds.get(i).setThanhTienDichVu(dvp.getThanhTienDichVu());
 				return true;
 			}
 		return false;
 	}
-
+	public void clear() {
+	    for (int i = 0; i < ds.size(); i++)
+	    	ds.remove(i);
+	}
 	public ArrayList<HoaDonDichVuPhong> getList() {
 		return ds;
 	}

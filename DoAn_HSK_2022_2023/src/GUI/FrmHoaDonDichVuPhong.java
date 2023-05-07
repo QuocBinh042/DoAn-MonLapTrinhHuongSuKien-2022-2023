@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -35,6 +36,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	private DanhSachHoaDonDichVuPhong ds;
 	private DAOHoaDonDichVuPhong DAO_dvp;
 	public FrmHoaDonDichVuPhong(){
+		ds = new DanhSachHoaDonDichVuPhong();
 		try {
 			ConnectDB.getInstance().connect();
 		} catch (SQLException e) {
@@ -50,7 +52,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		setSize(1150, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		ds = new DanhSachHoaDonDichVuPhong();
+		
 		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
@@ -68,20 +70,21 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		b.add(b1 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b.setBorder(BorderFactory.createTitledBorder("Dịch vụ phòng"));
-		b1.add(lblMaPhong = new JLabel("Mã phòng: "));
+		b1.add(lblMaPhong = new JLabel("Mã đặt phòng: "));
 		b1.add(txtMaPhong = new JTextField(20));
 
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b2.add(lblMaDichVu = new JLabel("Mã dịch vụ: "));
 		b2.add(txtMaDichVu = new JTextField(20));
-		
+		lblMaDichVu.setPreferredSize(lblMaPhong.getPreferredSize());
 		
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b3.add(lblSoLuong = new JLabel("Số lượng: "));
 		b3.add(txtSoLuong = new JTextField(20));
-
+		lblSoLuong.setPreferredSize(lblMaPhong.getPreferredSize());
+		
 		b.add(Box.createHorizontalStrut(5));
 		b.add(b5 = Box.createHorizontalBox());
 		b5.add(txtMess = new JTextField());
@@ -164,20 +167,22 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		txtSoLuong.setEditable(true);
 	}
 	
-	private void showMessage(String message, JTextField txt) {
-		txt.requestFocus();
-		txtMess.setText(message);
-	}
-	
 	public void loadData() {
 		//delete all
 		deleteAllDataJtable();
 		//Load data
+//		ArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
 		DAO_dvp = new DAOHoaDonDichVuPhong();
+		ds.clear();
 		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
+			ds.themDichVuPhong(dvp);
 			Object row[] = {dvp.getMaDatPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
 			tableModel.addRow(row);
 		}
+//		dsDVP = ds.getList();
+//		for(int i=0;i<dsDVP.size();i++) {
+//			System.out.println(dsDVP.get(i).getThanhTienDichVu());
+//		}
 	}
 	
 	@Override
@@ -203,20 +208,9 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			
 		} else if (o.equals(btnSua)) {
 			btnThem.setEnabled(false);
-			if(btnSua.getText().equals("Sửa")) {
-				try {
-					int r = table.getSelectedRow();
-					if(r!=-1) {
-						btnSua.setText("Hoàn tất");
-						txtSoLuong.setEditable(true);
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
-					}
-				} catch (Exception e2) {
-					// TODO: handle exception
-					e2.printStackTrace();
-				}
+			if(btnSua.getText().equals("Sửa")) {				
+				btnSua.setText("Hoàn tất");
+				txtSoLuong.setEditable(true);
 			}
 			else {
 				TXTedit_false();
@@ -236,52 +230,54 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 				e1.printStackTrace();
 			}
 		} else if (o.equals(btnLuu)) {
-			saveData();
+			Luu();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
 	
-	private void saveData() {
+	private void Luu() {
 		// TODO Auto-generated method stub
+		String maPhong = txtMaPhong.getText();
+		String maDichVu = txtMaDichVu.getText();
+		String soLuong = txtSoLuong.getText();
 		
-		try {
-			String maPhong = txtMaPhong.getText();
-			String maDichVu = txtMaDichVu.getText();
-			String soLuong = txtSoLuong.getText();
-			float thanhTien = Integer.parseInt(soLuong) * 3000;
-			float gia = 3000;
-			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong), thanhTien);
-			
-			if (ds.themDichVuPhong(dvp)) {
-				String[] row = {maPhong,maDichVu,soLuong,String.valueOf(gia),String.valueOf(thanhTien)};
-				tableModel.addRow(row);
-				DAO_dvp.add(dvp);
-				xoaTrang();
-				JOptionPane.showMessageDialog(null, "Thêm dịch vụ phòng thành công!");
-				
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu!");
-			
+		HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong));
+		if (DAO_dvp.add(dvp)) {
+			ds.themDichVuPhong(dvp);
+			String[] row = {maPhong,maDichVu,soLuong};
+			tableModel.addRow(row);
+			xoaTrang();
+			JOptionPane.showMessageDialog(null, "Thêm dịch vụ phòng thành công!");
+			loadData();
 		}
+		else {
+			JOptionPane.showMessageDialog(null, "Vui lòng kiểm tra dữ liệu đầu vào");
+		}
+
 	}
 	
 	private void SuaDichVu() {
 		int r = table.getSelectedRow();
+		
 		if (r != -1) {	
-			String maPhong = txtMaPhong.getText();
+			String maDPhong = txtMaPhong.getText();
 			String maDichVu = txtMaDichVu.getText();
 			String soLuong = txtSoLuong.getText();
-			//float thanhTien = (float) tableModel.getValueAt(r, 4);
-			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maPhong, maDichVu, Integer.parseInt(soLuong));
-			//if (ds.suaDichVu(dvp)) {
-			DAO_dvp.updateSoLuong(dvp);
-			DAO_dvp.updateThanhTien(maPhong,maDichVu);
-			tableModel.setValueAt(soLuong, r, 2);
-			//tableModel.setValueAt(thanhTien, r, 4);
-			JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ phòng thành công!");
-			//}
-			loadData();
+
+			HoaDonDichVuPhong dvp = new HoaDonDichVuPhong(maDPhong, maDichVu, Integer.parseInt(soLuong));
+			if (DAO_dvp.updateSoLuong(dvp)) {
+				ds.suaDichVu(dvp);
+				DAO_dvp.updateThanhTien(maDPhong,maDichVu);
+				Float tt = DAO_dvp.getTien(maDPhong, maDichVu);
+				System.out.println(tt);
+//				tableModel.setValueAt(soLuong, r, 2);
+//				//tableModel.setValueAt(thanhTien, r, 4);
+				loadData();
+				JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ phòng thành công!");
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Không thành công! Vui lòng kiểm tra lại...");
+			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
 		}
