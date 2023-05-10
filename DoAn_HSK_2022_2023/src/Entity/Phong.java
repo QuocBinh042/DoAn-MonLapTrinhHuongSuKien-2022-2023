@@ -7,22 +7,18 @@ public class Phong implements Serializable {
 	private String maPhong;
 	private String tenPhong;
 	private String loaiPhong;
-	private String tinhTrang;
 	private double giaPhong;
 	private String moTa;
+	private String tinhTrang;
 
-	public Phong(String maPhong, String tenPhong, String loaiPhong, String tinhTrang, double giaPhong, String moTa) {
+	public Phong(String maPhong, String tenPhong, String loaiPhong, double giaPhong, String moTa, String tinhTrang) {
 		super();
 		this.maPhong = maPhong;
 		this.tenPhong = tenPhong;
 		this.loaiPhong = loaiPhong;
-		this.tinhTrang = tinhTrang;
 		this.giaPhong = giaPhong;
 		this.moTa = moTa;
-	}
-
-	public Phong() {
-		this("", "", "", "", 0, "");
+		this.tinhTrang = tinhTrang;
 	}
 
 	@Override
@@ -92,8 +88,10 @@ public class Phong implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", loaiPhong=" + loaiPhong + ", tinhTrang="
-				+ tinhTrang + ", giaPhong=" + giaPhong + ", moTa=" + moTa + "]";
+		return "Phong [maPhong=" + maPhong + ", tenPhong=" + tenPhong + ", loaiPhong=" + loaiPhong + ", giaPhong="
+				+ giaPhong + ", moTa=" + moTa + ", tinhTrang=" + tinhTrang + "]";
 	}
+
+	
 
 }

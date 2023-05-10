@@ -29,7 +29,6 @@ import Entity.Phong;
 import DAO.DAOPhong;
 import connectDB.ConnectDB;
 
-
 public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 	private DanhSachPhong dsP;
@@ -173,11 +172,11 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		pnlSouth.add(btnThoat = new JButton("Thoát"));
 		btnThoat.setBackground(Color.RED);
 		btnThoat.setForeground(Color.WHITE);
-		
-		//Gọi hàm loadData
+
+		// Gọi hàm loadData
 		loadData();
 
-		//Đăng ký sự kiện
+		// Đăng ký sự kiện
 		TXTedit_false();
 		btnLuu.setEnabled(false);
 		btnXoaTrang.setEnabled(false);
@@ -191,7 +190,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		btnThoat.addActionListener(this);
 		table.addMouseListener(this);
 	}
-	
+
 	private void TXTedit_false() {
 		txtMaPhong.setEditable(false);
 		radDaDat.setEnabled(false);
@@ -211,12 +210,12 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		txtMoTa.setEditable(true);
 		txtGiaPhong.setEditable(true);
 	}
-	
+
 	private void showMessage(String message, JTextField txt) {
 		txt.requestFocus();
 		txtMess.setText(message);
 	}
-	
+
 	public void loadData() {
 		// delete all
 		// Load data
@@ -227,7 +226,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			tableModel.addRow(row);
 		}
 	}
-	
+
 	private boolean validData() {
 		String maPhong = txtMaPhong.getText().trim();
 		String loaiPhong = txtLoai.getText().trim();
@@ -324,7 +323,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		} else if (o.equals(btnThoat))
 			System.exit(0);
 	}
-	
+
 	private void themPhong() {
 		String maphong = txtMaPhong.getText();
 		String tenphong = txtTen.getText();
@@ -337,7 +336,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			tinhTrang = radTrong.getText();
 		if (radDaDat.isSelected())
 			tinhTrang = radDaDat.getText();
-		Phong ph = new Phong(maphong, tenphong, loaip, mota, giaP, tinhTrang);
+		Phong ph = new Phong(maphong, tenphong, loaip, giaP, mota, tinhTrang);
 		try {
 			if (!validData()) {
 				if (dsP.themPhong(ph)) {
@@ -356,7 +355,6 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 				txtMaPhong.selectAll();
 				txtMaPhong.requestFocus();
 			}
-
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Lỗi nhập liệu!");
 			e.printStackTrace();
@@ -386,7 +384,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		txtTimMa.setText("");
 		showMessage("", txtMess);
 	}
-	
+
 	private void CapNhatThongTinPhong() {
 		// TODO Auto-generated method stub
 		String maPhong = txtMaPhong.getText();
@@ -400,7 +398,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			tinhTrang = radTrong.getText();
 		if (radDaDat.isSelected())
 			tinhTrang = radDaDat.getText();
-		Phong ph = new Phong(maPhong, tenPhong, loaiPhong, moTa, giaPhong, tinhTrang);
+		Phong ph = new Phong(maPhong, tenPhong, loaiPhong, giaPhong, moTa, tinhTrang);
 
 		if (dsP.capNhatThongTinPhong(ph)) {
 			int index = dsP.getList().indexOf(ph);
@@ -431,7 +429,8 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	public void xoaPhong() throws Exception {
 		int r = table.getSelectedRow();
 		if (r != -1) {
-			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá phòng này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
+			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá phòng này không?", "Chú ý!",
+					JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				dsP.xoaPhong(r);
 				tableModel.removeRow(r);

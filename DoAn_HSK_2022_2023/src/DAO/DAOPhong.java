@@ -26,8 +26,8 @@ public class DAOPhong {
 				rs.getString("MaPhong"),
 				rs.getString("TenPhong"),
 				rs.getString("LoaiPhong"),
-				rs.getString("MoTa"),
 				rs.getDouble("GiaPhong"),
+				rs.getString("MoTa"),
 				rs.getString("TinhTrang")));
 			}
 		} catch (Exception e) {
