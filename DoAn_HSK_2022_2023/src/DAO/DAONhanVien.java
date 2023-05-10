@@ -28,13 +28,13 @@ public class DAONhanVien{
 			DanhSachNhanVien.add(new NhanVien(
 					rs.getString("MaNhanVien"),
 					rs.getString("HoTen"),
-					rs.getString("Pwd"),
-					rs.getString("ChucVu"),
-					rs.getString("GioiTinh"), 
-					rs.getString("CMT"), 
-					rs.getString("SDT"), 
+					rs.getString("CMT"),
+					rs.getString("SDT"),
 					rs.getString("Gmail"), 
-					rs.getString("DiaChi")));
+					rs.getString("DiaChi"), 
+					rs.getString("GioiTinh"), 
+					rs.getString("ChucVu"), 
+					rs.getString("Pwd")));
 		}			
 		}catch (SQLException e) {
 			e.printStackTrace();
@@ -49,19 +49,19 @@ public class DAONhanVien{
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "INSERT INTO NhanVien (maNV, hoTen, matKhau, chucVu, gioiTinh, cmthu, sdthoai, gmail, diaChi) "
+		String sql = "INSERT INTO NhanVien (maNV, hoTen, cmthu, sdthoai, gmail, diaChi, gioiTinh, chucVu, matKhau) "
 				+ "values(?,?,?,?,?,?,?,?,?)";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, nv.getMaNV());
 			stm.setString(2, nv.getHoTen());
-			stm.setString(3, nv.getMatKhau());
-			stm.setString(4, nv.getChucVu());
-			stm.setString(5, nv.getGioiTinh());
-			stm.setString(6, nv.getCmthu());
-			stm.setString(7, nv.getSdthoai());
-			stm.setString(8, nv.getGmail());
-			stm.setString(9, nv.getDiaChi());
+			stm.setString(3, nv.getCmthu());
+			stm.setString(4, nv.getSdthoai());
+			stm.setString(5, nv.getGmail());
+			stm.setString(6, nv.getDiaChi());
+			stm.setString(7, nv.getGioiTinh());
+			stm.setString(8, nv.getChucVu());
+			stm.setString(9, nv.getMatKhau());
 			System.out.println(stm);
 			stm.executeUpdate();
 		} catch (Exception e) {
@@ -81,24 +81,25 @@ public class DAONhanVien{
 		String sql = "UPDATE NhanVien "
 				+ " maNV = ? "
 				+ " hoTen = ? "
-				+ " matKhau = ? "
-				+ " chucVu = ? "
-				+ " gioiTinh = ? "
 				+ " cmthu = ? "
 				+ " sdthoai = ? "
 				+ " gmail = ? "
-				+ " diaChi = ? ";
+				+ " diaChi = ? "
+				+ " gioiTinh = ? "
+				+ " chucVu = ? "
+				+ " matKhau = ? ";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, nv.getMaNV());
 			stm.setString(2, nv.getHoTen());
-			stm.setString(3, nv.getMatKhau());
-			stm.setString(4, nv.getChucVu());
-			stm.setString(5, nv.getGioiTinh());
-			stm.setString(6, nv.getCmthu());
-			stm.setString(7, nv.getSdthoai());
-			stm.setString(8, nv.getGmail());
-			stm.setString(9, nv.getDiaChi());
+			stm.setString(3, nv.getCmthu());
+			stm.setString(4, nv.getSdthoai());
+			stm.setString(5, nv.getGmail());
+			stm.setString(6, nv.getDiaChi());
+			stm.setString(7, nv.getGioiTinh());
+			stm.setString(8, nv.getChucVu());
+			stm.setString(9, nv.getMatKhau());
+
 			
 			stm.executeUpdate();
 		} catch (SQLException e) {
