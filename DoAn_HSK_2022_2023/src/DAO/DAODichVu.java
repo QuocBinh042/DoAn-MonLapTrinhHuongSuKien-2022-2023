@@ -35,7 +35,7 @@ public class DAODichVu {
 		return danhSachDichVu;
 	}
 	
-	public void add(DichVu dv) {
+	public boolean add(DichVu dv) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
@@ -52,34 +52,39 @@ public class DAODichVu {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
 	
-	public void updateSoLuong(DichVu dv) {
+	public boolean updateGia(DichVu dv) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
 		String sql = "UPDATE DichVu "
-				+ " MaDichVu = ? "
-				+ " TenDichVu = ? "
-				+ " Gia = ? ";
+							+ "Set Gia = ? "
+							+ ",TenDichVu = ? "
+							+ "where MaDichVu = ? ";
 		try {
 			stm = con.prepareStatement(sql);
-			stm.setString(1, dv.getMaDichVu());
+			stm.setDouble(1, dv.getGiaDichVu());
 			stm.setString(2, dv.getTenDichVu());
-			stm.setDouble(3, dv.getGiaDichVu());
+			stm.setString(3, dv.getMaDichVu());
+			
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
 	
 	public void delete(String maDichVu) {

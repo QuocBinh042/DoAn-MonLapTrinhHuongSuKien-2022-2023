@@ -219,12 +219,22 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 
 	public void loadData() {
 		// delete all
+		deleteAllDataJtable();
 		// Load data
 		DAO_DV = new DAODichVu();
 		for (DichVu dv : DAO_DV.getAll()) {
 			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), dv.getGiaDichVu() };
 			tableModel.addRow(row);
 		}
+	}
+
+	private void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel)table.getModel();
+		while(dm.getRowCount() > 0)
+		{
+		    dm.removeRow(0);
+		}
+		
 	}
 
 	@Override
@@ -248,24 +258,15 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 			}
 		} else if (o.equals(btnSua)) {
 			btnThem.setEnabled(false);
-			if (btnSua.getText().equals("Sửa")) {
-				try {
-					int r = table.getSelectedRow();
-					if (r != -1) {
-						TXTedit_true();
-						txtMaDichVu.setEditable(false);
-						btnSua.setText("Hoàn tất");
-					} else {
-						JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ phòng muốn xoá!");
-						btnThem.setEnabled(true);
-					}
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
-			} else {
+			if(btnSua.getText().equals("Sửa")) {
+				btnSua.setText("Hoàn tất");
+				txtGiaDichVu.setEditable(true);
+				txtTenDichVu.setEditable(true);
+			}else {
 				SuaDichVu();
 				btnSua.setText("Sửa");
 				btnThem.setEnabled(true);
+				btnXoaTrang.setEnabled(false);
 				TXTedit_false();
 				xoaTrang();
 				showMessage("", txtMess);
@@ -296,11 +297,13 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
 		showMessage("", txtMess);
 		if (validData()) {
-			if (dsDV.themDichVu(dv)) {
+			if (DAO_DV.add(dv)) {
+				dsDV.themDichVu(dv);
 				String[] row = { maDichVu, tenDichVu, String.valueOf(giaDichVu) };
 				tableModel.addRow(row);
 				xoaTrang();
 				showMessage("Thêm dịch vụ thành công!", txtMess);
+				JOptionPane.showMessageDialog(null, "Thêm dịch vụ thành công!");
 			} else {
 				JOptionPane.showMessageDialog(null, "Trùng mã dịch vụ!");
 				txtMaDichVu.selectAll();
@@ -337,17 +340,21 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 	}
 	
 	private void SuaDichVu() {
-		// TODO Auto-generated method stub
-		String maDichVu = txtMaDichVu.getText();
-		String tenDichVu = txtTenDichVu.getText();
-		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
-		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
-		if (dsDV.suaDichVu(dv)) {
-			int index = dsDV.getList().indexOf(dv);
-			tableModel.setValueAt(tenDichVu, index, 1);
-			tableModel.setValueAt(giaDichVu, index, 2);
-			showMessage("Cập nhật dịch vụ thành công!", txtMess);
-			JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ thành công!");
+		int r = table.getSelectedRow();
+		if (r != -1) {	
+			String maDichVu = txtMaDichVu.getText();
+			String tenDichVu = txtTenDichVu.getText();
+			Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
+			DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
+			if(DAO_DV.updateGia(dv)) {
+				dsDV.suaDichVu(dv);
+				loadData();
+				JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ thành công!");
+			}else {
+				JOptionPane.showMessageDialog(null, "Không thành công! Vui lòng kiểm tra lại...");
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn dịch vụ muốn sửa!");
 		}
 	}
 	
@@ -368,6 +375,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá dịch vụ này không!", "Chú ý!", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				dsDV.xoaDichVu(r);
+				DAO_DV.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá dịch vụ thành công!");
 				xoaTrang();
