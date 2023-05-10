@@ -220,9 +220,14 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		// delete all
 		// Load data
 		DAO_Phong = new DAOPhong();
+		String tinhTrang = "";
 		for (Phong phong : DAO_Phong.getAll()) {
+			if (phong.getTinhTrang().equals("1")) {
+				tinhTrang = "Đã đặt";
+			} else
+				tinhTrang = "Còn trống";
 			Object row[] = { phong.getMaPhong(), phong.getTenPhong(), phong.getLoaiPhong(), phong.getGiaPhong(),
-					phong.getMoTa(), phong.getTinhTrang() };
+					phong.getMoTa(), tinhTrang };
 			tableModel.addRow(row);
 		}
 	}
