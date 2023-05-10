@@ -55,7 +55,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private JComboBox startYear, startMonth, startDay;
 	private JComboBox endYear, endMonth, endDay;
 	private JComboBox bookYear, bookMonth, bookDay;
-	private JComboBox cbMaPhong, cbMaHoaDon, cbMaKhachHang;
+	private JComboBox cbMaPhong, cbMaKhachHang;
 	private DAOPhieuDatPhong DAO_datPhong;
 	private DAOPhong DAO_phong;
 	private List<Phong> dsPhong;
@@ -119,6 +119,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		DAO_phong = new DAOPhong();
 		dsPhong = DAO_phong.getAll();
 		for (Phong p : dsPhong) {
+			if (p.getTinhTrang().equals("0"))
 			cbMaPhong.addItem(p.getMaPhong());
 		}
 
@@ -453,15 +454,6 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			themPhieuDatPhong();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
-//		else if (o.equals(btnThanhTienPhong)) {
-//			Date ngayDen = Date.valueOf(getStartDate());
-//			Date ngayDi = Date.valueOf(getEndDate());
-//			long soNgay = TimeUnit.MILLISECONDS.toDays((ngayDi.getTime() - ngayDen.getTime()));
-//			for (Phong p : dsPhong) {
-//				if (cbMaPhong.getSelectedItem().equals(p.getMaPhong()))
-//					txtThanhTienPhong.setText(soNgay * p.getGiaPhong() + "");
-//			}
-//		}
 	}
 
 	private void themPhieuDatPhong() {
@@ -480,11 +472,11 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 		try {
 			if (validData()) {
-				if (dsPDP.themPhieuDatPhong(p)) {
+				if (DAO_datPhong.add(p)) {
+					dsPDP.themPhieuDatPhong(p);
 					String[] row = { maDP, maNV, maPhong, maKhachHang, ngayDatPhong, ngayDen, ngayDi,
 							Integer.toString(soNguoi), ghiChu };
 					tableModel.addRow(row);
-					DAO_datPhong.add(p);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm thành công phiếu đặt phòng!");
 				} else {
@@ -576,7 +568,6 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		txtaGhiChu.setText("");
 		txtTim.setText("");
 		cbMaPhong.setSelectedIndex(0);
-		cbMaHoaDon.setSelectedIndex(0);
 		cbMaKhachHang.setSelectedIndex(0);
 
 		startDate = Calendar.getInstance();

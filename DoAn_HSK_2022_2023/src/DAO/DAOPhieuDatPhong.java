@@ -36,7 +36,7 @@ public class DAOPhieuDatPhong {
 		return (ArrayList<PhieuDatPhong>) DanhSachPhieuDatPhong;
 	}
 
-	public void add(PhieuDatPhong pdp) {
+	public boolean add(PhieuDatPhong pdp) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
@@ -59,9 +59,11 @@ public class DAOPhieuDatPhong {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		} finally {
 			close(stm);
 		}
+		return true;
 	}
 
 	public void update(PhieuDatPhong pdp) {
@@ -97,7 +99,7 @@ public class DAOPhieuDatPhong {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "DELETE from PhieuDatPhong " + " MaDatPhong = ?";
+		String sql = "DELETE from PhieuDatPhong " + "where MaDatPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, maDatPhong);
