@@ -9,23 +9,24 @@ public class NhanVien implements Serializable {
 	private String cmthu;
 	private String sdthoai;
 	private String gmail;
-	private String chucVu;
-	private String gioiTinh;
 	private String diaChi;
+	private String gioiTinh;
+	private String chucVu;
 	private String matKhau;
 
-	public NhanVien(String maNV, String hoTen, String cmthu, String sdthoai, String gmail, String chucVu,
-			String gioiTinh, String diaChi, String matKhau) {
+	public NhanVien(String maNV, String hoTen, String cmthu, String sdthoai, String gmail, String diaChi,
+			String gioiTinh, String chucVu, String matKhau) {
 		super();
 		this.maNV = maNV;
 		this.hoTen = hoTen;
 		this.cmthu = cmthu;
 		this.sdthoai = sdthoai;
 		this.gmail = gmail;
-		this.chucVu = chucVu;
-		this.gioiTinh = gioiTinh;
 		this.diaChi = diaChi;
+		this.gioiTinh = gioiTinh;
+		this.chucVu = chucVu;
 		this.matKhau = matKhau;
+	
 	}
 
 	public NhanVien() {
@@ -89,12 +90,12 @@ public class NhanVien implements Serializable {
 		this.gmail = gmail;
 	}
 
-	public String getChucVu() {
-		return chucVu;
+	public String getDiaChi() {
+		return diaChi;
 	}
 
-	public void setChucVu(String chucVu) {
-		this.chucVu = chucVu;
+	public void setDiaChi(String diaChi) {
+		this.diaChi = diaChi;
 	}
 
 	public String getGioiTinh() {
@@ -105,12 +106,12 @@ public class NhanVien implements Serializable {
 		this.gioiTinh = gioiTinh;
 	}
 
-	public String getDiaChi() {
-		return diaChi;
+	public String getChucVu() {
+		return chucVu;
 	}
 
-	public void setDiaChi(String diaChi) {
-		this.diaChi = diaChi;
+	public void setChucVu(String chucVu) {
+		this.chucVu = chucVu;
 	}
 
 	public String getMatKhau() {
@@ -124,8 +125,10 @@ public class NhanVien implements Serializable {
 	@Override
 	public String toString() {
 		return "NhanVien [maNV=" + maNV + ", hoTen=" + hoTen + ", cmthu=" + cmthu + ", sdthoai=" + sdthoai + ", gmail="
-				+ gmail + ", chucVu=" + chucVu + ", gioiTinh=" + gioiTinh + ", diaChi=" + diaChi + ", matKhau="
+				+ gmail + ", diaChi=" + diaChi + ", gioiTinh=" + gioiTinh + ", chucVu=" + chucVu + ", matKhau="
 				+ matKhau + "]";
 	}
+
+	
 
 }
