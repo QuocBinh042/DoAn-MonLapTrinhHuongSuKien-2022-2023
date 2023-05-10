@@ -33,18 +33,19 @@ create table KhachHang(
 create table NhanVien(
 	MaNhanVien nvarchar(50) not null primary key,
 	HoTen nvarchar(50) not null,
-	Pwd nvarchar(50) not null,
+	CMT nvarchar(50) not null,
+	SDT nvarchar(10) not null,
+	Gmail nvarchar(50),
+	DiaChi nvarchar(200),
+	GioiTinh char(3),
 	--Chức vụ
 	--0: nhân viên bình thường
 	--1: quản lý
 	ChucVu bit not null,
 	--Giới tính
-	GioiTinh char(3),
-	CMT nvarchar(50) not null,
-	SDT nvarchar(10) not null,
-	Gmail nvarchar(50),
-	DiaChi nvarchar(200)
+	Pwd nvarchar(50) not null
 )
+
 create table PhieuDatPhong(
 	MaDatPhong nvarchar(50) not null primary key,
 	-----FOREIGN KEY
@@ -121,36 +122,36 @@ INSERT INTO KhachHang values(N'KH015',N'Nguyễn Minh Nhựt','16920123336','049
 
 --Nhan Vien
 select * from NhanVien
-INSERT INTO NhanVien values(N'NV001', N'Nguyễn Trà My', 'tramy6665', 0, 'Nữ', 12345678801, 0967344087,
-'tramy1234@gmail.com', 'Tỉnh Tiền Giang')
-INSERT INTO NhanVien values(N'NV002', N'Nguyễn Huỳnh Bảo', 'huybao2345', 1, 'Nam', 13598800021, 0134556780,
-'huynhbao4444@gmail.com', 'Tỉnh Tây Ninh')
-INSERT INTO NhanVien values(N'NV003', N'Lê Trần Thu Hà', 'thuha5699', 1, 'Nữ', 10445689901, 0860012345,
-'thuha5666@gmail.com', 'Tỉnh An Giang')
-INSERT INTO NhanVien values(N'NV004', N'Phan Đại Nam', 'namphan0123', 0, 'Nam', 14577770124, 0497601223,
-'dainam1111@gmail.com', 'Tỉnh Cà Mau')
-INSERT INTO NhanVien values(N'NV005', N'Trần Thanh Thúy', 'thuytran2222', 0, 'Nữ', 14378889012, 0403567790,
-'thanhthuy5666@gmail.com', 'Tỉnh Bình Thuận')
-INSERT INTO NhanVien values(N'NV006', N'Trần Công Toàn', '123456', 1, 'Nam', 17502254891, 0398865341,
-'congtoan0000@gmail.com', 'Thành Phố Hồ Chí Minh')
-INSERT INTO NhanVien values(N'NV007', N'Nguyễn Công Vinh', '123456', 1, 'Nam', 14659801870, 0495012397,
-'nguyenvinh1234@gmail.com', 'Tỉnh Bạc Liêu')
-INSERT INTO NhanVien values(N'NV008', N'Phạm Thị Thanh Vy', '123456', 0, 'Nữ', 12962007961, 0329276801,
-'thanhvy6492@gmail.com', 'Tỉnh Tiền Giang')
-INSERT INTO NhanVien values(N'NV009', N'Ngô Thị Kim Châu', '123456', 1, 'Nữ', 13456788990, 0296012578,
-'kimchau7777@gmail.com', 'Tỉnh Ninh Thuận')
-INSERT INTO NhanVien values(N'NV010', N'Phạm Tấn Đạt', '123456', 0, 'Nam', 14659801870, 0569207123,
-'tandat6032@gmail.com', 'Thành Phố Hà Nội')
-INSERT INTO NhanVien values(N'NV011', N'Trần Nam Phương', '123456', 1, 'Nam', 13951065912, 0879206591,
-'namphuong5931@gmail.com', 'Tỉnh Châu Đốc')
-INSERT INTO NhanVien values(N'NV012', N'Lê Thanh Thủy', '123456', 1, 'Nữ', 15914057801, 0901456891,
-'thanhthuy2482@gmail.com', 'Thành Phố Hồ Chí Minh')
-INSERT INTO NhanVien values(N'NV013', N'Trần Lê Đại Trí', '123456', 0, 'Nam', 18914034871, 0491547801,
-'daitri6291@gmail.com', 'Tỉnh Yên Bái')
-INSERT INTO NhanVien values(N'NV014', N'Dương Đăng Khoa', '123456', 1, 'Nam', 15195548991, 0158386012,
-'dangkhoa0247@gmail.com', 'Tỉnh Hà Nam')
-INSERT INTO NhanVien values(N'NV015', N'Trần Thị Thảo My', '123456', 0, 'Nữ', 14817507912, 0681497001,
-'thaomy5291@gmail.com', 'Thành Phố Hà Nội')
+INSERT INTO NhanVien values(N'NV001', N'Nguyễn Trà My',12345678801 ,'0967344087','tramy1234@gmail.com',
+N'Tỉnh Tiền Giang' ,N'Nu', 0,'tramy6665')
+INSERT INTO NhanVien values(N'NV002', N'Nguyễn Huỳnh Bảo', 13598800021, '0134556780', 'huynhbao4444@gmail.com',
+N'Tỉnh Tây Ninh', N'Nam', 1, 'huybao2345' )
+INSERT INTO NhanVien values(N'NV003', N'Lê Trần Thu Hà', 10445689901, '0860012345', 'thuha4666@gmail.com',
+N'Tỉnh An Giang', N'Nu', 1, 'thuha5699')
+INSERT INTO NhanVien values(N'NV004', N'Phan Đại Nam', 14577770124, '0497601223', 'dainam1111@gmail.com',
+N'Tỉnh Cà Mau', N'Nam', 0, 'namphan0123')
+INSERT INTO NhanVien values(N'NV005', N'Trần Thanh Thúy', 14378889012, '0403567790', 'thanhthuy5666@gmail.com',
+N'Tỉnh Bình Thuận', N'Nu', 0, 'thuytran2222')
+INSERT INTO NhanVien values(N'NV006', N'Trần Công Toàn', 17502254891, '0398865341', 'congtoan0000@gmail.com',
+N'Thành Phố Hồ Chí Minh', N'Nam', 1, '123456')
+INSERT INTO NhanVien values(N'NV007', N'Nguyễn Công Vinh', 14659801870, '0495012397', 'nguyenvinh1234@gmail.com',
+N'Tỉnh Bạc Liêu', N'Nam', 1, '123456')
+INSERT INTO NhanVien values(N'NV008', N'Phạm Thị Thanh Vy', 12962007961, '0329276801', 'thanhvy6492@gmail.com',
+N'Tỉnh Tiền Giang', N'Nu', 0, '123456')
+INSERT INTO NhanVien values(N'NV009', N'Ngô Thị Kim Châu', 13456788990, '0296012578', 'kimchau7777@gmail.com',
+N'Tỉnh Ninh Thuận', N'Nu', 1, '123456')
+INSERT INTO NhanVien values(N'NV010', N'Phạm Tấn Đạt', 13592590001, '0572176912', 'tandat2953@gmail.com',
+N'Tỉnh Kiên Giang', N'Nam', 0, '123456')
+INSERT INTO NhanVien values(N'NV011', N'Trần Nam Phương', 15925048123, '0149367012', 'namphuong1492@gmail.com',
+N'Tỉnh Châu Đốc', N'Nam', 1, '123456')
+INSERT INTO NhanVien values(N'NV012', N'Lê Thanh Thủy', 16932058712, '0471486012', 'thanhthuy4295@gmail.com', 
+N'Thành Phố Hồ Chí Minh', N'Nu', 1, '123456')
+INSERT INTO NhanVien values(N'NV013', N'Trần Lê Đại Trí', 17032012681, '0247198012', 'daitri5397@gmail.com',
+N'Tỉnh Yên Bái', N'Nam', 0, '123456')
+INSERT INTO NhanVien values(N'NV014', N'Dương Đăng Khoa', 15920459681, '0247175901', 'dangkhoa7741@gmail.com',
+N'Tỉnh An Giang', N'Nam', 0, '123456')
+INSERT INTO NhanVien values(N'NV015', N'Trần Thị Thảo My', 16920633811, '0471159801', 'thaomy4291@gmail.com',
+N'Thành Phố Hà Nội', N'Nu',1, '123456')
 
 
 
