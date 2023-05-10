@@ -330,22 +330,25 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	}
 
 	private void themPhong() {
-		String maphong = txtMaPhong.getText();
-		String tenphong = txtTen.getText();
-		String loaip = txtLoai.getText();
-		double giaP = Double.parseDouble(txtGiaPhong.getText());
-		String mota = txtMoTa.getText();
-		String tinhTrang = "";
-
+		String maPhong = txtMaPhong.getText();
+		String tenPhong = txtTen.getText();
+		String loaiPhong = txtLoai.getText();
+		double giaPhong = Double.parseDouble(txtGiaPhong.getText());
+		String moTa = txtMoTa.getText();
+		Boolean tinhTrang = true;
 		if (radTrong.isSelected())
-			tinhTrang = radTrong.getText();
-		if (radDaDat.isSelected())
-			tinhTrang = radDaDat.getText();
-		Phong ph = new Phong(maphong, tenphong, loaip, giaP, mota, tinhTrang);
+			tinhTrang = false;
+		Phong ph = new Phong(maPhong, tenPhong, loaiPhong, giaPhong, moTa, tinhTrang.toString());
 		try {
-			if (!validData()) {
-				if (dsP.themPhong(ph)) {
-					String[] row = { maphong, tenphong, loaip, Double.toString(giaP) + "", mota, tinhTrang };
+			if (validData()) {
+				if (DAO_Phong.add(ph)) {
+					dsP.themPhong(ph);
+					String tt;
+					if (tinhTrang) {
+						tt = "Đã đặt";
+					}
+					else tt = "Còn trống";
+						String[] row = { maPhong, tenPhong, loaiPhong, Double.toString(giaPhong) + "", moTa,  tt};
 					tableModel.addRow(row);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm phòng thành công!");
@@ -438,6 +441,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 					JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				dsP.xoaPhong(r);
+				DAO_Phong.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				xoaTrang();
 			}

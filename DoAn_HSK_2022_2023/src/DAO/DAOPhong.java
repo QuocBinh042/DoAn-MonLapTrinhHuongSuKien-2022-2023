@@ -36,7 +36,7 @@ public class DAOPhong {
 		return dsPhong;
 	}
 	
-	public void add(Phong phong) {
+	public boolean add(Phong phong) {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
@@ -55,10 +55,12 @@ public class DAOPhong {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 		
 	}
 	public void updateSoLuongPhong(Phong phong) {
@@ -95,7 +97,7 @@ public class DAOPhong {
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
 		String sql = "DELETE from Phong "
-				+ " MaPhong = ?";
+				+ "where MaPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, maPhong);
