@@ -176,7 +176,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		add(b, BorderLayout.WEST);
 
 		bb.setBorder(BorderFactory.createTitledBorder("Danh sách nhân viên"));
-		String[] headers = "Mã nhân viên;Họ tên;Chứng minh thư ;SĐT;Gmail ; Địa chỉ; Giới tính; Chức vụ; Mật khẩu;"
+		String[] headers = "Mã nhân viên;Họ tên;Chứng minh thư ;SĐT;Gmail;Địa chỉ;Giới tính ; Chức vụ; Mật khẩu;"
 				.split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -313,8 +313,8 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		// Load data
 		DAO_NV = new DAONhanVien();
 		for (NhanVien nv : DAO_NV.getAll()) {
-			Object row[] = { nv.getMaNV(), nv.getHoTen(), nv.getMatKhau(), nv.getChucVu(), nv.getGioiTinh(),
-					nv.getCmthu(), nv.getChucVu(), nv.getGmail(), nv.getDiaChi() };
+			Object row[] = { nv.getMaNV(), nv.getHoTen(), nv.getCmthu(), nv.getSdthoai(), nv.getGmail(),
+					nv.getDiaChi(), nv.getGioiTinh(), nv.getChucVu(), nv.getMatKhau() };
 			tableModel.addRow(row);
 		}
 	}
