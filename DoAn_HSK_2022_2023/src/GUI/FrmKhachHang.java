@@ -223,7 +223,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 			showMessage("Tên không tồn tại!", txtTenKH);
 			return false;
 		}
-		Pattern p2 = Pattern.compile("[0-9]{11}");
+		Pattern p2 = Pattern.compile("[0-9]{12}");
 		if (!(cmthu.length() > 0 && p2.matcher(cmthu).find())) {
 			showMessage("Chứng minh thư này không tồn tại!", txtCMinhThu);
 			return false;
@@ -324,9 +324,10 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		KhachHang kh = new KhachHang(makh, ten, cmthu, sdt, gmail);
 		try {
 			if (validData()) {
-				if (dsKH.themKHang(kh)) {
+				if (DAO_KH.add(kh)) {
 					String[] row = { makh, ten, cmthu, sdt, gmail };
 					tableModel.addRow(row);
+					dsKH.themKHang(kh);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công!");
 					showMessage("Thêm thành công!", txtMaKH);
@@ -373,35 +374,23 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 	
 	private void SuaKhachHang() {
 		// TODO Auto-generated method stub
-	
-			int r = table.getSelectedRow();
-			
-			if (r != -1) {	
-				String makh = txtMaKH.getText();
-				String tenkh = txtTenKH.getText();
-				String cmthu = txtCMinhThu.getText();
-				String sdt = txtSDT.getText();
-				String gmail = txtGMail.getText();
-				KhachHang kh = new KhachHang(makh, tenkh, cmthu, sdt, gmail);
-			
-
-				
-				if (DAO_KH.updateKhachHang(kh)) {
-					dsKH.suaKhachHang(kh);
-//					tableModel.setValueAt(soLuong, r, 2);
-//					//tableModel.setValueAt(thanhTien, r, 4);
-					loadData();
-					JOptionPane.showMessageDialog(null, "Cập nhật khách hàng thành công!");
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Không thành công! Vui lòng kiểm tra lại...");
-				}
-			} else {
-				JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng muốn xoá!");
+		String makh = txtMaKH.getText();
+		String tenkh = txtTenKH.getText();
+		String cmthu = txtCMinhThu.getText();
+		String sdt = txtSDT.getText();
+		String gmail = txtGMail.getText();
+		KhachHang kh = new KhachHang(makh, tenkh, cmthu, sdt, gmail);
+		if (validData()) {
+			if (dsKH.capNhatThongTinKhachHang(kh)) {
+				int index = dsKH.getList().indexOf(kh);
+				tableModel.setValueAt(tenkh, index, 1);
+				tableModel.setValueAt(cmthu, index, 2);
+				tableModel.setValueAt(sdt, index, 3);
+				tableModel.setValueAt(gmail, index, 4);
+				showMessage("Cập nhật thành công", txtMess);
+				JOptionPane.showMessageDialog(null, "Cập nhật thành công thông tin khách hàng!");
 			}
-			// TODO Auto-generated method stub
-			
-		
+		}
 
 	}
 	
@@ -411,6 +400,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá khách hàng này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
 				dsKH.xoaKHang(r);
+				DAO_KH.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				xoaTrang();
 			}

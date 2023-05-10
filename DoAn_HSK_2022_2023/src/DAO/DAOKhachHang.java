@@ -1,4 +1,5 @@
 package DAO;
+
 //sai thư viện
 //import java.beans.Statement;
 import java.sql.Connection;
@@ -9,11 +10,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import Entity.HoaDonDichVuPhong;
 import Entity.KhachHang;
 import connectDB.ConnectDB;
 
-public class DAOKhachHang{
+public class DAOKhachHang {
 
 	public List<KhachHang> getAll() {
 		List<KhachHang> DanhSachKhachHang = new ArrayList<KhachHang>();
@@ -21,37 +21,31 @@ public class DAOKhachHang{
 		Connection con = ConnectDB.getConnection();
 		try {
 			String sql = "select * from KhachHang";
-			Statement statement =con.createStatement();
+			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
-		while(rs.next()) {
-			DanhSachKhachHang.add(new KhachHang(
-					//getString phải trùng với tên của các trường trong sql
+			while (rs.next()) {
+				DanhSachKhachHang.add(new KhachHang(
+				// getString phải trùng với tên của các trường trong sql
 //					rs.getString("maKHang");
 //					rs.getString("tenKHang");
 //					rs.getString("CMThu");
 //					rs.getString("SDThoai");
 //					rs.getString("Gmail")));
-					rs.getString("MaKhachHang"),
-					rs.getString("TenKhachHang"),
-					rs.getString("CMT"),
-					rs.getString("SDT"),
-					rs.getString("Gmail")));
-		}
-		}catch (SQLException e) {
+						rs.getString("MaKhachHang"), rs.getString("TenKhachHang"), rs.getString("CMT"),
+						rs.getString("SDT"), rs.getString("Gmail")));
+			}
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			return DanhSachKhachHang;	
-	}	
-	
-		
+		return DanhSachKhachHang;
+	}
 
-	public void add(KhachHang kh) {
+	public boolean add(KhachHang kh) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "INSERT INTO KhachHang (maKHang,tenKHang,CMThu, SDThoai, Gmail) "
-				+ "values(?,?,?,?,?)";
+		String sql = "INSERT INTO KhachHang (MaKhachHang,TenKhachHang,CMT, SDT, Gmail) " + "values(?,?,?,?,?)";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, kh.getMaKHang());
@@ -64,22 +58,19 @@ public class DAOKhachHang{
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-		}
-		finally {
+			return false;
+		} finally {
 			close(stm);
 		}
+		return true;
 	}
 
-	public boolean updateKhachHang(KhachHang kh) {
+	public void updateSoLuong(KhachHang kh) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE HoaDonDichVuPhong "
-				+ " maKHang = ? "
-				+ " tenKHang = ? "
-				+ " CMThu = ? "
-				+ " SDThoai = ? "
+		String sql = "UPDATE KhachHang " + " MaKhachHang = ? " + " TenKhachHang = ? " + " CMT = ? " + " SDT = ?"
 				+ " Gmail = ? ";
 		try {
 			stm = con.prepareStatement(sql);
@@ -88,39 +79,35 @@ public class DAOKhachHang{
 			stm.setString(3, kh.getCMThu());
 			stm.setString(4, kh.getSDThoai());
 			stm.setString(5, kh.getGmail());
-			
+
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			return false;
-		}
-		finally {
+		} finally {
 			close(stm);
 		}
-		return true;
 	}
-	
+
 	public void delete(String maKHang) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "DELETE from KhachHang "
-				+ " maKHang = ?";
+		String sql = "DELETE from KhachHang " + "where MaKhachHang = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, maKHang);
-			
+
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
 		}
 	}
-	
+
 	private void close(PreparedStatement stm) {
 		// TODO Auto-generated method stub
-		if(stm!=null) {
+		if (stm != null) {
 			try {
 				stm.close();
 			} catch (SQLException e) {
@@ -130,10 +117,3 @@ public class DAOKhachHang{
 		}
 	}
 }
-
-
-
-
-
-	
-
