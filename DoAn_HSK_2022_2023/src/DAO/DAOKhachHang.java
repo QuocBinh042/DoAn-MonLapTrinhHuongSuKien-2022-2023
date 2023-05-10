@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import Entity.HoaDonDichVuPhong;
 import Entity.KhachHang;
 import connectDB.ConnectDB;
 
@@ -69,16 +70,16 @@ public class DAOKhachHang{
 		}
 	}
 
-	public void updateSoLuong(KhachHang kh) {
+	public boolean updateKhachHang(KhachHang kh) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE KhachHang "
+		String sql = "UPDATE HoaDonDichVuPhong "
 				+ " maKHang = ? "
 				+ " tenKHang = ? "
 				+ " CMThu = ? "
-				+ " SDThoai = ?"
+				+ " SDThoai = ? "
 				+ " Gmail = ? ";
 		try {
 			stm = con.prepareStatement(sql);
@@ -92,11 +93,14 @@ public class DAOKhachHang{
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
+	
 	public void delete(String maKHang) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
