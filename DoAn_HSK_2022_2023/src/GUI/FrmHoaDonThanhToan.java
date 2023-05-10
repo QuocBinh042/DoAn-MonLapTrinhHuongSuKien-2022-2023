@@ -53,7 +53,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private JTextField txtMaHoaDon, txtTongThanhToan, txtTim, txtThanhTienPhong, txtTienDichVu;
 	private JTextArea txtaGhiChu;
 	private JRadioButton radChuyenKhoan, radTienMat;
-	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat, btnTongTT;
+	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
 	private JTextField txtMess;
 	private Calendar dDate = Calendar.getInstance();
@@ -165,7 +165,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 		b.add(b5 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
-		b5.add(btnTongTT = new JButton("Tổng thanh toán"));
+		b5.add(lblTongThanhToan = new JLabel("Tổng thanh toán"));
 		b5.add(Box.createHorizontalStrut(5));
 		b5.add(txtTongThanhToan = new JTextField());
 
@@ -208,7 +208,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		lblMaDatPhong.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 		lblThanhTienPhong.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 		lblNgayThanhToan.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
-
+		lblTongThanhToan.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 		lblGhiChu.setPreferredSize(lblHinhThucThanhToan.getPreferredSize());
 
 		add(b, BorderLayout.WEST);
@@ -253,7 +253,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		btnXoaTrang.addActionListener(this);
 		btnLuu.addActionListener(this);
 		btnThoat.addActionListener(this);
-		btnTongTT.addActionListener(this);
 		table.addMouseListener(this);
 		dayTT.addItemListener(this);
 		monthTT.addItemListener(this);
@@ -415,10 +414,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			themHoaDonThanhToan();
 		} else if (o.equals(btnThoat))
 			System.exit(0);
-		else if (o.equals(btnTongTT)) {
-			txtTongThanhToan.setText(String.valueOf(
-					Double.parseDouble(txtThanhTienPhong.getText()) + Double.parseDouble(txtTienDichVu.getText())));
-		}
 
 	}
 
@@ -432,19 +427,23 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 		String ghiChu = txtaGhiChu.getText();
 		Date ngayTT = Date.valueOf(getNgayTT());
-		String hinhThucTT = "";
-		if (radChuyenKhoan.isSelected())
-			hinhThucTT = radChuyenKhoan.getText();
+		Boolean hinhThucTT = true;
 		if (radTienMat.isSelected())
-			hinhThucTT = radTienMat.getText();
-		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, maDP, ngayTT, hinhThucTT, thanhTienPhong, tongTT, ghiChu);
+			hinhThucTT = false;
+		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, maDP, ngayTT, hinhThucTT.toString(), thanhTienPhong, tongTT,
+				ghiChu);
 		try {
 			if (validData()) {
-				if (ds.themHoaDonThanhToan(hd)) {
-					String[] row = { maHDTT, maDP, ngayTT.toString(), hinhThucTT, String.valueOf(thanhTienPhong),
-							phiDV + "", String.valueOf(tongTT), ghiChu };
+				if (DAO_hoaDon.add(hd)) {
+					ds.themHoaDonThanhToan(hd);
+					String ht = "";
+					if (hinhThucTT) {
+						ht = "Chuyển khoản";
+					} else
+						ht = "Tiền mặt";
+					String[] row = { maHDTT, maDP, ngayTT.toString(), ht, String.valueOf(thanhTienPhong),
+							String.valueOf(tongTT), ghiChu };
 					tableModel.addRow(row);
-					DAO_hoaDon.add(hd);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm hoá đơn thành công!");
 				} else {
@@ -609,11 +608,13 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			for (PhieuDatPhong pdp : dsPDP) {
 				if (cbMaDatPhong.getSelectedItem().equals(pdp.getMaDatPhong())) {
 					Date ngayDen = pdp.getNgayDen();
-					Date ngayDi = Date.valueOf(getNgayTT());
-					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayDi.getTime() - ngayDen.getTime()));
+					Date ngayDi = pdp.getNgayDi();
+					Date ngayTT = Date.valueOf(getNgayTT());
+					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayTT.getTime() - ngayDen.getTime()));
 					for (Phong p : dsPhong) {
 						if (p.getMaPhong().equals(pdp.getMaPhong())) {
 							txtThanhTienPhong.setText(soNgay * p.getGiaPhong() + "");
+							p.setTinhTrang("Còn trống");
 							break;
 						}
 					}
@@ -623,6 +624,10 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 							phiDichVu += dvp.getThanhTienDichVu();
 						}
 					}
+					if (ngayDi.equals(ngayTT)) {
+						txtaGhiChu.setText("Thanh toán đúng hạn!");
+					} else if (ngayDi.before(ngayTT)) 
+						txtaGhiChu.setText("Trả phòng sớm!");
 					txtTienDichVu.setText(String.valueOf(phiDichVu));
 					break;
 				}

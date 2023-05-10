@@ -37,7 +37,7 @@ public class DAOHoaDonThanhToan {
 		return DanhSachHoaDonThanhToan;
 	}
 	
-	public void add(HoaDonThanhToan hd) {
+	public boolean add(HoaDonThanhToan hd) {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
@@ -57,10 +57,12 @@ public class DAOHoaDonThanhToan {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 		
 	}
 	public void updateHoaDonThanhToan(HoaDonThanhToan hd) {
@@ -99,7 +101,7 @@ public class DAOHoaDonThanhToan {
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
 		String sql = "DELETE from HoaDonThanhToan "
-				+ " MaHoaDon = ?";
+				+ "where MaHoaDon = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, maHoaDon);
