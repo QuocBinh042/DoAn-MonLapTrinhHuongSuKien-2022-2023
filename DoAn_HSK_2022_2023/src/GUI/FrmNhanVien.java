@@ -275,7 +275,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 			return false;
 		}
 
-		Pattern p2 = Pattern.compile("[0-9]{11}");
+		Pattern p2 = Pattern.compile("[0-9]{12}");
 		if (!(cmthu.length() > 0 && p2.matcher(cmthu).find())) {
 			showMessage("Chứng minh thư này không tồn tại!", txtCMThu);
 			return false;
