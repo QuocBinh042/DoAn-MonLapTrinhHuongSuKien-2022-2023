@@ -68,7 +68,13 @@ public class DAOPhong {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "Update Phong set TenPhong = ?, LoaiPhong = ?, GiaPhong = ?, MoTa = ?\r\n"
+		int tt;
+		if(phong.getTinhTrang().equalsIgnoreCase("Đã đặt")) {
+			tt=1;
+		}else {
+			tt=0;
+		}
+		String sql = "Update Phong set TenPhong = ?, LoaiPhong = ?, GiaPhong = ?, MoTa = ?, TinhTrang = ?\r\n"
 				+ "where MaPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
@@ -76,7 +82,8 @@ public class DAOPhong {
 			stm.setString(2, phong.getLoaiPhong());
 			stm.setDouble(3, phong.getGiaPhong());
 			stm.setString(4, phong.getMoTa());
-			stm.setString(5, phong.getMaPhong());
+			stm.setInt(5, tt);
+			stm.setString(6, phong.getMaPhong());
 			
 			stm.executeUpdate();
 		} catch (SQLException e) {
