@@ -171,28 +171,28 @@ INSERT INTO NhanVien values(N'NV013', N'Trần Lê Đại Trí', '123456', 0, N'
 INSERT INTO NhanVien values(N'NV014', N'Dương Đăng Khoa', '123456', 1, N'Nam', 151955489912, '0158386012',
 'dangkhoa0247@gmail.com', N'Tỉnh Hà Nam')
 INSERT INTO NhanVien values(N'NV015', N'Trần Thị Thảo My', '123456', 0, N'Nu', 148175079123, '0681497001',
-'thaomy5291@gmail.com', N'Thành Phố Hà Nội')
+'thaomy5291@gmail.com', N'Tỉnh Tiền Giang')
 --Xem toan bo NhanVien
 select * from NhanVien
 
 --------------------------------PHONG-----------------------------------------------
 --MaPhong--TenPhong--LoaiPhong--GiaPhong--MoTa--TinhTrang
 --InsertData
-INSERT INTO Phong values(N'P001',N'A001',N'VIP0001',10000000,N'Phòng có view biển',0)
-INSERT INTO Phong values(N'P002',N'A002',N'Single0001',10000000,N'Phòng đơn',0)
-INSERT INTO Phong values(N'P003',N'A003',N'Double0001',10000000,N'Phòng giành cho cặp đôi',0)
-INSERT INTO Phong values(N'P004',N'A004',N'Triple0001',10000000,N'Phòng giành cho bạn bè',0)
-INSERT INTO Phong values(N'P005',N'A005',N'VIP0001',10000000,N'Phòng có view biển',0)
-INSERT INTO Phong values(N'P006',N'A006',N'VIP0002',90000000,N'Phòng có view biển',0)
-INSERT INTO Phong values(N'P007',N'A007',N'Single0002',10000000,N'Phòng đơn',0)
-INSERT INTO Phong values(N'P008',N'A008',N'Double0002',50000000,N'Phòng giành cho cặp đôi',0)
-INSERT INTO Phong values(N'P009',N'A009',N'Triple0002',50000000,N'Phòng giành cho bạn bè',0)
-INSERT INTO Phong values(N'P010',N'A010',N'VIP0002',70000000,N'Phòng có view biển',0)
-INSERT INTO Phong values(N'P011',N'A011',N'VIP0002',40000000,N'Phòng có view biển',0)
-INSERT INTO Phong values(N'P012',N'A012',N'Single0002',10000000,N'Phòng đơn',0)
-INSERT INTO Phong values(N'P013',N'A013',N'Double0002',80000000,N'Phòng giành cho cặp đôi',0)
-INSERT INTO Phong values(N'P014',N'A014',N'Triple0002',90000000,N'Phòng giành cho bạn bè',0)
-INSERT INTO Phong values(N'P015',N'A015',N'VIP0002',50000000,N'Phòng có view biển',0)
+INSERT INTO Phong values(N'P001',N'C001',N'Single0001',100000,N'Phòng đơn',0)
+INSERT INTO Phong values(N'P002',N'C002',N'Single0002',100000,N'Phòng đơn',0)
+INSERT INTO Phong values(N'P003',N'C003',N'Single0003',100000,N'Phòng đơn',0)
+INSERT INTO Phong values(N'P004',N'C004',N'Single0004',500000,N'Phòng đơn có view biển',0)
+INSERT INTO Phong values(N'P005',N'C005',N'Single0005',500000,N'Phòng đơn có view biển',0)
+INSERT INTO Phong values(N'P006',N'B001',N'Double0001',200000,N'Phòng giành cho cặp đôi',0)
+INSERT INTO Phong values(N'P007',N'B002',N'Double0002',200000,N'Phòng giành cho cặp đôi',0)
+INSERT INTO Phong values(N'P008',N'B003',N'Double0003',200000,N'Phòng giành cho cặp đôi',0)
+INSERT INTO Phong values(N'P009',N'B004',N'Double0004',750000,N'Phòng giành cho cặp đôi có view biển',0)
+INSERT INTO Phong values(N'P010',N'B005',N'Double0005',750000,N'Phòng giành cho cặp đôi có view biển',0)
+INSERT INTO Phong values(N'P011',N'A001',N'VIP0001',1000000,N'Phòng có view biển',0)
+INSERT INTO Phong values(N'P012',N'A002',N'VIP0002',1500000,N'Phòng có view biển, núi non',0)
+INSERT INTO Phong values(N'P013',N'A003',N'VIP0003',700000,N'Phòng có view núi non',0)
+INSERT INTO Phong values(N'P014',N'A004',N'VIP0004',1200000,N'Phòng có view thành phố',0)
+INSERT INTO Phong values(N'P015',N'A005',N'VIP0005',1000000,N'Phòng có view biển',0)
 go
 
 --Update Phong
@@ -201,10 +201,10 @@ go
 --UPDATE Phong set TinhTrang = 1 where MaPhong = N'P014'
 --UPDATE Phong set TinhTrang = 1 where MaPhong = N'P012'
 --UPDATE Phong set TinhTrang = 1 where MaPhong = N'P003'
---UPDATE Phong set TinhTrang = 1 where MaPhong = N'P013'
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P015'
 --
---Update Phong set TenPhong = N'A019', LoaiPhong = N'Double0022', GiaPhong = 3300000, MoTa = N'Phòng đôi view biển'
---where MaPhong = 'P016'
+--Update Phong set TenPhong = N'A014', LoaiPhong = N'VIP0006', GiaPhong = 550000, MoTa = N'Phòng đôi view biển và thành phố', TinhTrang = 1
+--where MaPhong = 'P014'
 go
 --Xoa phong theo MaPhong
 --DELETE from Phong where MaPhong = 'P001'
@@ -297,7 +297,7 @@ select * from HoaDonDichVuPhong
 --select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan
 --from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
 --where p.MaPhong = 'P005'
---select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = SUM(ThanhTienPhong), Tong = SUM(ThanhTienDichVu) + SUM(ThanhTienPhong)
+--select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = Sum(ThanhTienPhong), Tong = SUM(TongThanhToan)
 --from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong join HoaDonDichVuPhong dvp on pdp.MaDatPhong=dvp.MaDatPhong
 --where NgayThanhToan BETWEEN CAST('2022-05-28' AS DATE) AND CAST('2023-07-10' AS DATE)
 --group by p.MaPhong
