@@ -202,20 +202,20 @@ go
 --------------------------------DICH VU-----------------------------------------------
 --InsertData
 INSERT INTO DichVu values(N'DV001',N'Khăn giấy',3000)
-INSERT INTO DichVu values(N'DV002',N'Nước ngọt 7 Up 330ml',10000)
+INSERT INTO DichVu values(N'DV002',N'7 Up',10000)
 INSERT INTO DichVu values(N'DV003',N'Khăn ướt',4000)
 INSERT INTO DichVu values(N'DV004',N'Nước suối Aquafina 500ml',3000)
 INSERT INTO DichVu values(N'DV005',N'Coca cola',8000)
 INSERT INTO DichVu values(N'DV006',N'Nước suối Lavie 500ml',5000)
-INSERT INTO DichVu values(N'DV007',N'Nước ngọt 7 Up 330ml',10000)
-INSERT INTO DichVu values(N'DV008',N'Pepsi zero zalo 350ml',10000)
-INSERT INTO DichVu values(N'DV009',N'Nước suối Aquafina 500ml',5000)
-INSERT INTO DichVu values(N'DV010',N'Khăn ướt',8000)
-INSERT INTO DichVu values(N'DV011',N'Khăn giấy',8000)
-INSERT INTO DichVu values(N'DV012',N'Nước ngọt 7 Up 330ml',10000)
-INSERT INTO DichVu values(N'DV013',N'Khăn ướt',10000)
-INSERT INTO DichVu values(N'DV014',N'Nước suối Aquafina 500ml',20000)
-INSERT INTO DichVu values(N'DV015',N'Coca cola',500000)
+INSERT INTO DichVu values(N'DV007',N'Pepsi',12000)
+INSERT INTO DichVu values(N'DV008',N'Pepsi zero calo 350ml',12000)
+INSERT INTO DichVu values(N'DV009',N'Nước suối Vĩnh Hão',5000)
+INSERT INTO DichVu values(N'DV010',N'Cà phê đá',15000)
+INSERT INTO DichVu values(N'DV011',N'Cà phê sữa đá',18000)
+INSERT INTO DichVu values(N'DV012',N'Espresso',35000)
+INSERT INTO DichVu values(N'DV013',N'Americano',39000)
+INSERT INTO DichVu values(N'DV014',N'Cappuccino',55000)
+INSERT INTO DichVu values(N'DV015',N'Latte',55000)
 --Xem Toan bo DichVu
 select *from DichVu
 
@@ -237,6 +237,11 @@ values(N'PDP001',N'NV001',N'P001', N'KH001', '2023/5/11', '2023/5/12', '2023/5/2
 	  (N'PDP013',N'NV013',N'P013', N'KH013','2023/7/14','2023/7/15', '2023/7/20',3,''),
 	  (N'PDP014',N'NV014',N'P014', N'KH014','2023/7/15','2023/7/16', '2023/7/23',4,''),
 	  (N'PDP015',N'NV015',N'P015', N'KH015','2023/7/25','2023/7/26', '2023/7/28',1,'')
+--Phần test phòng trùng
+--INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
+--values(N'PDP016',N'NV006',N'P006', N'KH001','2023/6/12','2023/6/23', '2023/6/25',2,''),
+--	  (N'PDP017',N'NV003',N'P001', N'KH011', '2023/5/15', '2023/5/24', '2023/5/28',3,''),
+--	  (N'PDP018',N'NV003',N'P005', N'KH014','2023/5/20','2023/5/25', '2023/5/30',1,'')
 --Xem toan bo PhieuDatPhong
 select * from PhieuDatPhong
 
@@ -244,20 +249,21 @@ select * from PhieuDatPhong
 --------------------------------HoaDonDichVuPhong-----------------------------------------------
 --InsertData HoaDonDichVuPhong
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV001',9)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP002',N'DV002',5)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP003',N'DV003',7)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV002',5)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'DV003',7)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV004',3)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV005',5)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV005',5)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP006',N'DV006',15)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV007',10)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP008',N'DV008',4)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP009',N'DV009',8)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP010',N'DV010',20)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP011',N'DV011',10)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP012',N'DV012',6)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP013',N'DV013',20)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV008',4)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV009',8)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV010',20)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV011',10)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'DV012',6)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'DV013',20)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'DV014',10)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV015',6)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP016',N'DV002',6)
 --Xem toan bo HoaDonDichVuPhong
 select * from HoaDonDichVuPhong
 
@@ -291,7 +297,12 @@ select * from HoaDonDichVuPhong
 --UPDATE HoaDonDichVuPhong
 --Set ThanhTienDichVu = SoLuong * @gia
 --where MaPhong = 'P001' and MaDichVu = 'DV003'
-
+--select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan
+--from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
+--where p.MaPhong = 'P001'
+--select p.MaPhong, thanhtien = Sum(ThanhTienPhong), tong = SUM(TongThanhToan)
+--from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
+--group by p.MaPhong
 --------------------------------HoaDonThanhToan-----------------------------------------------
 --InsertData HoaDonThanhToan
 INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
@@ -310,7 +321,14 @@ values(N'HD001',N'PDP001','2023/5/2',1, 2000000, 2030000, ''),
 	  (N'HD013',N'PDP013','2023/7/15',0, 1000000, 1020000, ''),
 	  (N'HD014',N'PDP014','2023/7/20',1, 3000000, 3050000, ''),
 	  (N'HD015',N'PDP015','2023/7/25',1, 1000000, 1060000, '')
+	  -----TEST
+--INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
+--values(N'HD016',N'PDP016','2023/5/2',1, 2000000, 2030000, ''),
+--	(N'HD017',N'PDP017','2023/5/2',1, 100000, 5000000, ''),
+--	(N'HD018',N'PDP018','2023/5/2',1, 20000, 600000, '')
 		--Xem toan bo HoaDonThanhToan
 select * from HoaDonThanhToan
+--select * from HoaDonThanhToan
+--where NgayThanhToan BETWEEN CAST('2023-05-28' AS DATE) AND CAST('2023-07-10' AS DATE)
 --Xoa HoaDonThanhToan khi biet MaHoaDon
 --delete from HoaDonThanhToan where MaHoaDon = 'HD001'

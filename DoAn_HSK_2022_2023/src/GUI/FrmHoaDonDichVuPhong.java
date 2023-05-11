@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -170,7 +171,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		//delete all
 		deleteAllDataJtable();
 		//Load data
-//		ArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
+		ArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
 		DAO_dvp = new DAOHoaDonDichVuPhong();
 		ds.clear();
 		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
@@ -178,10 +179,10 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 			Object row[] = {dvp.getMaDatPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
 			tableModel.addRow(row);
 		}
-//		dsDVP = ds.getList();
-//		for(int i=0;i<dsDVP.size();i++) {
-//			System.out.println(dsDVP.get(i).getThanhTienDichVu());
-//		}
+		dsDVP = ds.getList();
+		for(int i=0;i<dsDVP.size();i++) {
+			System.out.println(dsDVP.get(i).getThanhTienDichVu());
+		}
 	}
 	
 	@Override

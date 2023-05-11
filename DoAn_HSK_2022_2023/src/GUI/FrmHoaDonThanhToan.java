@@ -38,6 +38,7 @@ import DAO.DAOHoaDonDichVuPhong;
 import DAO.DAOHoaDonThanhToan;
 import DAO.DAOPhieuDatPhong;
 import DAO.DAOPhong;
+import DanhSach.DanhSachHoaDonDichVuPhong;
 import DanhSach.DanhSachHoaDonThanhToan;
 import DanhSach.DanhSachPhieuDatPhong;
 import Entity.HoaDonDichVuPhong;
@@ -241,7 +242,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 		// Gọi hàm loadData
 		loadData();
-
 		// ĐĂNG KÝ SỰ KIỆN
 		TXTedit_false();
 		btnLuu.setEnabled(false);
@@ -356,7 +356,15 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			tableModel.addRow(row);
 		}
 	}
-
+	public void testArr() {
+		DanhSachHoaDonDichVuPhong dsdvp = new DanhSachHoaDonDichVuPhong();
+		ArrayList<HoaDonDichVuPhong> arrdvp = new ArrayList<HoaDonDichVuPhong>();
+		arrdvp = dsdvp.getList();
+		for (int i=0; i<arrdvp.size(); i++) {
+			System.out.println(i);
+			System.out.println(arrdvp.get(i).getThanhTienDichVu());
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -375,6 +383,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 				btnSua.setEnabled(true);
 				btnLuu.setEnabled(false);
 				showMessage("", txtMess);
+				loadData();
 			}
 		} else if (o.equals(btnSua)) {
 			btnThem.setEnabled(false);
