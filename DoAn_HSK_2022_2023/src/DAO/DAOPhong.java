@@ -64,7 +64,7 @@ public class DAOPhong {
 		return true;
 		
 	}
-	public boolean updateSoLuongPhong(Phong phong) {
+	public boolean updatePhong(Phong phong) {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
@@ -84,8 +84,8 @@ public class DAOPhong {
 			stm.setString(4, phong.getMoTa());
 			stm.setInt(5, tt);
 			stm.setString(6, phong.getMaPhong());
-			
 			stm.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -94,7 +94,7 @@ public class DAOPhong {
 		finally {
 			close(stm);
 		}
-		return true;
+		
 	}
 	
 	public void delete(String maPhong) {

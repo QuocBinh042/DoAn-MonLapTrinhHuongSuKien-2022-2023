@@ -11,10 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -34,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import DAO.DAOKhachHang;
 import DAO.DAOPhieuDatPhong;
 import DAO.DAOPhong;
+import DanhSach.DanhSachKhachHang;
 import DanhSach.DanhSachPhieuDatPhong;
 import DanhSach.DanhSachPhong;
 import Entity.KhachHang;
@@ -43,11 +41,15 @@ import connectDB.ConnectDB;
 
 public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseListener, ItemListener {
 
-	private DanhSachPhieuDatPhong dsPDP;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private JTable table;
 	private JTextField txtMaDatPhong, txtMaNV, txtSoNguoi, txtTim;
 	private JTextArea txtaGhiChu;
-	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat, btnThanhTienPhong;
+	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTim, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
 	private JTextField txtMess;
 	private Calendar startDate = Calendar.getInstance();
@@ -56,13 +58,13 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private JComboBox startYear, startMonth, startDay;
 	private JComboBox endYear, endMonth, endDay;
 	private JComboBox bookYear, bookMonth, bookDay;
-	private JComboBox cbMaPhong, cbMaKhachHang;
+	private JComboBox<String> cbMaPhong, cbMaKhachHang;
 	private DAOPhieuDatPhong DAO_datPhong;
 	private DAOPhong DAO_phong;
 	private DanhSachPhong dsPhong;
 	private DAOKhachHang DAO_khachHang;
-	private List<KhachHang> dsKhachHang;
-
+	private DanhSachKhachHang dsKhachHang;
+	private DanhSachPhieuDatPhong dsPhieuDatPhong = new DanhSachPhieuDatPhong();
 	public FrmPhieuDatPhong() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -70,7 +72,6 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		dsPDP = new DanhSachPhieuDatPhong();
 		createGUI();
 	}
 
@@ -130,7 +131,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		b4.add(cbMaKhachHang = new JComboBox<>());
 		DAO_khachHang = new DAOKhachHang();
 		dsKhachHang = DAO_khachHang.getAll();
-		for (KhachHang kh : dsKhachHang) {
+		for (KhachHang kh : dsKhachHang.getList()) {
 			cbMaKhachHang.addItem(kh.getMaKHang());
 		}
 
@@ -374,7 +375,8 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		deleteAllDataJtable();
 		// Load data
 		DAO_datPhong = new DAOPhieuDatPhong();
-		for (PhieuDatPhong pdp : DAO_datPhong.getAll()) {
+		dsPhieuDatPhong = DAO_datPhong.getAll();
+		for (PhieuDatPhong pdp : dsPhieuDatPhong.getList()) {
 			Object row[] = { pdp.getMaDatPhong(), pdp.getMaNhanVien(), pdp.getMaPhong(), pdp.getMaKhachHang(),
 					pdp.getNgayDatPhong(), pdp.getNgayDen(), pdp.getNgayDi(), pdp.getSoNguoi(), pdp.getGhiChu() };
 			tableModel.addRow(row);
@@ -474,7 +476,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		try {
 			if (validData()) {
 				if (DAO_datPhong.add(p)) {
-					dsPDP.themPhieuDatPhong(p);
+					dsPhieuDatPhong.themPhieuDatPhong(p);
 					String[] row = { maDP, maNV, maPhong, maKhachHang, ngayDatPhong, ngayDen, ngayDi,
 							Integer.toString(soNguoi), ghiChu };
 					tableModel.addRow(row);
@@ -498,7 +500,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 	private void TimPhieuDatPhong() {
 		// TODO Auto-generated method stub
-		int pos = dsPDP.timPhieuDatPhongTheoMa(txtTim.getText());
+		int pos = dsPhieuDatPhong.timPhieuDatPhongTheoMa(txtTim.getText());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Tồn tại phiếu đặt phòng có mã số này!");
 			table.setRowSelectionInterval(pos, pos);
@@ -521,8 +523,8 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		PhieuDatPhong p = new PhieuDatPhong(maDP, maNV, maPhong, maKhachHang, Date.valueOf(ngayDatPhong),
 				Date.valueOf(ngayDen), Date.valueOf(ngayDi), soNguoi, ghiChu);
 		if (validData()) {
-			if (dsPDP.suaPhieuDatPhong(p)) {
-				int index = dsPDP.getList().indexOf(p);
+			if (DAO_datPhong.update(p)) {
+				int index = dsPhieuDatPhong.getList().indexOf(p);
 				tableModel.setValueAt(maNV, index, 1);
 				tableModel.setValueAt(maPhong, index, 2);
 				tableModel.setValueAt(maKhachHang, index, 3);
@@ -531,7 +533,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 				tableModel.setValueAt(ngayDi, index, 6);
 				tableModel.setValueAt(soNguoi, index, 7);
 				tableModel.setValueAt(ghiChu, index, 8);
-				DAO_datPhong.update(p);
+				dsPhieuDatPhong.suaPhieuDatPhong(p);
 				showMessage("Cập nhật thành công!", txtMess);
 				JOptionPane.showMessageDialog(null, "Cập nhật phiếu đặt phòng thành công!");
 			}
@@ -549,7 +551,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá phiếu đặt phòng này không?", "Chú ý!",
 					JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				dsPDP.xoaPhieuDatPhong(r);
+				dsPhieuDatPhong.xoaPhieuDatPhong(r);
 				DAO_datPhong.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				JOptionPane.showMessageDialog(null, "Xoá phiếu đặt phòng thành công!");

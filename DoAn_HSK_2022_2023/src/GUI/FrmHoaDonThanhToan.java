@@ -67,7 +67,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private DanhSachPhong dsPhong;
 	private DAOHoaDonDichVuPhong DAO_DichVuPhong = new DAOHoaDonDichVuPhong();
 	private List<HoaDonDichVuPhong> dsDVP;
-	private ArrayList<PhieuDatPhong> dsPDP;
+	private DanhSachPhieuDatPhong dsPhieuDatPhong;
 	private DecimalFormat formatter = new DecimalFormat("###,###,###");
 
 	public FrmHoaDonThanhToan() {
@@ -118,8 +118,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b1.add(Box.createHorizontalStrut(5));
 		b1.add(cbMaDatPhong = new JComboBox<>());
 		DAO_phieudDatPhong = new DAOPhieuDatPhong();
-		dsPDP = DAO_phieudDatPhong.getAll();
-		for (PhieuDatPhong pdp : dsPDP) {
+		dsPhieuDatPhong = DAO_phieudDatPhong.getAll();
+		for (PhieuDatPhong pdp : dsPhieuDatPhong.getList()) {
 			cbMaDatPhong.addItem(pdp.getMaDatPhong());
 		}
 
@@ -618,7 +618,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			dDate.set(Calendar.DATE, day);
 		}
 		if (event.getSource() == cbMaDatPhong) {
-			for (PhieuDatPhong pdp : dsPDP) {
+			for (PhieuDatPhong pdp : dsPhieuDatPhong.getList()) {
 				if (cbMaDatPhong.getSelectedItem().equals(pdp.getMaDatPhong())) {
 					Date ngayDen = pdp.getNgayDen();
 					Date ngayDi = pdp.getNgayDi();

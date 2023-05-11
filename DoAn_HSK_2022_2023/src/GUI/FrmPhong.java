@@ -418,7 +418,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			if (radDaDat.isSelected())
 				tinhTrang = radDaDat.getText();
 			Phong ph = new Phong(maPhong, tenPhong, loaiPhong, giaPhong, moTa, tinhTrang);
-			if (DAO_Phong.updateSoLuongPhong(ph)) {
+			if (DAO_Phong.updatePhong(ph)) {
 				dsPhong.capNhatThongTinPhong(ph);
 				loadData();
 				JOptionPane.showMessageDialog(null, "Cập nhật thông tin phòng thành công!");

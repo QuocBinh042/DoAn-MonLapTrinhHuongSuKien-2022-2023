@@ -14,9 +14,9 @@ import connectDB.ConnectDB;
 
 public class DAOPhieuDatPhong {
 
-	public ArrayList<PhieuDatPhong> getAll() {
+	public DanhSachPhieuDatPhong getAll() {
 		// TODO Auto-generated method stub
-		List<PhieuDatPhong> DanhSachPhieuDatPhong = new ArrayList<PhieuDatPhong>();
+		DanhSachPhieuDatPhong dsPhieuDatPhong = new DanhSachPhieuDatPhong();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
@@ -24,7 +24,7 @@ public class DAOPhieuDatPhong {
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {
-				DanhSachPhieuDatPhong.add(
+				dsPhieuDatPhong.themPhieuDatPhong(
 						new PhieuDatPhong(rs.getString("MaDatPhong"), rs.getString("MaNV"), rs.getString("MaPhong"),
 								rs.getString("IDNguoiDatPhong"), rs.getDate("NgayDatPhong"), rs.getDate("NgayCheckIn"),
 								rs.getDate("NgayCheckOut"), rs.getInt("SoNguoi"), rs.getString("GhiChu")));
@@ -33,7 +33,7 @@ public class DAOPhieuDatPhong {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return (ArrayList<PhieuDatPhong>) DanhSachPhieuDatPhong;
+		return dsPhieuDatPhong;
 	}
 
 	public boolean add(PhieuDatPhong pdp) {
@@ -66,32 +66,33 @@ public class DAOPhieuDatPhong {
 		return true;
 	}
 
-	public void update(PhieuDatPhong pdp) {
+	public boolean update(PhieuDatPhong pdp) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE PhieuDatPhong " + " MaDatPhong = ? " + " MaNV = ? " + " MaPhong = ? "
-				+ " IDNguoiDatPhong = ?" + " NgayDatPhong = ? " + " NgayCheckIn = ? " + " NgayCheckOut = ? " 
-				+ " SoNguoi = ? " + " GhiChu = ? ";
+		String sql = "UPDATE PhieuDatPhong set MaNV = ?, MaPhong = ?, IDNguoiDatPhong = ?, NgayDatPhong = ?, NgayCheckIn = ?, NgayCheckOut = ?, SoNguoi = ?, GhiChu = ? where MaDatPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
-			stm.setString(1, pdp.getMaDatPhong());
-			stm.setString(2, pdp.getMaNhanVien());
-			stm.setString(3, pdp.getMaPhong());
-			stm.setString(4, pdp.getMaKhachHang());
-			stm.setDate(6, pdp.getNgayDatPhong());
-			stm.setDate(7, pdp.getNgayDen());
-			stm.setDate(8, pdp.getNgayDi());
-			stm.setInt(9, pdp.getSoNguoi());
-			stm.setString(10, pdp.getGhiChu());
+			
+			stm.setString(1, pdp.getMaNhanVien());
+			stm.setString(2, pdp.getMaPhong());
+			stm.setString(3, pdp.getMaKhachHang());
+			stm.setDate(4, pdp.getNgayDatPhong());
+			stm.setDate(5, pdp.getNgayDen());
+			stm.setDate(6, pdp.getNgayDi());
+			stm.setInt(7, pdp.getSoNguoi());
+			stm.setString(8, pdp.getGhiChu());
+			stm.setString(9, pdp.getMaDatPhong());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		} finally {
 			close(stm);
 		}
+		return true;
 	}
 
 	public void delete(String maDatPhong) {
