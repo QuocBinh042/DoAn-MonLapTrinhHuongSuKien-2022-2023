@@ -16,7 +16,7 @@ public class DAOThongKe {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = Sum(ThanhTienPhong), Tong = SUM(TongThanhToan)\r\n"
+			String sql = "select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = Sum(ThanhTienPhong), Tong = SUM(ThanhTienDichVu) + SUM(ThanhTienPhong)\r\n"
 					+ "from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong join HoaDonDichVuPhong dvp on pdp.MaDatPhong=dvp.MaDatPhong\r\n"
 					+ "where NgayThanhToan BETWEEN CAST('"+start+"' AS DATE) AND CAST('"+end+"' AS DATE)\r\n"
 					+ "group by p.MaPhong";

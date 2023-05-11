@@ -293,14 +293,14 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP016',N'D
 --Xem toan bo HoaDonDichVuPhong
 select * from HoaDonDichVuPhong
 --Xử lý form thống kê
-select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
-select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan
-from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
-where p.MaPhong = 'P005'
-select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = Sum(ThanhTienPhong), Tong = SUM(TongThanhToan)
-from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong join HoaDonDichVuPhong dvp on pdp.MaDatPhong=dvp.MaDatPhong
-where NgayThanhToan BETWEEN CAST('2022-05-28' AS DATE) AND CAST('2023-07-10' AS DATE)
-group by p.MaPhong
+--select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
+--select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan
+--from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
+--where p.MaPhong = 'P005'
+--select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = SUM(ThanhTienPhong), Tong = SUM(ThanhTienDichVu) + SUM(ThanhTienPhong)
+--from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong join HoaDonDichVuPhong dvp on pdp.MaDatPhong=dvp.MaDatPhong
+--where NgayThanhToan BETWEEN CAST('2022-05-28' AS DATE) AND CAST('2023-07-10' AS DATE)
+--group by p.MaPhong
 
 --------------------------------HoaDonThanhToan-----------------------------------------------
 --InsertData HoaDonThanhToan

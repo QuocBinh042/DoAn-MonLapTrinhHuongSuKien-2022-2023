@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -39,6 +40,7 @@ public class FrmThongKe extends JFrame implements ActionListener{
 	private JButton btnTim;
 	private JTable table;
 	private DefaultTableModel tableModel;
+	private DecimalFormat fmt = new DecimalFormat("###,###");
 	private DanhSachThongKe ds;
 	private DAOThongKe DAO_TK;
 	public FrmThongKe(){
@@ -148,11 +150,11 @@ public class FrmThongKe extends JFrame implements ActionListener{
 		for(ThongKe tk:DAO_TK.getAll(start,end)) {
 			if(ds.them(tk)) {	
 				sum+=tk.getTongTien();
-				Object row[] = {tk.getMaPhong(),String.valueOf(tk.getTienDV()),String.valueOf(tk.getTienPhong()),String.valueOf(tk.getTongTien())};
+				Object row[] = {tk.getMaPhong(),fmt.format(tk.getTienDV()),fmt.format(tk.getTienPhong()),fmt.format(tk.getTongTien())};
 				tableModel.addRow(row);
 			}
 		}
-		lblValue.setText(String.valueOf(sum));
+		lblValue.setText(fmt.format(sum)+" VND");
 	}
 	public void loadData() {
 		//delete all
