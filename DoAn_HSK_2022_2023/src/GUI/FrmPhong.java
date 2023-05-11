@@ -218,6 +218,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 
 	public void loadData() {
 		// delete all
+		deleteAllDataJtable();
 		// Load data
 		DAO_Phong = new DAOPhong();
 		String tinhTrang = "";
@@ -230,6 +231,15 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 					phong.getMoTa(), tinhTrang };
 			tableModel.addRow(row);
 		}
+	}
+
+	private void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel)table.getModel();
+		while(dm.getRowCount() > 0)
+		{
+		    dm.removeRow(0);
+		}
+		
 	}
 
 	private boolean validData() {
@@ -395,28 +405,32 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 
 	private void CapNhatThongTinPhong() {
 		// TODO Auto-generated method stub
-		String maPhong = txtMaPhong.getText();
-		String tenPhong = txtTen.getText();
-		String loaiPhong = txtLoai.getText();
-		double giaPhong = Double.parseDouble(txtGiaPhong.getText());
-		String moTa = txtMoTa.getText();
-		String tinhTrang = "";
-
-		if (radTrong.isSelected())
-			tinhTrang = radTrong.getText();
-		if (radDaDat.isSelected())
-			tinhTrang = radDaDat.getText();
-		Phong ph = new Phong(maPhong, tenPhong, loaiPhong, giaPhong, moTa, tinhTrang);
-
-		if (dsP.capNhatThongTinPhong(ph)) {
-			int index = dsP.getList().indexOf(ph);
-			tableModel.setValueAt(tenPhong, index, 1);
-			tableModel.setValueAt(loaiPhong, index, 2);
-			tableModel.setValueAt(giaPhong, index, 3);
-			tableModel.setValueAt(moTa, index, 4);
-			tableModel.setValueAt(tinhTrang, index, 5);
-			showMessage("Cập nhật thông tin phòng thành công!", txtMess);
-			JOptionPane.showMessageDialog(null, "Cập nhật thông tin phòng thành công!");
+		
+		int r = table.getSelectedRow();
+		
+		if (r != -1) {	
+			String maPhong = txtMaPhong.getText();
+			String tenPhong = txtTen.getText();
+			String loaiPhong = txtLoai.getText();
+			double giaPhong = Double.parseDouble(txtGiaPhong.getText());
+			String moTa = txtMoTa.getText();
+			String tinhTrang = "";
+			if (radTrong.isSelected())
+				tinhTrang = radTrong.getText();
+			if (radDaDat.isSelected())
+				tinhTrang = radDaDat.getText();
+			Phong ph = new Phong(maPhong, tenPhong, loaiPhong, giaPhong, moTa, tinhTrang);
+			if (DAO_Phong.updateSoLuongPhong(ph)) {
+				dsP.capNhatThongTinPhong(ph);
+				loadData();
+				JOptionPane.showMessageDialog(null, "Cập nhật thông tin phòng thành công!");
+				showMessage("Cập nhật thông tin phòng thành công!", txtMess);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Cập nhật phòng không thành công!");
+			}
+		}else {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng muốn xoá!");
 		}
 
 	}
@@ -443,7 +457,10 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 				dsP.xoaPhong(r);
 				DAO_Phong.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
+				loadData();
 				xoaTrang();
+				JOptionPane.showMessageDialog(null, "Xóa phòng thành công!");
+				showMessage("Xóa phòng thành công!", txtMess);
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng muốn xoá!");
@@ -459,13 +476,10 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		txtLoai.setText(table.getValueAt(row, 2).toString());
 		txtGiaPhong.setText(table.getValueAt(row, 3).toString());
 		txtMoTa.setText(table.getValueAt(row, 4).toString());
-		if (tableModel.getValueAt(row, 5).toString().equalsIgnoreCase("Còn trống")) {
-			radTrong.setSelected(true);
-			radDaDat.setSelected(false);
-		} else {
-			radTrong.setSelected(false);
+		if (tableModel.getValueAt(row, 5).toString().equalsIgnoreCase("Đã đặt")) 
 			radDaDat.setSelected(true);
-		}
+		else
+			radTrong.setSelected(true);
 	}
 
 	@Override

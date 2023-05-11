@@ -63,33 +63,30 @@ public class DAOPhong {
 		return true;
 		
 	}
-	public void updateSoLuongPhong(Phong phong) {
+	public boolean updateSoLuongPhong(Phong phong) {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE Phong "
-				+ " MaPhong = ? "
-				+ " TenPhong = ? "
-				+ " LoaiPhong = ? "
-				+ " GiaPhong = ?"
-				+ " MoTa = ? "
-				+ " TinhTrang = ? ";
+		String sql = "Update Phong set TenPhong = ?, LoaiPhong = ?, GiaPhong = ?, MoTa = ?\r\n"
+				+ "where MaPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
-			stm.setString(1, phong.getMaPhong());
-			stm.setString(2, phong.getTenPhong());
-			stm.setString(3, phong.getLoaiPhong());
-			stm.setDouble(4, phong.getGiaPhong());
-			stm.setString(5, phong.getMoTa());
-			stm.setString(6, phong.getTinhTrang());
+			stm.setString(1, phong.getTenPhong());
+			stm.setString(2, phong.getLoaiPhong());
+			stm.setDouble(3, phong.getGiaPhong());
+			stm.setString(4, phong.getMoTa());
+			stm.setString(5, phong.getMaPhong());
+			
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
 	
 	public void delete(String maPhong) {
