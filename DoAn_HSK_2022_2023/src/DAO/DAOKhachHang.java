@@ -70,8 +70,8 @@ public class DAOKhachHang {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE KhachHang " + " MaKhachHang = ? " + " TenKhachHang = ? " + " CMT = ? " + " SDT = ?"
-				+ " Gmail = ? ";
+		String sql = "Update KhachHang set ,TenKhachHang = ?, CMT = ?, SDT = ?, Gmail = ?\r\n"
+				+ "where MaKhachHang = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, kh.getMaKHang());
