@@ -34,7 +34,7 @@ import connectDB.ConnectDB;
 
 public class FrmKhachHang extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private DanhSachKhachHang dsKH;
+	private DanhSachKhachHang dsKhachHang = new DanhSachKhachHang();
 	private JTable table;
 	private JTextField txtMaKH, txtTenKH, txtCMinhThu, txtSDT, txtGMail, txtTimMa, txtTimTen, txtMess;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTimMa, btnTimTen, btnThoat, btnSua;
@@ -60,7 +60,6 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		dsKH = new DanhSachKhachHang();
 
 		JPanel pnlNorth = new JPanel();
 		add(pnlNorth, BorderLayout.NORTH);
@@ -248,7 +247,8 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		// delete all
 		// Load data
 		DAO_KH = new DAOKhachHang();
-		for (KhachHang kh : DAO_KH.getAll()) {
+		dsKhachHang = DAO_KH.getAll();
+		for (KhachHang kh : dsKhachHang.getList()) {
 			Object row[] = { kh.getMaKHang(), kh.getTenKHang(), kh.getCMThu(), kh.getSDThoai(), kh.getGmail() };
 			tableModel.addRow(row);
 		}
@@ -327,7 +327,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 				if (DAO_KH.add(kh)) {
 					String[] row = { makh, ten, cmthu, sdt, gmail };
 					tableModel.addRow(row);
-					dsKH.themKHang(kh);
+					dsKhachHang.themKHang(kh);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm khách hàng thành công!");
 					showMessage("Thêm thành công!", txtMaKH);
@@ -350,7 +350,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 
 	private void TimKhachHangTheoMa() {
 		// TODO Auto-generated method stub
-		int pos = dsKH.timKhachHangTheoMa(txtTimMa.getText());
+		int pos = dsKhachHang.timKhachHangTheoMa(txtTimMa.getText());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Khách hàng này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);
@@ -362,7 +362,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 
 	private void TimKhachHangTheoTen() {
 		// TODO Auto-generated method stub
-		int pos = dsKH.timKhachHangTheoTen(txtTimTen.getText());
+		int pos = dsKhachHang.timKhachHangTheoTen(txtTimTen.getText().trim());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Khách hàng này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);
@@ -381,8 +381,9 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		String gmail = txtGMail.getText();
 		KhachHang kh = new KhachHang(makh, tenkh, cmthu, sdt, gmail);
 		if (validData()) {
-			if (dsKH.capNhatThongTinKhachHang(kh)) {
-				int index = dsKH.getList().indexOf(kh);
+			if (DAO_KH.updateKhachHang(kh)) {
+				dsKhachHang.capNhatThongTinKhachHang(kh);
+				int index = dsKhachHang.getList().indexOf(kh);
 				tableModel.setValueAt(tenkh, index, 1);
 				tableModel.setValueAt(cmthu, index, 2);
 				tableModel.setValueAt(sdt, index, 3);
@@ -391,7 +392,6 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 				JOptionPane.showMessageDialog(null, "Cập nhật thành công thông tin khách hàng!");
 			}
 		}
-
 	}
 	
 	public void xoaKhachHang() throws Exception {
@@ -399,7 +399,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá khách hàng này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				dsKH.xoaKHang(r);
+				dsKhachHang.xoaKHang(r);
 				DAO_KH.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				xoaTrang();
