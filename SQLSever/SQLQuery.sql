@@ -292,43 +292,16 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'D
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP016',N'DV002',6)
 --Xem toan bo HoaDonDichVuPhong
 select * from HoaDonDichVuPhong
+--Xử lý form thống kê
+select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
+select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan
+from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
+where p.MaPhong = 'P005'
+select p.MaPhong,TienDV = SUM(ThanhTienDichVu) ,TienPhong = Sum(ThanhTienPhong), Tong = SUM(TongThanhToan)
+from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong join HoaDonDichVuPhong dvp on pdp.MaDatPhong=dvp.MaDatPhong
+where NgayThanhToan BETWEEN CAST('2022-05-28' AS DATE) AND CAST('2023-07-10' AS DATE)
+group by p.MaPhong
 
---select ThanhTien = SUM(ThanhTienDichVu)
---from HoaDonDichVuPhong
---where MaDatPhong = 'PDP005' 
---select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
---UPDATE HoaDonDichVuPhong Set SoLuong = 3 where MaPhong = 'P001' and MaDichVu =  'DV003'
---select * from HoaDonDichVuPhong
---DELETE from HoaDonDichVuPhong where MaPhong = ? and MaDichVu = ?
-
---select * from DichVu
---declare @gia float
---select @gia= Gia from DichVu where MaDichVu = 'DV001'
---print(@gia)
-
---select MaPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu 
---from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
-
-
---declare @gia float
---select @gia=Gia from DichVu where MaDichVu =  'DV001'
---print(@gia)
-
---select Gia from DichVu where MaDichVu = 'DV001'
-
---UPDATE HoaDonDichVuPhong
---Set SoLuong = 7
---where MaPhong = 'P001' and MaDichVu = 'DV001'
-
---UPDATE HoaDonDichVuPhong
---Set ThanhTienDichVu = SoLuong * @gia
---where MaPhong = 'P001' and MaDichVu = 'DV003'
---select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan
---from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
---where p.MaPhong = 'P001'
---select p.MaPhong, thanhtien = Sum(ThanhTienPhong), tong = SUM(TongThanhToan)
---from PhieuDatPhong pdp full join Phong p on pdp.MaPhong = p.MaPhong join HoaDonThanhToan hd on pdp.MaDatPhong = hd.MaDatPhong
---group by p.MaPhong
 --------------------------------HoaDonThanhToan-----------------------------------------------
 --InsertData HoaDonThanhToan
 INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
