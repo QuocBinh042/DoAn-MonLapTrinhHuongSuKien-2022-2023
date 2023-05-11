@@ -7,6 +7,6 @@
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="libs/sqljdbc42.jar"/>
-	<classpathentry kind="lib" path="D:/Studies/NamHai/HK2(Nam2)/LTHSKjava/update/DoAn-MonLapTrinhHuongSuKien-2022-2023/DoAn_HSK_2022_2023/libs/sqljdbc42.jar"/>
+	<classpathentry kind="lib" path="libs/jcalendar-1.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -38,7 +39,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnTimMa, btnTimTen, btnThoat, btnSua;
 	private DefaultTableModel tableModel;
 	private DAOPhong DAO_Phong;
-
+	private DecimalFormat formatter = new DecimalFormat("###,###,###");
 	public FrmPhong() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -227,7 +228,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 				tinhTrang = "Đã đặt";
 			} else
 				tinhTrang = "Còn trống";
-			Object row[] = { phong.getMaPhong(), phong.getTenPhong(), phong.getLoaiPhong(), phong.getGiaPhong(),
+			Object row[] = { phong.getMaPhong(), phong.getTenPhong(), phong.getLoaiPhong(), formatter.format(phong.getGiaPhong())+"VNĐ" ,
 					phong.getMoTa(), tinhTrang };
 			tableModel.addRow(row);
 		}
@@ -476,10 +477,13 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		txtLoai.setText(table.getValueAt(row, 2).toString());
 		txtGiaPhong.setText(table.getValueAt(row, 3).toString());
 		txtMoTa.setText(table.getValueAt(row, 4).toString());
-		if (tableModel.getValueAt(row, 5).toString().equalsIgnoreCase("Đã đặt")) 
-			radDaDat.setSelected(true);
-		else
+		if (tableModel.getValueAt(row, 5).toString().equalsIgnoreCase("Còn trống")) {
 			radTrong.setSelected(true);
+		}
+		else {
+			radDaDat.setSelected(true);
+		}
+			
 	}
 
 	@Override

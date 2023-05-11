@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -66,6 +67,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private DAOHoaDonDichVuPhong DAO_DichVuPhong = new DAOHoaDonDichVuPhong();
 	private List<HoaDonDichVuPhong> dsDVP;
 	private ArrayList<PhieuDatPhong> dsPDP;
+	private DecimalFormat formatter = new DecimalFormat("###,###,###");
 
 	public FrmHoaDonThanhToan() {
 		try {
@@ -169,12 +171,13 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b5.add(lblTongThanhToan = new JLabel("Tổng thanh toán"));
 		b5.add(Box.createHorizontalStrut(5));
 		b5.add(txtTongThanhToan = new JTextField());
-
+		txtTongThanhToan.setFont(new Font("Arial", Font.BOLD, 20));
+		txtTongThanhToan.setForeground(Color.red);
 		b.add(b6 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b6.add(lblGhiChu = new JLabel("Ghi chú: "));
 		b6.add(Box.createHorizontalStrut(5));
-		b6.add(txtaGhiChu = new JTextArea(6, 6));
+		b6.add(txtaGhiChu = new JTextArea(8, 8));
 		txtaGhiChu.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
 		b.add(b7 = Box.createHorizontalBox());
@@ -193,7 +196,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b8.add(Box.createHorizontalStrut(5));
 		b8.add(btnXoaTrang = new JButton("Xoá trắng"));
 
-		b.add(Box.createVerticalStrut(80));
+		b.add(Box.createVerticalStrut(50));
 		b.add(b9 = Box.createVerticalBox());
 
 		b9.setBorder(BorderFactory.createTitledBorder("Tìm kiếm"));
@@ -275,7 +278,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	private void TXTedit_true() {
 		txtMaHoaDon.setEditable(true);
-		txtTienDichVu.setEditable(true);
 		radChuyenKhoan.setEnabled(true);
 		radTienMat.setEnabled(true);
 		dayTT.setEnabled(true);
@@ -356,15 +358,17 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			tableModel.addRow(row);
 		}
 	}
+
 	public void testArr() {
 		DanhSachHoaDonDichVuPhong dsdvp = new DanhSachHoaDonDichVuPhong();
 		ArrayList<HoaDonDichVuPhong> arrdvp = new ArrayList<HoaDonDichVuPhong>();
 		arrdvp = dsdvp.getList();
-		for (int i=0; i<arrdvp.size(); i++) {
+		for (int i = 0; i < arrdvp.size(); i++) {
 			System.out.println(i);
 			System.out.println(arrdvp.get(i).getThanhTienDichVu());
 		}
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -565,9 +569,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			radTienMat.setSelected(true);
 		}
 		cbMaDatPhong.setSelectedIndex(cbMaDatPhong.getSelectedIndex());
-		txtThanhTienPhong.setText(table.getValueAt(row, 4).toString());
-//		txtTienDichVu.setText(table.getValueAt(row, ).toString());
-		txtTongThanhToan.setText(table.getValueAt(row, 5).toString());
+		txtThanhTienPhong.setText(formatter.format(table.getValueAt(row, 4)) + " VNĐ");
+		txtTongThanhToan.setText(formatter.format(table.getValueAt(row, 5)) + " VNĐ");
 		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
 	}
 
@@ -619,25 +622,27 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					Date ngayDen = pdp.getNgayDen();
 					Date ngayDi = pdp.getNgayDi();
 					Date ngayTT = Date.valueOf(getNgayTT());
-					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayTT.getTime() - ngayDen.getTime()));
+					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayDen.getTime() - ngayTT.getTime()));
 					for (Phong p : dsPhong) {
 						if (p.getMaPhong().equals(pdp.getMaPhong())) {
-							txtThanhTienPhong.setText(soNgay * p.getGiaPhong() + "");
+							Double tienPhong = soNgay * p.getGiaPhong();
+							txtThanhTienPhong.setText(formatter.format(tienPhong) + " VNĐ");
 							p.setTinhTrang("Còn trống");
 							break;
 						}
 					}
 					double phiDichVu = 0;
 					for (HoaDonDichVuPhong dvp : dsDVP) {
-						if (pdp.getMaPhong().equals(dvp.getMaDatPhong())) {
+						if (pdp.getMaDatPhong().equals(dvp.getMaDatPhong())) {
 							phiDichVu += dvp.getThanhTienDichVu();
 						}
 					}
+					txtTienDichVu.setText(formatter.format(phiDichVu) + " VNĐ");
 					if (ngayDi.equals(ngayTT)) {
 						txtaGhiChu.setText("Thanh toán đúng hạn!");
-					} else if (ngayDi.before(ngayTT)) 
+					} else if (ngayDi.before(ngayTT))
 						txtaGhiChu.setText("Trả phòng sớm!");
-					txtTienDichVu.setText(String.valueOf(phiDichVu));
+
 					break;
 				}
 			}

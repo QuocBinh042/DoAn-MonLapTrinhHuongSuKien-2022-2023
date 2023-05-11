@@ -39,7 +39,6 @@ import javax.swing.table.DefaultTableModel;
 import DAO.DAOLeTanData;
 import Entity.LeTanData;
 
-
 public class FrmNVLeTan extends JFrame implements MenuListener {
 	private FrmPhieuDatPhong frmPhieuDatPhong = new FrmPhieuDatPhong();
 	private FrmHoaDonThanhToan frmHoaDonThanhToan = new FrmHoaDonThanhToan();
