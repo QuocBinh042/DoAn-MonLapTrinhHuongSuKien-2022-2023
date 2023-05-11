@@ -258,7 +258,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 			showMessage("Tên phòng không tồn tại!", txtTen);
 			return false;
 		}
-		Pattern p2 = Pattern.compile("[a-zA-Z]+[0-9]{4}+");
+		Pattern p2 = Pattern.compile("[a-zA-Z]$");
 		if (!(loaiPhong.length() > 0 && p2.matcher(loaiPhong).find())) {
 			showMessage("Loại phòng này không tồn tại!", txtLoai);
 			return false;
