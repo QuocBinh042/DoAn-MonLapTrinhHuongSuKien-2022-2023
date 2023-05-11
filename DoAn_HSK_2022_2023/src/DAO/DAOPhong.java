@@ -8,13 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import DanhSach.DanhSachPhong;
 import Entity.Phong;
 import connectDB.ConnectDB;
 
 public class DAOPhong {
 	
-	public List<Phong> getAll(){
-		List<Phong> dsPhong = new ArrayList<Phong>();
+	public DanhSachPhong getAll(){
+		DanhSachPhong dsPhong = new DanhSachPhong();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
@@ -22,7 +23,7 @@ public class DAOPhong {
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()) {
-				dsPhong.add(new Phong(
+				dsPhong.themPhong(new Phong(
 				rs.getString("MaPhong"),
 				rs.getString("TenPhong"),
 				rs.getString("LoaiPhong"),
@@ -67,7 +68,13 @@ public class DAOPhong {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "Update Phong set TenPhong = ?, LoaiPhong = ?, GiaPhong = ?, MoTa = ?\r\n"
+		int tt;
+		if(phong.getTinhTrang().equalsIgnoreCase("Đã đặt")) {
+			tt=1;
+		}else {
+			tt=0;
+		}
+		String sql = "Update Phong set TenPhong = ?, LoaiPhong = ?, GiaPhong = ?, MoTa = ?, TinhTrang = ?\r\n"
 				+ "where MaPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
@@ -75,7 +82,8 @@ public class DAOPhong {
 			stm.setString(2, phong.getLoaiPhong());
 			stm.setDouble(3, phong.getGiaPhong());
 			stm.setString(4, phong.getMoTa());
-			stm.setString(5, phong.getMaPhong());
+			stm.setInt(5, tt);
+			stm.setString(6, phong.getMaPhong());
 			
 			stm.executeUpdate();
 		} catch (SQLException e) {

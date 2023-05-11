@@ -35,6 +35,7 @@ import DAO.DAOKhachHang;
 import DAO.DAOPhieuDatPhong;
 import DAO.DAOPhong;
 import DanhSach.DanhSachPhieuDatPhong;
+import DanhSach.DanhSachPhong;
 import Entity.KhachHang;
 import Entity.PhieuDatPhong;
 import Entity.Phong;
@@ -58,7 +59,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private JComboBox cbMaPhong, cbMaKhachHang;
 	private DAOPhieuDatPhong DAO_datPhong;
 	private DAOPhong DAO_phong;
-	private List<Phong> dsPhong;
+	private DanhSachPhong dsPhong;
 	private DAOKhachHang DAO_khachHang;
 	private List<KhachHang> dsKhachHang;
 
@@ -118,7 +119,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		b3.add(cbMaPhong = new JComboBox<>());
 		DAO_phong = new DAOPhong();
 		dsPhong = DAO_phong.getAll();
-		for (Phong p : dsPhong) {
+		for (Phong p : dsPhong.getList()) {
 			if (p.getTinhTrang().equals("0"))
 			cbMaPhong.addItem(p.getMaPhong());
 		}

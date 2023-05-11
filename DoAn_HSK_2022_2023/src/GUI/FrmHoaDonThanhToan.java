@@ -42,6 +42,7 @@ import DAO.DAOPhong;
 import DanhSach.DanhSachHoaDonDichVuPhong;
 import DanhSach.DanhSachHoaDonThanhToan;
 import DanhSach.DanhSachPhieuDatPhong;
+import DanhSach.DanhSachPhong;
 import Entity.HoaDonDichVuPhong;
 import Entity.HoaDonThanhToan;
 import Entity.PhieuDatPhong;
@@ -63,7 +64,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private DAOHoaDonThanhToan DAO_hoaDon;
 	private DAOPhieuDatPhong DAO_phieudDatPhong;
 	private DAOPhong DAO_Phong = new DAOPhong();
-	private List<Phong> dsPhong;
+	private DanhSachPhong dsPhong;
 	private DAOHoaDonDichVuPhong DAO_DichVuPhong = new DAOHoaDonDichVuPhong();
 	private List<HoaDonDichVuPhong> dsDVP;
 	private ArrayList<PhieuDatPhong> dsPDP;
@@ -623,7 +624,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					Date ngayDi = pdp.getNgayDi();
 					Date ngayTT = Date.valueOf(getNgayTT());
 					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayDen.getTime() - ngayTT.getTime()));
-					for (Phong p : dsPhong) {
+					for (Phong p : dsPhong.getList()) {
 						if (p.getMaPhong().equals(pdp.getMaPhong())) {
 							Double tienPhong = soNgay * p.getGiaPhong();
 							txtThanhTienPhong.setText(formatter.format(tienPhong) + " VNĐ");
