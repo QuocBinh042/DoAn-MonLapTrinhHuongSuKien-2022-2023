@@ -120,6 +120,7 @@ as
 go
 
 --------------------------------KHACH HANG-----------------------------------------------
+--MaKhachHang--TenKhachHang--ChungMinhThu--SoDienThoai--Gmail
 --Insert Data
 INSERT INTO KhachHang values(N'KH001',N'Nguyễn Đức Vương','123456789104','0799558911','vuongnguyen221203@gmail.com') 
 INSERT INTO KhachHang values(N'KH002',N'Nguyễn Thu Sương ','111253678815','0258104791','thusuong120402@gmail.com')
@@ -175,6 +176,7 @@ INSERT INTO NhanVien values(N'NV015', N'Trần Thị Thảo My', '123456', 0, N'
 select * from NhanVien
 
 --------------------------------PHONG-----------------------------------------------
+--MaPhong--TenPhong--LoaiPhong--GiaPhong--MoTa--TinhTrang
 --InsertData
 INSERT INTO Phong values(N'P001',N'A001',N'VIP0001',10000000,N'Phòng có view biển',0)
 INSERT INTO Phong values(N'P002',N'A002',N'Single0001',10000000,N'Phòng đơn',0)
@@ -191,6 +193,18 @@ INSERT INTO Phong values(N'P012',N'A012',N'Single0002',10000000,N'Phòng đơn',
 INSERT INTO Phong values(N'P013',N'A013',N'Double0002',80000000,N'Phòng giành cho cặp đôi',0)
 INSERT INTO Phong values(N'P014',N'A014',N'Triple0002',90000000,N'Phòng giành cho bạn bè',0)
 INSERT INTO Phong values(N'P015',N'A015',N'VIP0002',50000000,N'Phòng có view biển',0)
+go
+
+--Update Phong
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P011'
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P005'
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P014'
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P012'
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P003'
+--UPDATE Phong set TinhTrang = 1 where MaPhong = N'P013'
+--
+--Update Phong set TenPhong = N'A019', LoaiPhong = N'Double0022', GiaPhong = 3300000, MoTa = N'Phòng đôi view biển'
+--where MaPhong = 'P016'
 go
 --Xoa phong theo MaPhong
 --DELETE from Phong where MaPhong = 'P001'
@@ -220,6 +234,7 @@ INSERT INTO DichVu values(N'DV015',N'Latte',55000)
 select *from DichVu
 
 --------------------------------PhieuDatPhong-----------------------------------------------
+--MaDatPhong--MaNV-MaPhong--IDNguoiDatPhong--NgayDatPhong--NgayCheckIn-NGayCheckOut-Songuoi-Ghichu
 --InsertData
 INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
 values(N'PDP001',N'NV001',N'P001', N'KH001', '2023/5/11', '2023/5/12', '2023/5/22',2,''),
@@ -245,6 +260,17 @@ values(N'PDP001',N'NV001',N'P001', N'KH001', '2023/5/11', '2023/5/12', '2023/5/2
 --Xem toan bo PhieuDatPhong
 select * from PhieuDatPhong
 
+--Loc du lieu tu 3 table PhieuDatPhong,Phong,KhachHang
+--Danh Sach CheckOut
+--select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,p.TinhTrang,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp
+--join Phong p on pdp.MaPhong = p.MaPhong
+--join KhachHang kh on kh.MaKhachHang = pdp.IDNguoiDatPhong
+--where p.TinhTrang = 1 and pdp.NgayCheckOut > pdp.NgayCheckIn;
+----Danh Sach CheckIn
+--select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,p.TinhTrang,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp
+--join Phong p on pdp.MaPhong = p.MaPhong
+--join KhachHang kh on kh.MaKhachHang = pdp.IDNguoiDatPhong
+--where pdp.NgayCheckIn >= GETDATE() and p.TinhTrang = 0;
 
 --------------------------------HoaDonDichVuPhong-----------------------------------------------
 --InsertData HoaDonDichVuPhong
