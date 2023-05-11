@@ -8,6 +8,10 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,13 +25,20 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
+
+import DAO.DAOLeTanData;
+import Entity.LeTanData;
+
 
 public class FrmNVLeTan extends JFrame implements MenuListener {
 	private FrmPhieuDatPhong frmPhieuDatPhong = new FrmPhieuDatPhong();
@@ -41,6 +52,8 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 	private JMenuBar mnubar = new JMenuBar();
 	private JMenu mnuPhong, mnuKhachHang, mnuPhieuDatPhong, mnuHoaDonThanhToan,mnuHoaDonDichVuPhong, mnunDichVu, mnuTrangChu, mnuThoat;
 	private JList<String> myList;
+	private DAOLeTanData DAO_LeTanData;
+	
 	public FrmNVLeTan() {
 		setTitle("QUẢN LÝ THÔNG TIN ĐẶT PHÒNG KHÁCH SẠN");
 		setSize(1350, 700);
@@ -75,7 +88,7 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 		JPanel pnlWest;
 		DefaultListModel<String> model = new DefaultListModel<>();
         // add element to model
-        model.addElement("Danh sách checkin ");
+        model.addElement("Danh sách checkin");
         model.addElement("Danh sách checkout");
         // set model to JList
         myList = new JList<String>(model);
@@ -104,7 +117,7 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		b.add(scroll);
 		bb.add(b);
-
+		
 		mnuPhong.addMenuListener(this);
 		mnuKhachHang.addMenuListener(this);
 		mnunDichVu.addMenuListener(this);
@@ -112,6 +125,23 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 		mnuPhieuDatPhong.addMenuListener(this);
 		mnuHoaDonThanhToan.addMenuListener(this);
 		mnuThoat.addMenuListener(this);
+		
+		//Jlist
+		myList.addListSelectionListener((ListSelectionListener) new ListSelectionListener() {
+			  public void valueChanged(ListSelectionEvent evt) {
+			    if (!evt.getValueIsAdjusting()) {
+			    	JList source = (JList)evt.getSource();
+		            String selected = source.getSelectedValue().toString();
+		            if(selected.equalsIgnoreCase("Danh sách checkin")) {
+		            	//test item danh sach checkin
+		            	DanhSachCheckIn();
+		            }else if(selected.equalsIgnoreCase("Danh sách checkout")){
+		            	//test item danh sach checkout
+		            	DanhSachCheckOut();
+		            }
+			    }
+			  }
+			});
 	}
 
 	public static void main(String[] args) {
@@ -155,5 +185,33 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 	public void menuCanceled(MenuEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	public void DanhSachCheckIn() {
+		// delete all
+		deleteAllDataJtable();
+		// Load data
+		DAO_LeTanData = new DAOLeTanData();
+		for (LeTanData d : DAO_LeTanData.dsCheckIn()) {
+			Object row[] = { d.getMaDatPhong(), d.getHoTenKhachHang(), d.getTenPhong(), d.getTinhTrang(),
+					d.getNgayDen(), d.getNgayDi(), d.getGhiChu() };
+			tableModel.addRow(row);
+		}
+	}
+	public void DanhSachCheckOut() {
+		// delete all
+		deleteAllDataJtable();
+		// Load data
+		DAO_LeTanData = new DAOLeTanData();
+		for (LeTanData d : DAO_LeTanData.dsCheckOut()) {
+			Object row[] = { d.getMaDatPhong(), d.getHoTenKhachHang(), d.getTenPhong(), d.getTinhTrang(),
+					d.getNgayDen(), d.getNgayDi(), d.getGhiChu() };
+			tableModel.addRow(row);
+		}
+	}
+	private void deleteAllDataJtable() {
+		DefaultTableModel dm = (DefaultTableModel) table.getModel();
+		while (dm.getRowCount() > 0) {
+			dm.removeRow(0);
+		}
 	}
 }
