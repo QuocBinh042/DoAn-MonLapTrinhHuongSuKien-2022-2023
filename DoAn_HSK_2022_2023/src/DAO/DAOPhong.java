@@ -8,13 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import DanhSach.DanhSachPhong;
 import Entity.Phong;
 import connectDB.ConnectDB;
 
 public class DAOPhong {
 	
-	public List<Phong> getAll(){
-		List<Phong> dsPhong = new ArrayList<Phong>();
+	public DanhSachPhong getAll(){
+		DanhSachPhong dsPhong = new DanhSachPhong();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
@@ -22,7 +23,7 @@ public class DAOPhong {
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()) {
-				dsPhong.add(new Phong(
+				dsPhong.themPhong(new Phong(
 				rs.getString("MaPhong"),
 				rs.getString("TenPhong"),
 				rs.getString("LoaiPhong"),
