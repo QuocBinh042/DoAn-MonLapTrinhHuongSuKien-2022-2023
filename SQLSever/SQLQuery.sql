@@ -1,6 +1,6 @@
 ﻿create database QuanLyKhachSan
 go
---drop database QuanLyKhachSan
+drop database QuanLyKhachSan
 use QuanLyKhachSan
 go
 

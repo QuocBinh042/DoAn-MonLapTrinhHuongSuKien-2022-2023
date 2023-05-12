@@ -571,6 +571,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
 		txtMaHoaDon.setText(table.getValueAt(row, 0).toString());
+		cbMaDatPhong.setSelectedItem(table.getValueAt(row, 1).toString());
 		Date dateTT = Date.valueOf(table.getValueAt(row, 2).toString());
 		dayTT.setSelectedItem(String.valueOf(dateTT.getDate()));
 		monthTT.setSelectedIndex(dateTT.getMonth());
@@ -580,7 +581,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		} else {
 			radTienMat.setSelected(true);
 		}
-		cbMaDatPhong.setSelectedItem(table.getValueAt(row, 1).toString());
+		Double pdv = Double.valueOf(table.getValueAt(row, 5).toString())-Double.valueOf(table.getValueAt(row, 4).toString());
+		txtTienDichVu.setText(pdv+"");
 		txtThanhTienPhong.setText(table.getValueAt(row, 4).toString());
 		txtTongThanhToan.setText(table.getValueAt(row, 5).toString());
 		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
@@ -670,6 +672,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					} else if (ngayDi.before(ngayTT))
 						ghiChu += "\nTrả phòng sớm!";
 					txtaGhiChu.setText(ghiChu);
+					txtTongThanhToan.setText(formatter.format(phiDichVu+tienPhong)+"VNĐ");
 					break;
 
 				}
