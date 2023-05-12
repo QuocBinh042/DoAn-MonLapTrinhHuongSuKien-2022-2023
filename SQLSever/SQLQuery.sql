@@ -1,6 +1,6 @@
 ﻿create database QuanLyKhachSan
 go
-drop database QuanLyKhachSan
+--drop database QuanLyKhachSan
 use QuanLyKhachSan
 go
 
@@ -179,19 +179,19 @@ select * from NhanVien
 --MaPhong--TenPhong--LoaiPhong--GiaPhong--MoTa--TinhTrang
 --InsertData
 INSERT INTO Phong values(N'P001',N'C001',N'SINGLE',100000,N'Phòng đơn',0)
-INSERT INTO Phong values(N'P002',N'C002',N'SINGLE',100000,N'Phòng đơn',0)
+INSERT INTO Phong values(N'P002',N'C002',N'SINGLE',100000,N'Phòng đơn',1)
 INSERT INTO Phong values(N'P003',N'C003',N'SINGLE',100000,N'Phòng đơn',0)
 INSERT INTO Phong values(N'P004',N'C004',N'SINGLE',500000,N'Phòng đơn có view biển',0)
 INSERT INTO Phong values(N'P005',N'C005',N'SINGLE',500000,N'Phòng đơn có view biển',0)
-INSERT INTO Phong values(N'P006',N'B001',N'DOUBLE',200000,N'Phòng giành cho cặp đôi',0)
+INSERT INTO Phong values(N'P006',N'B001',N'DOUBLE',200000,N'Phòng giành cho cặp đôi',1)
 INSERT INTO Phong values(N'P007',N'B002',N'DOUBLE',200000,N'Phòng giành cho cặp đôi',0)
-INSERT INTO Phong values(N'P008',N'B003',N'DOUBLE',200000,N'Phòng giành cho cặp đôi',0)
-INSERT INTO Phong values(N'P009',N'B004',N'DOUBLE',750000,N'Phòng giành cho cặp đôi có view biển',0)
+INSERT INTO Phong values(N'P008',N'B003',N'DOUBLE',200000,N'Phòng giành cho cặp đôi',1)
+INSERT INTO Phong values(N'P009',N'B004',N'DOUBLE',750000,N'Phòng giành cho cặp đôi có view biển',1)
 INSERT INTO Phong values(N'P010',N'B005',N'DOUBLE',750000,N'Phòng giành cho cặp đôi có view biển',0)
 INSERT INTO Phong values(N'P011',N'A001',N'VIP',1000000,N'Phòng có view biển',0)
 INSERT INTO Phong values(N'P012',N'A002',N'VIP',1500000,N'Phòng có view biển, núi non',0)
 INSERT INTO Phong values(N'P013',N'A003',N'VIP',700000,N'Phòng có view núi non',0)
-INSERT INTO Phong values(N'P014',N'A004',N'VIP',1200000,N'Phòng có view thành phố',0)
+INSERT INTO Phong values(N'P014',N'A004',N'VIP',1200000,N'Phòng có view thành phố',1)
 INSERT INTO Phong values(N'P015',N'A005',N'VIP',1000000,N'Phòng có view biển',0)
 go
 
