@@ -537,7 +537,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 			radNam.setSelected(true);
 		else
 			radNu.setSelected(true);
-		cbChucVu.setSelectedIndex(cbChucVu.getSelectedIndex());
+		cbChucVu.setSelectedItem(table.getValueAt(row, 7).toString());
 		txtMatKhau.setText(table.getValueAt(row, 8).toString());
 	}
 
