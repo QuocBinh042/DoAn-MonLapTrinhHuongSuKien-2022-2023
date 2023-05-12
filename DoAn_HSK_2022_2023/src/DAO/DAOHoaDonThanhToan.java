@@ -8,13 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import DanhSach.DanhSachHoaDonThanhToan;
 import Entity.HoaDonThanhToan;
 import connectDB.ConnectDB;
 
 public class DAOHoaDonThanhToan {
 	
-	public List<HoaDonThanhToan> getAll(){
-		List<HoaDonThanhToan> DanhSachHoaDonThanhToan = new ArrayList<HoaDonThanhToan>();
+	public DanhSachHoaDonThanhToan getAll(){
+		DanhSachHoaDonThanhToan dsHoaDonThanhToan = new DanhSachHoaDonThanhToan();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
@@ -22,7 +23,7 @@ public class DAOHoaDonThanhToan {
 			Statement statement = con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()) {
-				DanhSachHoaDonThanhToan.add(new HoaDonThanhToan(
+				dsHoaDonThanhToan.themHoaDonThanhToan(new HoaDonThanhToan(
 				rs.getString("MaHoaDon"),
 				rs.getString("MaDatPhong"),
 				rs.getDate("NgayThanhToan"),
@@ -34,7 +35,7 @@ public class DAOHoaDonThanhToan {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return DanhSachHoaDonThanhToan;
+		return dsHoaDonThanhToan;
 	}
 	
 	public boolean add(HoaDonThanhToan hd) {
@@ -69,23 +70,17 @@ public class DAOHoaDonThanhToan {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE HoaDonThanhToan "
-				+ " MaHoaDon = ? "
-				+ " MaDatPhong = ? "
-				+ " NgayThanhToan = ? "
-				+ " HinhThucThanhToan = ? "
-				+ " ThanhTienPhong = ?"
-				+ " TongThanhToan = ? "
-				+ " GhiChu = ? ";
+		String sql = "Update HoaDonThanhToan set MaDatPhong = ?, NgayThanhToan = ?, HinhThucThanhToan = ?, ThanhTienPhong = ?, TongThanhToan = ?, GhiChu = ?\r\n"
+				+ "where MaHoaDon = ?";
 		try {
 			stm = con.prepareStatement(sql);
-			stm.setString(1, hd.getMaHoaDon());
-			stm.setString(2, hd.getMaHoaDon());
-			stm.setDate(3, hd.getNgayThanhToan());
-			stm.setString(4, hd.getHinhThucThanhToan());
-			stm.setDouble(5, hd.getThanhTienPhong());
-			stm.setDouble(6, hd.getTongThanhToan());
-			stm.setString(7, hd.getGhiChu());
+		    stm.setString(1, hd.getMaDatPhong());
+			stm.setDate(2, hd.getNgayThanhToan());
+			stm.setString(3, hd.getHinhThucThanhToan());
+			stm.setDouble(4, hd.getThanhTienPhong());
+			stm.setDouble(5, hd.getTongThanhToan());
+			stm.setString(6, hd.getGhiChu());
+			stm.setString(7, hd.getMaHoaDon());
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
