@@ -349,7 +349,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// Load data
 		DAO_hoaDon = new DAOHoaDonThanhToan();
 		String ht;
-		for (HoaDonThanhToan hd : DAO_hoaDon.getAll()) {
+		for (HoaDonThanhToan hd : ds.getList()) {
 			if (hd.getHinhThucThanhToan().equals("1")) {
 				ht = "Tiên mặt";
 			} else
