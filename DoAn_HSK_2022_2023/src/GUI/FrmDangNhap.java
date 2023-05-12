@@ -1,27 +1,152 @@
 package GUI;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
+//import javax.swing.JButton;
+//import javax.swing.JFrame;
+//import javax.swing.JLabel;
+//import javax.swing.JOptionPane;
+//import javax.swing.JPanel;
+//import javax.swing.JPasswordField;
+//import javax.swing.JTextField;
+//import javax.swing.border.Border;
+//
+//import DAO.DAONhanVien;
+//import DanhSach.DanhSachNhanVien;
+//import Entity.NhanVien;
+//
+//public class FrmDangNhap2 extends JFrame implements ActionListener {
+//	private JLabel lblUser,lblPass;
+//	private JTextField txtUser;
+//	private JPasswordField txtPass;
+//	private JButton btnDangnhap, btnThoat;
+//	private DAONhanVien DAO_NV;
+//	private ArrayList<NhanVien> ds;
+//	
+//	public FrmDangNhap2() {
+//		createGUI();
+//	}
+//	public static void main(String[] args) {
+//		new FrmDangNhap2().setVisible(true);
+//	}
+//	public void createGUI() {
+//		
+//		setTitle("LOGIN");
+//		setSize(500, 300);
+//		setLocationRelativeTo(null);
+//		setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		JPanel panel = new JPanel();
+//		panel.setLayout(null);
+//		add(panel,BorderLayout.CENTER);
+//		
+//		
+//		lblUser = new JLabel("User");
+//		lblUser.setFont(new Font("Arial", ICONIFIED, 13));
+//		lblUser.setBounds(40,20,100,40);
+//		panel.add(lblUser);
+//		
+//		txtUser = new JTextField();
+//		txtUser.setBounds(140,20,320,40);
+//		panel.add(txtUser);
+//		
+//		lblPass = new JLabel("Password");
+//		lblPass.setFont(new Font("Arial", ICONIFIED, 13));
+//		lblPass.setBounds(40,80,100,40);
+//		panel.add(lblPass);
+//		
+//		txtPass = new JPasswordField();
+//		txtPass.setBounds(140,80,320,40);
+//		panel.add(txtPass);
+//		
+//		btnDangnhap = new JButton("LOGIN");
+//		btnDangnhap.setForeground(Color.WHITE);
+//		btnDangnhap.setBackground(Color.GREEN);
+//		
+//		btnDangnhap.setBounds(200,140,120,35);
+//		panel.add(btnDangnhap);
+//		
+//		btnThoat = new JButton("EXIT");
+//		btnThoat.setForeground(Color.WHITE);
+//		btnThoat.setBackground(Color.RED);
+//		btnThoat.setBounds(340,140,120,35);
+//		panel.add(btnThoat);
+//		
+//		
+//		btnThoat.addActionListener(this);
+//		btnDangnhap.addActionListener(this);
+//	}
+//	@Override
+//	public void actionPerformed(ActionEvent e) {
+//		// TODO Auto-generated method stub
+//		
+//		Object o = e.getSource();
+//		if(o.equals(btnThoat)) {
+//			System.exit(0);
+//		}
+//		if(o.equals(btnDangnhap)) {
+////			String user = txtUser.getText();
+////			String pass = txtPass.getText();
+////			if(user.equalsIgnoreCase("Admin")&&pass.equalsIgnoreCase("123")) {
+////				JOptionPane.showMessageDialog(null, "Login Successful!");
+////			}else {
+////				JOptionPane.showMessageDialog(null, "Login failed!");
+////			}
+//			
+//		}
+//		
+//	}
+//	public void getList() {
+//		ds = new ArrayList<NhanVien>();
+//		String user = txtUser.getText();
+//		String pass = txtPass.getText();
+//
+//	}
+//	
+//}
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+import DAO.DAONhanVien;
+import DanhSach.DanhSachNhanVien;
+import Entity.NhanVien;
+import connectDB.ConnectDB;
 
 public class FrmDangNhap extends JFrame implements ActionListener {
-	private JButton btnLeTan, btnQuanLy, btnThoat;
 	private FrmNVLeTan frmLeTan = new FrmNVLeTan();
 	private FrmQuanLy frmQuanLy = new FrmQuanLy();
+	private JLabel lblUser, lblPass;
+	private JTextField txtUser;
+	private JPasswordField txtPass;
+	private JButton btnDangnhap, btnThoat;
+	private DAONhanVien DAO_NV = new DAONhanVien();
+	private DanhSachNhanVien dsNV = new DanhSachNhanVien();
 
 	public FrmDangNhap() {
-		setTitle("Đăng nhập");
-		setSize(500, 400);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		createGUI();
 	}
 
@@ -29,38 +154,83 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		new FrmDangNhap().setVisible(true);
 	}
 
-	private void createGUI() {
-		// TODO Auto-generated method stub
-		JPanel contentPane = new JPanel();
-		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		contentPane.add(btnLeTan = new JButton("LỄ TÂN"));
-		btnLeTan.setFont(new Font("Arial", Font.BOLD, 20));
-		btnLeTan.setBounds(130, 50, 200, 50);
-		contentPane.add(btnQuanLy = new JButton("QUẢN LÝ"));
-		btnQuanLy.setFont(new Font("Arial", Font.BOLD, 20));
+	public void createGUI() {
 
-		btnQuanLy.setBounds(130, 150, 200, 50);
-		contentPane.add(btnThoat = new JButton("THOÁT"));
-		btnThoat.setFont(new Font("Arial", Font.BOLD, 20));
+		setTitle("LOGIN");
+		setSize(500, 300);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		JPanel panel = new JPanel();
+		panel.setLayout(null);
+		add(panel, BorderLayout.CENTER);
+
+		lblUser = new JLabel("User");
+		lblUser.setFont(new Font("Arial", ICONIFIED, 13));
+		lblUser.setBounds(40, 20, 100, 40);
+		panel.add(lblUser);
+
+		txtUser = new JTextField();
+		txtUser.setBounds(140, 20, 320, 40);
+		panel.add(txtUser);
+
+		lblPass = new JLabel("Password");
+		lblPass.setFont(new Font("Arial", ICONIFIED, 13));
+		lblPass.setBounds(40, 80, 100, 40);
+		panel.add(lblPass);
+
+		txtPass = new JPasswordField();
+		txtPass.setBounds(140, 80, 320, 40);
+		panel.add(txtPass);
+
+		btnDangnhap = new JButton("LOGIN");
+		btnDangnhap.setForeground(Color.WHITE);
+		btnDangnhap.setBackground(Color.GREEN);
+
+		btnDangnhap.setBounds(200, 140, 120, 35);
+		panel.add(btnDangnhap);
+
+		btnThoat = new JButton("EXIT");
 		btnThoat.setForeground(Color.WHITE);
 		btnThoat.setBackground(Color.RED);
-		btnThoat.setBounds(130, 250, 200, 50);
-		btnLeTan.addActionListener(this);
-		btnQuanLy.addActionListener(this);
+		btnThoat.setBounds(340, 140, 120, 35);
+		panel.add(btnThoat);
+
 		btnThoat.addActionListener(this);
+		btnDangnhap.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+
 		Object o = e.getSource();
-		if (o.equals(btnLeTan)) {
-			frmLeTan.setVisible(true);
-		} else if (o.equals(btnQuanLy)) {
-			frmQuanLy.setVisible(true);
-		} else if (o.equals(btnThoat)) {
+		if (o.equals(btnThoat)) {
 			System.exit(0);
+		}
+		if (o.equals(btnDangnhap)) {
+			changeForm();
+		}
+
+	}
+
+	public void changeForm() {
+		dsNV = DAO_NV.getAll();
+		String user = txtUser.getText();
+		String pass = txtPass.getText();
+		if (dsNV.timNhanVienTheoMa(user) != -1) {
+			if (dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getChucVu().equals("1")
+					&& dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getMatKhau().equalsIgnoreCase(pass)) {
+				JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Manager!");
+				frmQuanLy.setVisible(true);
+			} else if (dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getChucVu().equals("0")
+					&& dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getMatKhau().equalsIgnoreCase(pass)) {
+				JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Reception!");
+				frmLeTan.setVisible(true);
+			} else {
+				JOptionPane.showMessageDialog(null, "Lỗi! Vui lòng kiểm tra lại thông tin đăng nhập!");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Lỗi! Tài khoản không tồn tại!");
 		}
 
 	}
