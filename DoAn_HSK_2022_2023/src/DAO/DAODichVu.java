@@ -67,7 +67,7 @@ public class DAODichVu {
 		PreparedStatement stm = null;
 		String sql = "UPDATE DichVu "
 							+ "Set Gia = ? "
-							+ ",TenDichVu = ? "
+							+ "TenDichVu = ? "
 							+ "where MaDichVu = ? ";
 		try {
 			stm = con.prepareStatement(sql);
