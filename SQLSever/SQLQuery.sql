@@ -292,6 +292,8 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'D
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP016',N'DV002',6)
 --Xem toan bo HoaDonDichVuPhong
 select * from HoaDonDichVuPhong
+--select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu /*= SoLuong * dv.Gia*/
+--from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
 --Xử lý form thống kê
 --select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu from HoaDonDichVuPhong dvp join DichVu dv on dvp.MaDichVu = dv.MaDichVu
 --select pdp.MaDatPhong, p.MaPhong, ThanhTienPhong, TongThanhToan

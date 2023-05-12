@@ -347,6 +347,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 			Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
 			DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
 			if(DAO_DV.updateGia(dv)) {
+				DAO_DV.updateThanhTienDVP(dv.getMaDichVu());
 				dsDV.suaDichVu(dv);
 				loadData();
 				JOptionPane.showMessageDialog(null, "Cập nhật dịch vụ thành công!");

@@ -11,7 +11,6 @@ import connectDB.ConnectDB;
 
 public class DAOThongKe {
 	public ArrayList<ThongKe> getAll(String start, String end) {
-		// TODO Auto-generated method stubArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
 		ArrayList<ThongKe> dsTK = new ArrayList<ThongKe>();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();

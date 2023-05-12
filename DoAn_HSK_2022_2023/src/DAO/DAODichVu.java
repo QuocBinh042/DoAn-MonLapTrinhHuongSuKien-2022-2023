@@ -86,7 +86,28 @@ public class DAODichVu {
 		}
 		return true;
 	}
-	
+	public void updateThanhTienDVP(String maDv) {
+		// TODO Auto-generated method stub
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		PreparedStatement stm = null;
+		String sql = "UPDATE HoaDonDichVuPhong "
+				+ "Set ThanhTienDichVu = SoLuong * (select Gia from DichVu where MaDichVu = ?)"
+				+ "where MaDichVu = ? ";
+		try {
+			stm = con.prepareStatement(sql);
+			stm.setString(1, maDv);
+			stm.setString(2, maDv);
+			
+			stm.executeUpdate();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		finally {
+			close(stm);
+		}
+}
 	public void delete(String maDichVu) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();

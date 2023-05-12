@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -33,6 +34,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	private JTextField txtMaDichVu, txtMaPhong, txtSoLuong, txtMess;
 	private JButton btnThem, btnXoa, btnXoaTrang, btnLuu, btnSua, btnThoat;
 	private DefaultTableModel tableModel;
+	private DecimalFormat fmt = new DecimalFormat("###,###");
 	private DanhSachHoaDonDichVuPhong ds;
 	private DAOHoaDonDichVuPhong DAO_dvp;
 	public FrmHoaDonDichVuPhong(){
@@ -171,18 +173,18 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 		//delete all
 		deleteAllDataJtable();
 		//Load data
-		ArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
+//		ArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
 		DAO_dvp = new DAOHoaDonDichVuPhong();
 		ds.clear();
 		for(HoaDonDichVuPhong dvp:DAO_dvp.getAll()) {
 			ds.themDichVuPhong(dvp);
-			Object row[] = {dvp.getMaDatPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),dvp.getGia(),dvp.getThanhTienDichVu()};
+			Object row[] = {dvp.getMaDatPhong(),dvp.getMaDichVu(),dvp.getSoLuong(),fmt.format(dvp.getGia()),fmt.format(dvp.getThanhTienDichVu())};
 			tableModel.addRow(row);
 		}
-		dsDVP = ds.getList();
-		for(int i=0;i<dsDVP.size();i++) {
-			System.out.println(dsDVP.get(i).getThanhTienDichVu());
-		}
+//		dsDVP = ds.getList();
+//		for(int i=0;i<dsDVP.size();i++) {
+//			System.out.println(dsDVP.get(i).getThanhTienDichVu());
+//		}
 	}
 	
 	@Override
