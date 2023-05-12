@@ -71,7 +71,8 @@ public class DAOPhieuDatPhong {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE PhieuDatPhong set MaNV = ?, MaPhong = ?, IDNguoiDatPhong = ?, NgayDatPhong = ?, NgayCheckIn = ?, NgayCheckOut = ?, SoNguoi = ?, GhiChu = ? where MaDatPhong = ?";
+		String sql = "UPDATE PhieuDatPhong set MaNV = ?, MaPhong = ?, IDNguoiDatPhong = ?, NgayDatPhong = ?, NgayCheckIn = ?, NgayCheckOut = ?, SoNguoi = ?, GhiChu = ?\r\n"
+				+ " where MaDatPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			
