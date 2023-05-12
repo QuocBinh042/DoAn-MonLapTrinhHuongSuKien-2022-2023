@@ -175,6 +175,9 @@ INSERT INTO NhanVien values(N'NV015', N'Trần Thị Thảo My', '123456', 0, N'
 --Xem toan bo NhanVien
 select * from NhanVien
 
+--Check chuc vu 0: Nhan vien, 1: Quan ly
+--select *from NhanVien where ChucVu = 1
+
 --------------------------------PHONG-----------------------------------------------
 --MaPhong--TenPhong--LoaiPhong--GiaPhong--MoTa--TinhTrang
 --InsertData
