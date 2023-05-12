@@ -10,14 +10,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import DanhSach.DanhSachNhanVien;
 import Entity.NhanVien;
 import connectDB.ConnectDB;
 
 public class DAONhanVien{
 
-	public List<NhanVien> getAll() {
-		List<NhanVien> DanhSachNhanVien = new ArrayList<NhanVien>();
+	public DanhSachNhanVien getAll() {
+		DanhSachNhanVien dsNhanVien = new DanhSachNhanVien();
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
@@ -25,7 +25,7 @@ public class DAONhanVien{
 			Statement statement =con.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 		while(rs.next()) {
-			DanhSachNhanVien.add(new NhanVien(
+			dsNhanVien.themNhanVien(new NhanVien(
 					rs.getString("MaNhanVien"),
 					rs.getString("HoTen"),
 					rs.getString("CMT"),
@@ -39,7 +39,7 @@ public class DAONhanVien{
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-			return DanhSachNhanVien;	
+			return dsNhanVien;	
 	}	
 	
 		
@@ -78,29 +78,20 @@ public class DAONhanVien{
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "UPDATE NhanVien "
-				+ " maNV = ? "
-				+ " hoTen = ? "
-				+ " cmthu = ? "
-				+ " sdthoai = ? "
-				+ " gmail = ? "
-				+ " diaChi = ? "
-				+ " gioiTinh = ? "
-				+ " chucVu = ? "
-				+ " matKhau = ? ";
+		String sql = "Update NhanVien set hoTen = ?, cmthu = ?, sdthoai = ?, gmail = ?, diaChi = ?, gioiTinh = ?, chucVu = ?, matKhau =?\r\n"
+				+ "where maNV = ?";
 		try {
 			stm = con.prepareStatement(sql);
-			stm.setString(1, nv.getMaNV());
-			stm.setString(2, nv.getHoTen());
-			stm.setString(3, nv.getCmthu());
-			stm.setString(4, nv.getSdthoai());
-			stm.setString(5, nv.getGmail());
-			stm.setString(6, nv.getDiaChi());
-			stm.setString(7, nv.getGioiTinh());
-			stm.setString(8, nv.getChucVu());
-			stm.setString(9, nv.getMatKhau());
+			stm.setString(1, nv.getHoTen());
+			stm.setString(2, nv.getCmthu());
+			stm.setString(3, nv.getSdthoai());
+			stm.setString(4, nv.getGmail());
+			stm.setString(5, nv.getDiaChi());
+			stm.setString(6, nv.getGioiTinh());
+			stm.setString(7, nv.getChucVu());
+			stm.setString(8, nv.getMatKhau());
+			stm.setString(9, nv.getMaNV());
 
-			
 			stm.executeUpdate();
 		} catch (SQLException e) {
 			// TODO: handle exception
