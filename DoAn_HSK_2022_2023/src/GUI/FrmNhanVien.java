@@ -312,7 +312,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		// delete all
 		// Load data
 		DAO_NV = new DAONhanVien();
-		for (NhanVien nv : DAO_NV.getAll()) {
+		for (NhanVien nv : dsNV.getList()) {
 			Object row[] = { nv.getMaNV(), nv.getHoTen(), nv.getCmthu(), nv.getSdthoai(), nv.getGmail(),
 					nv.getDiaChi(), nv.getGioiTinh(), nv.getChucVu(), nv.getMatKhau() };
 			tableModel.addRow(row);
