@@ -182,7 +182,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b.add(Box.createVerticalStrut(10));
 		b6.add(lblGhiChu = new JLabel("Ghi chú: "));
 
-		
 		txtaGhiChu = new JTextArea(10, 10);
 		txtaGhiChu.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 		JScrollPane scrolll = new JScrollPane(txtaGhiChu);
@@ -335,20 +334,12 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	private boolean validData() {
 		String maHDTT = txtMaHoaDon.getText().trim();
-		String thanhTienPhong = txtThanhTienPhong.getText().trim();
 
 		Pattern p1 = Pattern.compile("^(HD)[0-9]{3}");
 		if (!(maHDTT.length() > 0 && p1.matcher(maHDTT).find())) {
 			showMessage("Lỗi mã hoá đơn", txtMaHoaDon);
 			return false;
 		}
-
-		Pattern p2 = Pattern.compile("^[0-9]+");
-		if (!(thanhTienPhong.length() > 0 && p2.matcher(thanhTienPhong).find())) {
-			showMessage("Lỗi thành tiền phòng", txtThanhTienPhong);
-			return false;
-		}
-
 		return true;
 	}
 
@@ -371,6 +362,16 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		}
 	}
 
+	public Double changeDigit(String st) {
+		String tien = "";
+		for (int i = 0; i < st.length(); i++) {
+			if (Character.isDigit(st.charAt(i))) {
+				tien += st.charAt(i);
+			}
+		}
+		return Double.valueOf(tien);
+		
+	}
 	public void testArr() {
 		DanhSachHoaDonDichVuPhong dsdvp = new DanhSachHoaDonDichVuPhong();
 		ArrayList<HoaDonDichVuPhong> arrdvp = new ArrayList<HoaDonDichVuPhong>();
@@ -445,9 +446,9 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private void themHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
-		String maDP = cbMaDatPhong.getSelectedItem().toString();
-		double thanhTienPhong = Double.parseDouble(txtThanhTienPhong.getText());
-		double phiDV = Double.parseDouble(txtTienDichVu.getText());
+		String maDP = cbMaDatPhong.getSelectedItem().toString();	
+		double thanhTienPhong = changeDigit(txtThanhTienPhong.getText());
+		double phiDV = changeDigit(txtTienDichVu.getText());
 		double tongTT = thanhTienPhong + phiDV;
 
 		String ghiChu = txtaGhiChu.getText();
@@ -466,8 +467,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 						ht = "Chuyển khoản";
 					} else
 						ht = "Tiền mặt";
-					String[] row = { maHDTT, maDP, ngayTT.toString(), ht, String.valueOf(thanhTienPhong),
-							String.valueOf(tongTT), ghiChu };
+					String[] row = { maHDTT, maDP, ngayTT.toString(), ht, formatter.format(thanhTienPhong)+" VNĐ",
+							formatter.format(tongTT)+" VNĐ", ghiChu };
 					tableModel.addRow(row);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm hoá đơn thành công!");
@@ -501,8 +502,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
 		String maDP = cbMaDatPhong.getSelectedItem().toString();
-		double thanhTienPhong = Double.parseDouble(txtThanhTienPhong.getText());
-		double phiDV = Double.parseDouble(txtTienDichVu.getText());
+		double thanhTienPhong = changeDigit(txtThanhTienPhong.getText());
+		double phiDV = changeDigit(txtTienDichVu.getText());
 		double tongTT = thanhTienPhong + phiDV;
 		String ghiChu = txtaGhiChu.getText();
 		Date ngayTT = Date.valueOf(getNgayTT());
@@ -581,8 +582,9 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		} else {
 			radTienMat.setSelected(true);
 		}
-		Double pdv = Double.valueOf(table.getValueAt(row, 5).toString())-Double.valueOf(table.getValueAt(row, 4).toString());
-		txtTienDichVu.setText(pdv+"");
+		Double pdv = changeDigit(table.getValueAt(row, 5).toString())
+				- changeDigit(table.getValueAt(row, 4).toString());
+		txtTienDichVu.setText(pdv + "");
 		txtThanhTienPhong.setText(table.getValueAt(row, 4).toString());
 		txtTongThanhToan.setText(table.getValueAt(row, 5).toString());
 		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
@@ -637,20 +639,12 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					Date ngayDen = pdp.getNgayDen();
 					Date ngayDi = pdp.getNgayDi();
 					Date ngayTT = Date.valueOf(getNgayTT());
-					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayDen.getTime() - ngayTT.getTime()));
+					long soNgay = TimeUnit.MILLISECONDS.toDays((ngayTT.getTime() - ngayDen.getTime()));
 					Phong p = dsPhong.getList().get(dsPhong.timPhongTheoMa(pdp.getMaPhong()));
 					Double tienPhong = soNgay * p.getGiaPhong();
 					txtThanhTienPhong.setText(formatter.format(tienPhong) + " VNĐ");
 					p.setTinhTrang("Còn trống");
-//					for (Phong p : dsPhong.getList()) {
-//						if (p.getMaPhong().equals(pdp.getMaPhong())) {
-//							Double tienPhong = soNgay * p.getGiaPhong();
-//							txtThanhTienPhong.setText(formatter.format(tienPhong) + " VNĐ");
-//							p.setTinhTrang("Còn trống");
-//							break;
-//						}
-//					}
-					
+
 					String ghiChu = "Chi tiết dịch vụ:";
 					double phiDichVu = 0;
 					for (HoaDonDichVuPhong dvp : dsDVP) {
@@ -660,7 +654,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 								ghiChu += String.format("\n- %s \n\tSố lượng: %s \n\tThành tiền: %s",
 										tenDichVu.get(tenDichVu.indexOf(dvp.getMaDichVu()) + 1), dvp.getSoLuong(),
 										formatter.format(dvp.getThanhTienDichVu()));
-
 							}
 						}
 					}
@@ -672,7 +665,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					} else if (ngayDi.before(ngayTT))
 						ghiChu += "\nTrả phòng sớm!";
 					txtaGhiChu.setText(ghiChu);
-					txtTongThanhToan.setText(formatter.format(phiDichVu+tienPhong)+"VNĐ");
+					txtTongThanhToan.setText(formatter.format(phiDichVu + tienPhong) + "VNĐ");
 					break;
 
 				}
