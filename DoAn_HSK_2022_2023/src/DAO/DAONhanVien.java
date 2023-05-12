@@ -1,5 +1,3 @@
-
-
 package DAO;
 
 import java.sql.Connection;
@@ -49,7 +47,7 @@ public class DAONhanVien{
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "INSERT INTO NhanVien (maNV, hoTen, cmthu, sdthoai, gmail, diaChi, gioiTinh, chucVu, matKhau) "
+		String sql = "INSERT INTO NhanVien (MaNhanVien, HoTen, CMT, SDT, Gmail, DiaChi, GioiTinh, chucVu, Pwd) "
 				+ "values(?,?,?,?,?,?,?,?,?)";
 		try {
 			stm = con.prepareStatement(sql);
@@ -73,13 +71,13 @@ public class DAONhanVien{
 		}
 	}
 
-	public void updateSoLuong(NhanVien nv) {
+	public boolean updateNhanVien(NhanVien nv) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "Update NhanVien set hoTen = ?, cmthu = ?, sdthoai = ?, gmail = ?, diaChi = ?, gioiTinh = ?, chucVu = ?, matKhau =?\r\n"
-				+ "where maNV = ?";
+		String sql = "Update NhanVien set HoTen = ?, CMT = ?, SDT = ?, Gmail = ?, DiaChi = ?, GioiTinh = ?, ChucVu = ?, Pwd =?\r\n"
+				+ "where MaNhanVien = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, nv.getHoTen());
@@ -96,18 +94,19 @@ public class DAONhanVien{
 		} catch (SQLException e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return false;
 		}
 		finally {
 			close(stm);
 		}
+		return true;
 	}
 	public void delete(String maNV) {
 		// TODO Auto-generated method stub
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		PreparedStatement stm = null;
-		String sql = "DELETE from NhanVien "
-				+ " maNV = ?";
+		String sql = "DELETE from NhanVien where MaNhanVien = ?";
 		try {
 			stm = con.prepareStatement(sql);
 			stm.setString(1, maNV);
@@ -130,8 +129,3 @@ public class DAONhanVien{
 		}
 	}
 }
-
-
-
-
-

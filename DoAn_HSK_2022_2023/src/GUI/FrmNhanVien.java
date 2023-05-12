@@ -33,7 +33,7 @@ import connectDB.ConnectDB;
 
 public class FrmNhanVien extends JFrame implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private DanhSachNhanVien dsNV;
+	private DanhSachNhanVien dsNhanVien = new DanhSachNhanVien();
 	private JTable table;
 	private JTextField txtMaNV, txtHoTen, txtCMThu, txtSDThoai, txtGmail, txtTimMa, txtTimTen, txtDiaChi, txtMess,
 			txtMatKhau;
@@ -62,7 +62,6 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		dsNV = new DanhSachNhanVien();
 		
 		// NORTH
 		JPanel pnlNorth = new JPanel();
@@ -127,8 +126,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		cbChucVu = new JComboBox<>();
 		b6.add(cbChucVu);
 		cbChucVu.addItem("Lễ tân");
-		cbChucVu.addItem("Bảo vệ");
-		cbChucVu.addItem("Lao công");
+		cbChucVu.addItem("Quản lý");
 
 		b.add(b7 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
@@ -312,9 +310,17 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		// delete all
 		// Load data
 		DAO_NV = new DAONhanVien();
-		for (NhanVien nv : dsNV.getList()) {
+		dsNhanVien = DAO_NV.getAll();
+		String cv;
+		
+		for (NhanVien nv : dsNhanVien.getList()) {
+			if (nv.getChucVu().endsWith("0")) {
+				cv = "Lễ tân";
+			}
+			else
+				cv = "Quản lý";
 			Object row[] = { nv.getMaNV(), nv.getHoTen(), nv.getCmthu(), nv.getSdthoai(), nv.getGmail(),
-					nv.getDiaChi(), nv.getGioiTinh(), nv.getChucVu(), nv.getMatKhau() };
+					nv.getDiaChi(), nv.getGioiTinh(), cv, nv.getMatKhau() };
 			tableModel.addRow(row);
 		}
 	}
@@ -394,11 +400,17 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		if (radNu.isSelected())
 			gioiTinh = radNu.getText();
 		String chucVu = cbChucVu.getSelectedItem().toString();
-
-		NhanVien nv = new NhanVien(maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau);
+		String cv;
+		if (chucVu.equals("Lễ tân")) {
+			cv = "0";
+		}
+		else
+			cv = "1";
+		NhanVien nv = new NhanVien(maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, cv, matKhau);
 		try {
-			if (!validData()) {
-				if (dsNV.themNhanVien(nv)) {
+			if (validData()) {
+				if (dsNhanVien.themNhanVien(nv)) {
+					DAO_NV.add(nv);
 					String[] row = { maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau };
 					tableModel.addRow(row);
 					xoaTrang();
@@ -423,7 +435,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 
 	private void TimNhanVienTheoMa(){
 		// TODO Auto-generated method stub
-		int pos = dsNV.timNhanVienTheoMa(txtTimMa.getText());
+		int pos = dsNhanVien.timNhanVienTheoMa(txtTimMa.getText());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Nhân viên này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);
@@ -435,7 +447,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 
 	private void TimNhanVienTheoTen(){
 		// TODO Auto-generated method stub
-		int pos = dsNV.timNhanVienTheoTen(txtTimTen.getText());
+		int pos = dsNhanVien.timNhanVienTheoTen(txtTimTen.getText());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Nhân viên này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);
@@ -460,9 +472,16 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		if (radNu.isSelected())
 			gioiTinh = radNu.getText();
 		String chucVu = cbChucVu.getSelectedItem().toString();
-		NhanVien nv = new NhanVien(maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, chucVu, matKhau);
-		if (dsNV.capNhatThongTinNhanVien(nv)) {
-			int index = dsNV.getList().indexOf(nv);
+		String cv;
+		if (chucVu.equals("Lễ tân")) {
+			cv = "0";
+		}
+		else
+			cv = "1";
+		NhanVien nv = new NhanVien(maNV, tenNV, cmthu, sdt, gmail, diaChi, gioiTinh, cv, matKhau);
+		if (DAO_NV.updateNhanVien(nv)) {
+			dsNhanVien.capNhatThongTinNhanVien(nv);
+			int index = dsNhanVien.getList().indexOf(nv);
 			tableModel.setValueAt(tenNV, index, 1);
 			tableModel.setValueAt(cmthu, index, 2);
 			tableModel.setValueAt(sdt, index, 3);
@@ -481,7 +500,8 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		if (r != -1) {
 			int tb = JOptionPane.showConfirmDialog(null, "Chắn chắn xoá nhân viên này không?", "Chú ý!", JOptionPane.YES_NO_OPTION);
 			if (tb == JOptionPane.YES_OPTION) {
-				dsNV.xoaNV(r);
+				dsNhanVien.xoaNV(r);
+				DAO_NV.delete(table.getValueAt(r, 0).toString());
 				tableModel.removeRow(r);
 				xoaTrang();
 			}
