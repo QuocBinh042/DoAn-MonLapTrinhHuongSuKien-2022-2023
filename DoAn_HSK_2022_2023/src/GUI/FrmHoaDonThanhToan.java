@@ -348,14 +348,16 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		deleteAllDataJtable();
 		// Load data
 		DAO_hoaDon = new DAOHoaDonThanhToan();
+		ds = DAO_hoaDon.getAll();
 		String ht;
 		for (HoaDonThanhToan hd : ds.getList()) {
 			if (hd.getHinhThucThanhToan().equals("1")) {
 				ht = "Tiên mặt";
 			} else
 				ht = "Chuyển khoản";
-			Object row[] = { hd.getMaHoaDon(), hd.getMaDatPhong(), hd.getNgayThanhToan(), ht, hd.getThanhTienPhong(),
-					hd.getTongThanhToan(), hd.getGhiChu() };
+			Object row[] = { hd.getMaHoaDon(), hd.getMaDatPhong(), hd.getNgayThanhToan(), ht,
+					formatter.format(hd.getThanhTienPhong()) + " VNĐ", formatter.format(hd.getTongThanhToan()) + " VNĐ",
+					hd.getGhiChu() };
 			tableModel.addRow(row);
 		}
 	}
@@ -569,9 +571,9 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		} else {
 			radTienMat.setSelected(true);
 		}
-		cbMaDatPhong.setSelectedIndex(cbMaDatPhong.getSelectedIndex());
-		txtThanhTienPhong.setText(formatter.format(table.getValueAt(row, 4)) + " VNĐ");
-		txtTongThanhToan.setText(formatter.format(table.getValueAt(row, 5)) + " VNĐ");
+		cbMaDatPhong.setSelectedItem(table.getValueAt(row, 1).toString());
+		txtThanhTienPhong.setText(table.getValueAt(row, 4).toString());
+		txtTongThanhToan.setText(table.getValueAt(row, 5).toString());
 		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
 	}
 

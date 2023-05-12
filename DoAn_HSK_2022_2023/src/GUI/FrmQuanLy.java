@@ -28,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 public class FrmQuanLy extends JFrame implements MenuListener {
 	JButton btnDsNhanVien, btnThongKe, btnThoat;
 	private FrmNhanVien guiNhanVien = new FrmNhanVien();
-	private FrmHoaDonThanhToan frmHDTT = new FrmHoaDonThanhToan();
+	private FrmThongKe frmTK = new FrmThongKe();
 	private JMenuBar mnubar = new JMenuBar();
 	private JMenu mnuTrangChu, mnuDSNhanVien, mnuThongKe, mnuThoat;
 	private DefaultTableModel tableModel;
@@ -139,7 +139,7 @@ public class FrmQuanLy extends JFrame implements MenuListener {
 			guiNhanVien.setVisible(true);
 		}
 		if (o.equals(mnuThongKe)) {
-			frmHDTT.setVisible(true);
+			frmTK.setVisible(true);
 		}
 		if (o.equals(mnuThoat)) {
 			System.exit(0);

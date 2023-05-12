@@ -596,8 +596,8 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		int row = table.getSelectedRow();
 		txtMaDatPhong.setText(table.getValueAt(row, 0).toString());
 		txtMaNV.setText(table.getValueAt(row, 1).toString());
-		cbMaPhong.setSelectedIndex(cbMaPhong.getSelectedIndex());
-		cbMaKhachHang.setSelectedIndex(cbMaKhachHang.getSelectedIndex());
+		cbMaPhong.setSelectedItem(table.getValueAt(row, 2).toString());
+		cbMaKhachHang.setSelectedItem(table.getValueAt(row, 3).toString());
 
 		Date bDate = Date.valueOf(table.getValueAt(row, 4).toString());
 		bookDay.setSelectedItem(String.valueOf(bDate.getDate()));
