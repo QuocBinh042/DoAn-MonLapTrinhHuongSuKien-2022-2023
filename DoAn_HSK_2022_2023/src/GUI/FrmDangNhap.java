@@ -139,7 +139,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	private JButton btnDangnhap, btnThoat;
 	private DAONhanVien DAO_NV = new DAONhanVien();
 	private DanhSachNhanVien dsNV = new DanhSachNhanVien();
-
+ 
 	public FrmDangNhap() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -157,7 +157,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	public void createGUI() {
 
 		setTitle("LOGIN");
-		setSize(500, 300);
+		setSize(520, 250);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JPanel panel = new JPanel();
@@ -202,7 +202,6 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
 		Object o = e.getSource();
 		if (o.equals(btnThoat)) {
 			System.exit(0);

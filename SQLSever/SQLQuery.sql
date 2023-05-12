@@ -196,6 +196,7 @@ INSERT INTO Phong values(N'P012',N'A002',N'VIP',1500000,N'Phòng có view biển
 INSERT INTO Phong values(N'P013',N'A003',N'VIP',700000,N'Phòng có view núi non',0)
 INSERT INTO Phong values(N'P014',N'A004',N'VIP',1200000,N'Phòng có view thành phố',1)
 INSERT INTO Phong values(N'P015',N'A005',N'VIP',1000000,N'Phòng có view biển',0)
+select * from Phong
 go
 
 --Update Phong
@@ -293,6 +294,10 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'D
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'DV014',10)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV015',6)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP016',N'DV002',6)
+select * from HoaDonDichVuPhong
+SELECT dv.MaDichVu, dv.TenDichVu
+FROM HoaDonDichVuPhong As dvp, DichVu AS dv
+WHERE dv.MaDichVu = dvp.MaDichVu
 --Xem toan bo HoaDonDichVuPhong
 select * from HoaDonDichVuPhong
 --select MaDatPhong,dvp.MaDichVu,SoLuong,dv.Gia,ThanhTienDichVu /*= SoLuong * dv.Gia*/

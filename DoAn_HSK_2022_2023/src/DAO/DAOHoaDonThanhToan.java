@@ -64,7 +64,7 @@ public class DAOHoaDonThanhToan {
 			close(stm);
 		}
 		return true;
-		
+		 
 	}
 	public void updateHoaDonThanhToan(HoaDonThanhToan hd) {
 		ConnectDB.getInstance();
@@ -90,6 +90,7 @@ public class DAOHoaDonThanhToan {
 			close(stm);
 		}
 	}
+	
 	
 	public void delete(String maHoaDon) {
 		ConnectDB.getInstance();

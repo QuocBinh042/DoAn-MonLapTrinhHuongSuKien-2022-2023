@@ -302,11 +302,10 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		bookMonth.setEnabled(false);
 		bookDay.setEnabled(false);
 	}
-
+ 
 	private void TXTedit_true() {
 		txtMaDatPhong.setEditable(true);
 		txtSoNguoi.setEditable(true);
-		txtMaNV.setEditable(true);
 		txtaGhiChu.setEditable(true);
 
 		startYear.setEnabled(true);

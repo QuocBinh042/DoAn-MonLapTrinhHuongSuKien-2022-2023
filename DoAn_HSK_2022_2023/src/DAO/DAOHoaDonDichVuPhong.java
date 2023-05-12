@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import Entity.HoaDonDichVuPhong;
 import connectDB.ConnectDB;
@@ -24,6 +25,29 @@ public class DAOHoaDonDichVuPhong{
 			ResultSet rs = statement.executeQuery(sql);
 			while(rs.next()) {
 				dsDVP.add(new HoaDonDichVuPhong(rs.getString("MaDatPhong"), rs.getString("MaDichVu"), rs.getInt("SoLuong"), rs.getFloat("Gia"), rs.getFloat("ThanhTienDichVu")));
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return dsDVP;
+	}
+	
+	public List<String> getTenDichVu() {
+		// TODO Auto-generated method stubArrayList<HoaDonDichVuPhong> dsDVP = new ArrayList<HoaDonDichVuPhong>();
+		ArrayList<String> dsDVP = new ArrayList<>();
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		try {
+			//ThanhTienDichVu = SoLuong * Gia
+			String sql = "SELECT dv.MaDichVu, dv.TenDichVu\n"
+					+ "FROM HoaDonDichVuPhong As dvp, DichVu AS dv\n"
+					+ "WHERE dv.MaDichVu = dvp.MaDichVu";
+			Statement statement = con.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while(rs.next()) {
+				dsDVP.add(rs.getString("MaDichVu"));
+				dsDVP.add(rs.getString("TenDichVu"));
 			}
 		} catch (SQLException e) {
 			// TODO: handle exception
@@ -127,7 +151,7 @@ public class DAOHoaDonDichVuPhong{
 			// TODO: handle exception
 		}
 	}
-	
+	 
 	public void close(PreparedStatement stm) {
 		if(stm!=null) {
 			try {
