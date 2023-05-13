@@ -1,6 +1,6 @@
 ﻿create database QuanLyKhachSan
 go
-drop database QuanLyKhachSan
+--drop database QuanLyKhachSan
 use QuanLyKhachSan
 go
 
@@ -245,19 +245,19 @@ select *from DichVu
 --InsertData
 INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
 values(N'PDP000',N'NV000',N'P000', N'KH000','2022/5/11','2022/5/11', '2022/5/11',0,''),
-	  (N'PDP001',N'NV001',N'P001', N'KH001','2023/1/11','2023/1/12', '2023/1/22',2,''),
-	  (N'PDP002',N'NV002',N'P002', N'KH002','2023/1/12','2023/1/12', '2023/1/17',6,''),
-	  (N'PDP003',N'NV003',N'P003', N'KH003','2023/1/14','2023/1/15', '2023/1/20',3,''),
-	  (N'PDP004',N'NV004',N'P004', N'KH004','2023/1/15','2023/1/16', '2023/1/23',4,''),
+	  (N'PDP001',N'NV001',N'P001', N'KH001','2023/5/16','2023/5/16', '2023/5/22',2,''),
+	  (N'PDP002',N'NV002',N'P002', N'KH002','2023/5/17','2023/5/18', '2023/5/19',6,''),
+	  (N'PDP003',N'NV003',N'P003', N'KH003','2023/5/18','2023/5/18', '2023/5/20',3,''),
+	  (N'PDP004',N'NV004',N'P004', N'KH004','2023/5/19','2023/5/20', '2023/5/23',4,''),
 	  (N'PDP005',N'NV005',N'P005', N'KH005','2023/2/25','2023/2/26', '2023/2/28',1,''),
 	  (N'PDP006',N'NV006',N'P006', N'KH006','2023/2/11','2023/2/12', '2023/2/22',2,''),
 	  (N'PDP007',N'NV007',N'P007', N'KH007','2023/2/12','2023/2/12', '2023/2/17',3,''),
 	  (N'PDP008',N'NV008',N'P008', N'KH008','2023/2/14','2023/2/15', '2023/2/20',3,''),
-	  (N'PDP009',N'NV009',N'P009', N'KH009','2023/3/15','2023/3/16', '2023/3/23',4,''),
-	  (N'PDP010',N'NV010',N'P010', N'KH010','2023/3/1','2023/3/1', '2023/5/3',1,''),
-	  (N'PDP011',N'NV011',N'P011', N'KH011','2023/3/11','2023/3/12', '2023/3/22',2,''),
+	  (N'PDP009',N'NV009',N'P009', N'KH009','2023/5/15','2023/5/16', '2023/5/23',4,''),
+	  (N'PDP010',N'NV010',N'P010', N'KH010','2023/5/18','2023/5/18', '2023/5/22',1,''),
+	  (N'PDP011',N'NV011',N'P011', N'KH011','2023/5/21','2023/5/22', '2023/2/25',2,''),
 	  (N'PDP012',N'NV012',N'P012', N'KH012','2023/3/12','2023/3/12', '2023/3/17',5,''),
-	  (N'PDP013',N'NV013',N'P013', N'KH013','2023/4/14','2023/4/15', '2023/4/20',3,''),
+	  (N'PDP013',N'NV013',N'P013', N'KH013','2023/5/20','2023/5/21', '2023/5/25',3,''),
 	  (N'PDP014',N'NV014',N'P014', N'KH014','2023/4/15','2023/4/16', '2023/4/30',4,''),
 	  (N'PDP015',N'NV015',N'P015', N'KH015','2023/4/25','2023/4/26', '2023/4/30',1,'')
 	  
@@ -271,12 +271,12 @@ select * from PhieuDatPhong
 
 --Loc du lieu tu 3 table PhieuDatPhong,Phong,KhachHang
 --Danh Sach CheckOut
---select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,p.TinhTrang,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp
+--select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp
 --join Phong p on pdp.MaPhong = p.MaPhong
 --join KhachHang kh on kh.MaKhachHang = pdp.IDNguoiDatPhong
 --where p.TinhTrang = 1 and pdp.NgayCheckOut > pdp.NgayCheckIn;
-----Danh Sach CheckIn
---select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,p.TinhTrang,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp
+--Danh Sach CheckIn
+--select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp
 --join Phong p on pdp.MaPhong = p.MaPhong
 --join KhachHang kh on kh.MaKhachHang = pdp.IDNguoiDatPhong
 --where pdp.NgayCheckIn >= GETDATE() and p.TinhTrang = 0;
