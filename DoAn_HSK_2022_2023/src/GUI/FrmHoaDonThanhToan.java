@@ -176,8 +176,9 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b5.add(lblTongThanhToan = new JLabel("Tổng thanh toán"));
 		b5.add(Box.createHorizontalStrut(5));
 		b5.add(txtTongThanhToan = new JTextField());
-		txtTongThanhToan.setFont(new Font("Arial", Font.BOLD, 20));
+		txtTongThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
 		txtTongThanhToan.setForeground(Color.red);
+		txtTongThanhToan.setBorder(null);  
 		b.add(b6 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b6.add(lblGhiChu = new JLabel("Ghi chú: "));
@@ -277,6 +278,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		txtThanhTienPhong.setEditable(false);
 		txtTongThanhToan.setEditable(false);
 		radChuyenKhoan.setEnabled(false);
+		cbMaDatPhong.setEnabled(false);
 		txtTienDichVu.setEditable(false);
 		radTienMat.setEnabled(false);
 		dayTT.setEnabled(false);
@@ -287,6 +289,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	private void TXTedit_true() {
 		txtMaHoaDon.setEditable(true);
+		cbMaDatPhong.setEnabled(true);       
 		radChuyenKhoan.setEnabled(true);
 		radTienMat.setEnabled(true);
 		dayTT.setEnabled(true);
