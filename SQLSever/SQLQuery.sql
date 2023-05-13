@@ -122,6 +122,7 @@ go
 --------------------------------KHACH HANG-----------------------------------------------
 --MaKhachHang--TenKhachHang--ChungMinhThu--SoDienThoai--Gmail
 --Insert Data
+INSERT INTO KhachHang values(N'KH000',N'','','','') 
 INSERT INTO KhachHang values(N'KH001',N'Nguyễn Đức Vương','123456789104','0799558911','vuongnguyen221203@gmail.com') 
 INSERT INTO KhachHang values(N'KH002',N'Nguyễn Thu Sương ','111253678815','0258104791','thusuong120402@gmail.com')
 INSERT INTO KhachHang values(N'KH003',N'Nguyễn Đức Nhật','176558990128','0491228491','nhatnguyen121103@gmail.com')
@@ -142,6 +143,7 @@ select * from KhachHang
 
 --------------------------------NHAN VIEN-----------------------------------------------
 --InsertData
+INSERT INTO NhanVien values(N'NV000', N'', '', 0, N'', 0, '',N'', N'')
 INSERT INTO NhanVien values(N'NV001', N'Nguyễn Trà My', 'tramy6665', 0, N'Nữ', 123456788012, '0967344087',
 N'tramy1234@gmail.com', N'Tỉnh Tiền Giang')
 INSERT INTO NhanVien values(N'NV002', N'Nguyễn Huỳnh Bảo', 'huybao2345', 1, N'Nam', 135988000213, '0134556780',
@@ -181,6 +183,7 @@ select * from NhanVien
 --------------------------------PHONG-----------------------------------------------
 --MaPhong--TenPhong--LoaiPhong--GiaPhong--MoTa--TinhTrang
 --InsertData
+INSERT INTO Phong values(N'P000',N'',N'',0,N'',0)
 INSERT INTO Phong values(N'P001',N'C001',N'SINGLE',100000,N'Phòng đơn',0)
 INSERT INTO Phong values(N'P002',N'C002',N'SINGLE',100000,N'Phòng đơn',1)
 INSERT INTO Phong values(N'P003',N'C003',N'SINGLE',100000,N'Phòng đơn',0)
@@ -241,7 +244,8 @@ select *from DichVu
 --MaDatPhong--MaNV-MaPhong--IDNguoiDatPhong--NgayDatPhong--NgayCheckIn-NGayCheckOut-Songuoi-Ghichu
 --InsertData
 INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
-values(N'PDP001',N'NV001',N'P001', N'KH001', '2023/5/11', '2023/5/12', '2023/5/22',2,''),
+values(N'PDP000',N'NV000',N'P000', N'KH000','2022/5/11','2022/5/11', '2022/5/11',0,''),
+	  (N'PDP001',N'NV001',N'P001', N'KH001','2023/5/11','2023/5/12', '2023/5/22',2,''),
 	  (N'PDP002',N'NV002',N'P002', N'KH002','2023/5/12','2023/5/12', '2023/5/17',6,''),
 	  (N'PDP003',N'NV003',N'P003', N'KH003','2023/5/14','2023/5/15', '2023/5/20',3,''),
 	  (N'PDP004',N'NV004',N'P004', N'KH004','2023/5/15','2023/5/16', '2023/5/23',4,''),
@@ -256,6 +260,7 @@ values(N'PDP001',N'NV001',N'P001', N'KH001', '2023/5/11', '2023/5/12', '2023/5/2
 	  (N'PDP013',N'NV013',N'P013', N'KH013','2023/7/14','2023/7/15', '2023/7/20',3,''),
 	  (N'PDP014',N'NV014',N'P014', N'KH014','2023/7/15','2023/7/16', '2023/7/23',4,''),
 	  (N'PDP015',N'NV015',N'P015', N'KH015','2023/7/25','2023/7/26', '2023/7/28',1,'')
+	  
 --Phần test phòng trùng
 --INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
 --values(N'PDP016',N'NV006',N'P006', N'KH001','2023/6/12','2023/6/23', '2023/6/25',2,''),
@@ -329,7 +334,8 @@ values(N'HD001',N'PDP001','2023/5/2',1, 2000000, 2030000, ''),
 	  (N'HD012',N'PDP012','2023/7/10',0, 3000000, 3050000, ''),
 	  (N'HD013',N'PDP013','2023/7/15',0, 1000000, 1020000, ''),
 	  (N'HD014',N'PDP014','2023/7/20',1, 3000000, 3050000, ''),
-	  (N'HD015',N'PDP015','2023/7/25',1, 1000000, 1060000, '')
+	  (N'HD015',N'PDP015','2023/7/25',1, 1000000, 1060000, ''),
+	  (N'HD000',N'PDP000','',0, 0, 0, '')
 	  -----TEST
 --INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
 --values(N'HD016',N'PDP016','2023/5/2',1, 2000000, 2030000, ''),

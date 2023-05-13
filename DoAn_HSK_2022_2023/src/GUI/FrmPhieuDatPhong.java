@@ -65,6 +65,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private DAOKhachHang DAO_khachHang;
 	private DanhSachKhachHang dsKhachHang;
 	private DanhSachPhieuDatPhong dsPhieuDatPhong = new DanhSachPhieuDatPhong();
+	private String maNhanVien;
 	public FrmPhieuDatPhong() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -73,6 +74,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			e.printStackTrace();
 		}
 		createGUI();
+		
 	}
 
 	public static void main(String[] args) {
@@ -113,7 +115,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		b.add(Box.createVerticalStrut(15));
 		b2.add(lblMaNV = new JLabel("Mã nhân viên: "));
 		b2.add(txtMaNV = new JTextField());
-
+		
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
 		b3.add(lblMaPhong = new JLabel("Mã phòng: "));
@@ -258,7 +260,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 
 		// Gọi hàm load data
 		loadData();
-
+		txtMaNV.setText(maNhanVien);
 		// ĐĂNG KÝ SỰ KIỆN
 		startYear.addItemListener(this);
 		startMonth.addItemListener(this);
@@ -380,6 +382,9 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 					pdp.getNgayDatPhong(), pdp.getNgayDen(), pdp.getNgayDi(), pdp.getSoNguoi(), pdp.getGhiChu() };
 			tableModel.addRow(row);
 		}
+		maNhanVien = (String) tableModel.getValueAt(0, 1);
+		System.out.println(maNhanVien);
+		tableModel.removeRow(0);
 	}
 
 	private boolean validData() {
@@ -565,7 +570,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		// TODO Auto-generated method stub
 		txtMaDatPhong.setText("");
 		txtMaNV.setText("");
-
+		txtMaNV.setText(maNhanVien);
 		txtSoNguoi.setText("");
 		txtaGhiChu.setText("");
 		txtTim.setText("");

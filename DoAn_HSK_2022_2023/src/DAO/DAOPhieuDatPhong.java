@@ -75,7 +75,7 @@ public class DAOPhieuDatPhong {
 				+ " where MaDatPhong = ?";
 		try {
 			stm = con.prepareStatement(sql);
-			
+
 			stm.setString(1, pdp.getMaNhanVien());
 			stm.setString(2, pdp.getMaPhong());
 			stm.setString(3, pdp.getMaKhachHang());

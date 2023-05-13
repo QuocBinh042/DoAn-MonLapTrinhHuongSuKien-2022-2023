@@ -126,8 +126,11 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import DAO.DAONhanVien;
+import DAO.DAOPhieuDatPhong;
 import DanhSach.DanhSachNhanVien;
+import DanhSach.DanhSachPhieuDatPhong;
 import Entity.NhanVien;
+import Entity.PhieuDatPhong;
 import connectDB.ConnectDB;
 
 public class FrmDangNhap extends JFrame implements ActionListener {
@@ -139,7 +142,8 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	private JButton btnDangnhap, btnThoat;
 	private DAONhanVien DAO_NV = new DAONhanVien();
 	private DanhSachNhanVien dsNV = new DanhSachNhanVien();
- 
+	private DAOPhieuDatPhong DAO_pdp = new DAOPhieuDatPhong();
+	private DanhSachPhieuDatPhong dsPDP = DAO_pdp.getAll();
 	public FrmDangNhap() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -155,7 +159,6 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 	}
 
 	public void createGUI() {
-
 		setTitle("LOGIN");
 		setSize(520, 250);
 		setLocationRelativeTo(null);
@@ -208,6 +211,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		}
 		if (o.equals(btnDangnhap)) {
 			changeForm();
+			
 		}
 
 	}
@@ -217,14 +221,16 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 		String user = txtUser.getText();
 		String pass = txtPass.getText();
 		if (dsNV.timNhanVienTheoMa(user) != -1) {
-			if (dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getChucVu().equals("1")
-					&& dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getMatKhau().equalsIgnoreCase(pass)) {
-				JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Manager!");
-				frmQuanLy.setVisible(true);
-			} else if (dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getChucVu().equals("0")
-					&& dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getMatKhau().equalsIgnoreCase(pass)) {
-				JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Reception!");
-				frmLeTan.setVisible(true);
+			if (dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getMatKhau().equalsIgnoreCase(pass)) {
+				if (dsNV.getList().get(dsNV.timNhanVienTheoMa(user)).getChucVu().equals("1")) {
+					JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Manager!");
+					frmQuanLy.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Reception!");
+					frmLeTan.setVisible(true);
+					PhieuDatPhong pdp = new PhieuDatPhong("PDP000", user, "P015", "KH015", null, null, null, 0, null);
+					DAO_pdp.update(pdp);
+				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Lỗi! Vui lòng kiểm tra lại thông tin đăng nhập!");
 			}

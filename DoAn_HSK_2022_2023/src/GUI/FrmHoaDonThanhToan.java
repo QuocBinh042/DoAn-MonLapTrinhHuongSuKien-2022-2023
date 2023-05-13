@@ -370,7 +370,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			}
 		}
 		return Double.valueOf(tien);
-		
 	}
 	public void testArr() {
 		DanhSachHoaDonDichVuPhong dsdvp = new DanhSachHoaDonDichVuPhong();
