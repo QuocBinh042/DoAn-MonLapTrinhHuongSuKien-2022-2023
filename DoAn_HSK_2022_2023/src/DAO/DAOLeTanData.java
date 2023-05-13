@@ -18,7 +18,7 @@ public class DAOLeTanData {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,p.TinhTrang,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp\r\n"
+			String sql = "select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp\r\n"
 					+ "join Phong p on pdp.MaPhong = p.MaPhong\r\n"
 					+ "join KhachHang kh on kh.MaKhachHang = pdp.IDNguoiDatPhong\r\n"
 					+ "where pdp.NgayCheckIn >= GETDATE() and p.TinhTrang = 0;";
@@ -28,7 +28,7 @@ public class DAOLeTanData {
 			while (rs.next()) {
 				ds.add(
 						new LeTanData(rs.getString("MaDatPhong"), rs.getString("TenKhachHang"), rs.getString("TenPhong"),
-								rs.getString("TinhTrang"), rs.getDate("NgayCheckIn"), rs.getDate("NgayCheckOut"),rs.getString("GhiChu")));
+								rs.getDate("NgayCheckIn"), rs.getDate("NgayCheckOut"),rs.getString("GhiChu")));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -41,7 +41,7 @@ public class DAOLeTanData {
 		ConnectDB.getInstance();
 		Connection con = ConnectDB.getConnection();
 		try {
-			String sql = "select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,p.TinhTrang,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp\r\n"
+			String sql = "select pdp.MaDatPhong,kh.TenKhachHang,p.TenPhong,pdp.NgayCheckIn,pdp.NgayCheckOut,pdp.GhiChu from PhieuDatPhong pdp\r\n"
 					+ "join Phong p on pdp.MaPhong = p.MaPhong\r\n"
 					+ "join KhachHang kh on kh.MaKhachHang = pdp.IDNguoiDatPhong\r\n"
 					+ "where p.TinhTrang = 1 and pdp.NgayCheckOut > pdp.NgayCheckIn;";
@@ -49,8 +49,8 @@ public class DAOLeTanData {
 			ResultSet rs = statement.executeQuery(sql);
 			while (rs.next()) {
 				ds.add(
-						new LeTanData(rs.getString("MaDatPhong"), rs.getString("TenKhachHang"), rs.getString("TenPhong"),
-								rs.getString("TinhTrang"), rs.getDate("NgayCheckIn"), rs.getDate("NgayCheckOut"),rs.getString("GhiChu")));
+						new LeTanData(rs.getString("MaDatPhong"), rs.getString("TenKhachHang"), rs.getString("TenPhong"), rs.getDate("NgayCheckIn"), rs.getDate("NgayCheckOut"),rs.getString("GhiChu")));
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
