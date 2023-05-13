@@ -312,7 +312,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		txtSoNguoi.setEditable(true);
 		txtaGhiChu.setEditable(true);
 		cbMaPhong.setEnabled(true);
-
+		cbMaKhachHang.setEnabled(true);
 		startYear.setEnabled(true);
 		startMonth.setEnabled(true);
 		startDay.setEnabled(true);
