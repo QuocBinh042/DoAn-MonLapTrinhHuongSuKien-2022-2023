@@ -323,6 +323,8 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 					nv.getDiaChi(), nv.getGioiTinh(), cv, nv.getMatKhau() };
 			tableModel.addRow(row);
 		}
+		tableModel.removeRow(0);
+
 	}
 
 	@Override

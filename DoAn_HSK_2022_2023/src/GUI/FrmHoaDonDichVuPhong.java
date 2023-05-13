@@ -51,7 +51,7 @@ public class FrmHoaDonDichVuPhong extends JFrame implements ActionListener, Mous
 	private void createGUI() {
 		// TODO Auto-generated method stub
 		setTitle("QUẢN LÝ HÓA ĐƠN DỊCH VỤ PHÒNG");
-		setSize(1150, 700);
+		setSize(1350, 700);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		

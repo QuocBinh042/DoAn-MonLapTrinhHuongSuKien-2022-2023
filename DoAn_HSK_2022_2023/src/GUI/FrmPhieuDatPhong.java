@@ -45,7 +45,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private JTable table;
 	private JTextField txtMaDatPhong, txtMaNV, txtSoNguoi, txtTim;
 	private JTextArea txtaGhiChu;
@@ -66,6 +66,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 	private DanhSachKhachHang dsKhachHang;
 	private DanhSachPhieuDatPhong dsPhieuDatPhong = new DanhSachPhieuDatPhong();
 	private String maNhanVien;
+
 	public FrmPhieuDatPhong() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -74,7 +75,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			e.printStackTrace();
 		}
 		createGUI();
-		
+
 	}
 
 	public static void main(String[] args) {
@@ -115,7 +116,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		b.add(Box.createVerticalStrut(15));
 		b2.add(lblMaNV = new JLabel("Mã nhân viên: "));
 		b2.add(txtMaNV = new JTextField());
-		
+
 		b.add(b3 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
 		b3.add(lblMaPhong = new JLabel("Mã phòng: "));
@@ -124,7 +125,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		dsPhong = DAO_phong.getAll();
 		for (Phong p : dsPhong.getList()) {
 			if (p.getTinhTrang().equals("0"))
-			cbMaPhong.addItem(p.getMaPhong());
+				cbMaPhong.addItem(p.getMaPhong());
 		}
 
 		b.add(b4 = Box.createHorizontalBox());
@@ -291,7 +292,8 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		txtSoNguoi.setEditable(false);
 		txtaGhiChu.setEditable(false);
 		txtMaNV.setEditable(false);
-
+		cbMaKhachHang.setEnabled(false);
+		cbMaPhong.setEnabled(false);
 		startYear.setEnabled(false);
 		startMonth.setEnabled(false);
 		startDay.setEnabled(false);
@@ -304,11 +306,12 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 		bookMonth.setEnabled(false);
 		bookDay.setEnabled(false);
 	}
- 
+
 	private void TXTedit_true() {
 		txtMaDatPhong.setEditable(true);
 		txtSoNguoi.setEditable(true);
 		txtaGhiChu.setEditable(true);
+		cbMaPhong.setEnabled(true);
 
 		startYear.setEnabled(true);
 		startMonth.setEnabled(true);

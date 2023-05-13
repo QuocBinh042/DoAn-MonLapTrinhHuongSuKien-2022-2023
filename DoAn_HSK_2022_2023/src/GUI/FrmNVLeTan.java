@@ -62,13 +62,6 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 	}
 
 	private void createGUI() {
-//		JPanel pnlNorth;
-//		add(pnlNorth = new JPanel(), BorderLayout.NORTH);
-//		JLabel lblTilte;
-//		pnlNorth.add(lblTilte = new JLabel("QUẢN LÝ THÔNG TIN ĐẶT PHÒNG KHÁCH SẠN"));
-//		lblTilte.setFont(new Font("Arial", Font.BOLD, 20));
-//		lblTilte.setForeground(Color.BLUE);
-
 		setJMenuBar(mnubar);
 		mnubar.add(mnuTrangChu = new JMenu("Trang chủ"));
 		mnubar.add(mnuPhong = new JMenu("Phòng"));

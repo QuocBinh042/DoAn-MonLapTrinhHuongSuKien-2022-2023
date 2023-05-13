@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,6 +41,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 	private DefaultTableModel tableModel;
 	private DAOPhong DAO_Phong;
 	private DecimalFormat formatter = new DecimalFormat("###,###,###");
+
 	public FrmPhong() {
 		try {
 			ConnectDB.getInstance().connect();
@@ -96,6 +98,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		b.add(b5 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(15));
 		b5.add(lblMoTa = new JLabel("Mô tả: "));
+		
 		b5.add(txtMoTa = new JTextField());
 
 		b.add(b6 = Box.createHorizontalBox());
@@ -148,7 +151,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		b.add(Box.createVerticalStrut(200));
 
 		bb.setBorder(BorderFactory.createTitledBorder("Danh sách phòng"));
-		String[] headers = "Mã phòng;Tên;Loại phòng; Giá phòng; Mô tả;Tình trạng".split(";");
+		String[] headers = "Mã phòng;Tên phòng;Loại phòng; Giá phòng; Mô tả;Tình trạng".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -174,7 +177,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 
 		// Gọi hàm loadData
 		loadData();
-
+		
 		// Đăng ký sự kiện
 		TXTedit_false();
 		btnLuu.setEnabled(false);
@@ -227,17 +230,18 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 				tinhTrang = "Đã đặt";
 			} else
 				tinhTrang = "Còn trống";
-			Object row[] = { phong.getMaPhong(), phong.getTenPhong(), phong.getLoaiPhong(), formatter.format(phong.getGiaPhong())+"VNĐ" ,
-					phong.getMoTa(), tinhTrang };
+			Object row[] = { phong.getMaPhong(), phong.getTenPhong(), phong.getLoaiPhong(),
+					formatter.format(phong.getGiaPhong()) + "VNĐ", phong.getMoTa(), tinhTrang };
 			tableModel.addRow(row);
 		}
+		tableModel.removeRow(0);
+
 	}
 
 	private void deleteAllDataJtable() {
-		DefaultTableModel dm = (DefaultTableModel)table.getModel();
-		while(dm.getRowCount() > 0)
-		{
-		    dm.removeRow(0);
+		DefaultTableModel dm = (DefaultTableModel) table.getModel();
+		while (dm.getRowCount() > 0) {
+			dm.removeRow(0);
 		}
 	}
 
@@ -355,9 +359,9 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 					String tt;
 					if (tinhTrang) {
 						tt = "Đã đặt";
-					}
-					else tt = "Còn trống";
-						String[] row = { maPhong, tenPhong, loaiPhong, Double.toString(giaPhong) + "", moTa,  tt};
+					} else
+						tt = "Còn trống";
+					String[] row = { maPhong, tenPhong, loaiPhong, Double.toString(giaPhong) + "", moTa, tt };
 					tableModel.addRow(row);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm phòng thành công!");
@@ -404,9 +408,8 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 
 	private void CapNhatThongTinPhong() {
 		// TODO Auto-generated method stub
-		
 		int r = table.getSelectedRow();
-		if (r != -1) {	
+		if (r != -1) {
 			String maPhong = txtMaPhong.getText();
 			String tenPhong = txtTen.getText();
 			String loaiPhong = txtLoai.getText();
@@ -423,11 +426,10 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 				loadData();
 				JOptionPane.showMessageDialog(null, "Cập nhật thông tin phòng thành công!");
 				showMessage("Cập nhật thông tin phòng thành công!", txtMess);
-			}
-			else {
+			} else {
 				JOptionPane.showMessageDialog(null, "Cập nhật phòng không thành công!");
 			}
-		}else {
+		} else {
 			JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng muốn xoá!");
 		}
 
@@ -476,11 +478,10 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		txtMoTa.setText(table.getValueAt(row, 4).toString());
 		if (tableModel.getValueAt(row, 5).toString().equalsIgnoreCase("Còn trống")) {
 			radTrong.setSelected(true);
-		}
-		else {
+		} else {
 			radDaDat.setSelected(true);
 		}
-			
+
 	}
 
 	@Override

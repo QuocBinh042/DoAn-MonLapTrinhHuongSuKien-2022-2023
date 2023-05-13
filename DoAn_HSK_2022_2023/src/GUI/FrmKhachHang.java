@@ -252,6 +252,7 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 			Object row[] = { kh.getMaKHang(), kh.getTenKHang(), kh.getCMThu(), kh.getSDThoai(), kh.getGmail() };
 			tableModel.addRow(row);
 		}
+		tableModel.removeRow(0);
 	}
 
 	@Override
