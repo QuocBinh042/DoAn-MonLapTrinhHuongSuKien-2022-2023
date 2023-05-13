@@ -225,7 +225,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		// Load data
 		DAO_DV = new DAODichVu();
 		for (DichVu dv : DAO_DV.getAll()) {
-			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), formatter.format(dv.getGiaDichVu())+ " VNĐ"};
+			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), formatter.format(dv.getGiaDichVu())};
 			tableModel.addRow(row);
 		}
 	}
