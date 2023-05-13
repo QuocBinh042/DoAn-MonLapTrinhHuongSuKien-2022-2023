@@ -7,18 +7,16 @@ public class LeTanData implements Serializable{
 	private String maDatPhong;
 	private String hoTenKhachHang;
 	private String tenPhong;
-	private String tinhTrang;
 	private Date ngayDen;
 	private Date ngayDi;
 	private String ghiChu;
 
-	public LeTanData(String maDatPhong, String hoTenKhachHang, String tenPhong, String tinhTrang, Date ngayDen,
+	public LeTanData(String maDatPhong, String hoTenKhachHang, String tenPhong, Date ngayDen,
 			Date ngayDi, String ghiChu) {
 		super();
 		this.maDatPhong = maDatPhong;
 		this.hoTenKhachHang = hoTenKhachHang;
 		this.tenPhong = tenPhong;
-		this.tinhTrang = tinhTrang;
 		this.ngayDen = ngayDen;
 		this.ngayDi = ngayDi;
 		this.ghiChu = ghiChu;
@@ -48,14 +46,6 @@ public class LeTanData implements Serializable{
 		this.tenPhong = tenPhong;
 	}
 
-	public String getTinhTrang() {
-		return tinhTrang;
-	}
-
-	public void setTinhTrang(String tinhTrang) {
-		this.tinhTrang = tinhTrang;
-	}
-
 	public Date getNgayDen() {
 		return ngayDen;
 	}
@@ -83,7 +73,7 @@ public class LeTanData implements Serializable{
 	@Override
 	public String toString() {
 		return "LeTanData [maDatPhong=" + maDatPhong + ", hoTenKhachHang=" + hoTenKhachHang + ", tenPhong=" + tenPhong
-				+ ", tinhTrang=" + tinhTrang + ", ngayDen=" + ngayDen + ", ngayDi=" + ngayDi + ", ghiChu=" + ghiChu
+				+ ", ngayDen=" + ngayDen + ", ngayDi=" + ngayDi + ", ghiChu=" + ghiChu
 				+ "]";
 	}
 	
