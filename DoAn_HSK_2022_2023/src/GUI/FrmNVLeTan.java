@@ -106,7 +106,7 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 
 		bb.add(Box.createVerticalStrut(10));
 		bb.add(b);
-		String[] headers = "Mã đặt phòng; Họ tên khách hàng; Tên phòng; Tình trạng ở; Ngày đến; Ngày đi; Ghi chú".split(";");
+		String[] headers = "Mã đặt phòng; Họ tên khách hàng; Tên phòng; Ngày đến; Ngày đi; Ghi chú".split(";");
 		tableModel = new DefaultTableModel(headers, 0);
 		JScrollPane scroll = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -191,7 +191,7 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 		// Load data
 		DAO_LeTanData = new DAOLeTanData();
 		for (LeTanData d : DAO_LeTanData.dsCheckIn()) {
-			Object row[] = { d.getMaDatPhong(), d.getHoTenKhachHang(), d.getTenPhong(), d.getTinhTrang(),
+			Object row[] = { d.getMaDatPhong(), d.getHoTenKhachHang(), d.getTenPhong(),
 					d.getNgayDen(), d.getNgayDi(), d.getGhiChu() };
 			tableModel.addRow(row);
 		}
@@ -202,7 +202,7 @@ public class FrmNVLeTan extends JFrame implements MenuListener {
 		// Load data
 		DAO_LeTanData = new DAOLeTanData();
 		for (LeTanData d : DAO_LeTanData.dsCheckOut()) {
-			Object row[] = { d.getMaDatPhong(), d.getHoTenKhachHang(), d.getTenPhong(), d.getTinhTrang(),
+			Object row[] = { d.getMaDatPhong(), d.getHoTenKhachHang(), d.getTenPhong(),
 					d.getNgayDen(), d.getNgayDi(), d.getGhiChu() };
 			tableModel.addRow(row);
 		}

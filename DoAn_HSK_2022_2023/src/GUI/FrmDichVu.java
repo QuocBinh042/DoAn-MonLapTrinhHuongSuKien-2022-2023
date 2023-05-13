@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
@@ -38,6 +39,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 	private DefaultTableModel tableModel;
 	private DanhSachDichVu dsDV = new DanhSachDichVu();
 	private DAODichVu DAO_DV;
+	private DecimalFormat formatter = new DecimalFormat("###,###,###");
 
 	public FrmDichVu() {
 		try {
@@ -223,7 +225,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		// Load data
 		DAO_DV = new DAODichVu();
 		for (DichVu dv : DAO_DV.getAll()) {
-			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), dv.getGiaDichVu() };
+			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), formatter.format(dv.getGiaDichVu())+ " VNĐ"};
 			tableModel.addRow(row);
 		}
 	}
@@ -293,13 +295,13 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		// TODO Auto-generated method stub
 		String maDichVu = txtMaDichVu.getText();
 		String tenDichVu = txtTenDichVu.getText();
-		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText());
+		Double giaDichVu = Double.valueOf(txtGiaDichVu.getText()) ;
 		DichVu dv = new DichVu(maDichVu, tenDichVu, giaDichVu);
 		showMessage("", txtMess);
 		if (validData()) {
 			if (DAO_DV.add(dv)) {
 				dsDV.themDichVu(dv);
-				String[] row = { maDichVu, tenDichVu, String.valueOf(giaDichVu) };
+				String[] row = { maDichVu, tenDichVu, formatter.format(giaDichVu)+ " VNĐ"  };
 				tableModel.addRow(row);
 				xoaTrang();
 				showMessage("Thêm dịch vụ thành công!", txtMess);
