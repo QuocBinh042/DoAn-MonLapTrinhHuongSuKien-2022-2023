@@ -386,6 +386,7 @@ public class FrmPhieuDatPhong extends JFrame implements ActionListener, MouseLis
 			tableModel.addRow(row);
 		}
 		maNhanVien = (String) tableModel.getValueAt(0, 1);
+		dsPhieuDatPhong.xoaPhieuDatPhong(0);
 		tableModel.removeRow(0);
 	}
 

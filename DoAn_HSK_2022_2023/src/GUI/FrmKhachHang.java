@@ -248,11 +248,11 @@ public class FrmKhachHang extends JFrame implements ActionListener, MouseListene
 		// Load data
 		DAO_KH = new DAOKhachHang();
 		dsKhachHang = DAO_KH.getAll();
+		dsKhachHang.xoaKHang(0);
 		for (KhachHang kh : dsKhachHang.getList()) {
 			Object row[] = { kh.getMaKHang(), kh.getTenKHang(), kh.getCMThu(), kh.getSDThoai(), kh.getGmail() };
 			tableModel.addRow(row);
 		}
-		tableModel.removeRow(0);
 	}
 
 	@Override

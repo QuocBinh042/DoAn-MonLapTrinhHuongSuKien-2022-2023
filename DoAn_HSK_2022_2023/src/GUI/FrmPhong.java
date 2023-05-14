@@ -224,6 +224,7 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 		// Load data
 		DAO_Phong = new DAOPhong();
 		dsPhong = DAO_Phong.getAll();
+		dsPhong.xoaPhong(0);
 		String tinhTrang = "";
 		for (Phong phong : dsPhong.getList()) {
 			if (phong.getTinhTrang().equals("1")) {
@@ -234,7 +235,6 @@ public class FrmPhong extends JFrame implements ActionListener, MouseListener {
 					formatter.format(phong.getGiaPhong()) + "VNĐ", phong.getMoTa(), tinhTrang };
 			tableModel.addRow(row);
 		}
-		tableModel.removeRow(0);
 
 	}
 

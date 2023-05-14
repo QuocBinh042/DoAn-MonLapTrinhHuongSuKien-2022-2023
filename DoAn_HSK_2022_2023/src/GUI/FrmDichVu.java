@@ -224,7 +224,8 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 		deleteAllDataJtable();
 		// Load data
 		DAO_DV = new DAODichVu();
-		for (DichVu dv : DAO_DV.getAll()) {
+		dsDV = DAO_DV.getAll();
+		for (DichVu dv : dsDV.getList()) {
 			Object row[] = { dv.getMaDichVu(), dv.getTenDichVu(), formatter.format(dv.getGiaDichVu())};
 			tableModel.addRow(row);
 		}
@@ -331,7 +332,7 @@ public class FrmDichVu extends JFrame implements ActionListener, MouseListener {
 
 	private void TimDichVuTheoTen() {
 		// TODO Auto-generated method stub
-		int pos = dsDV.timDichVuTheoTen(txtTimTen.getText());
+		int pos = dsDV.timDichVuTheoTen(txtTimTen.getText().trim());
 		if (pos != -1) {
 			JOptionPane.showMessageDialog(null, "Dịch vụ này có trong danh sách!");
 			table.setRowSelectionInterval(pos, pos);

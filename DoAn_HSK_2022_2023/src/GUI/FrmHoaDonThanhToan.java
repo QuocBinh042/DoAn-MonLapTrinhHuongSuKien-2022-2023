@@ -61,7 +61,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private DefaultTableModel tableModel;
 	private JTextField txtMess;
 	private Calendar dDate = Calendar.getInstance();
-	private JComboBox yearTT, monthTT, dayTT, cbMaDatPhong, cbMaDichVu;
+	private JComboBox yearTT, monthTT, dayTT, cbMaDatPhong;
 	private DAOHoaDonThanhToan DAO_hoaDon;
 	private DAOPhieuDatPhong DAO_phieudDatPhong;
 	private DAOPhong DAO_Phong = new DAOPhong();
@@ -128,7 +128,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		dsPhong = DAO_Phong.getAll();
 		dsDVP = DAO_DichVuPhong.getAll();
 		tenDichVu = DAO_DichVuPhong.getTenDichVu();
-
+	
 		b.add(b2 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b2.add(lblNgayThanhToan = new JLabel("Ngày thanh toán: "));
@@ -362,6 +362,11 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					formatter.format(hd.getThanhTienPhong()) + " VNĐ", formatter.format(hd.getTongThanhToan()) + " VNĐ",
 					hd.getGhiChu() };
 			tableModel.addRow(row);
+			int vt = dsPhieuDatPhong.timPhieuDatPhongTheoMa(hd.getMaDatPhong());
+			System.out.println(vt);
+			if (vt!=-1)
+				cbMaDatPhong.removeItem(hd.getMaDatPhong());
+			
 		}
 	}
 
@@ -630,7 +635,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 			dDate.set(Calendar.DATE, day);
 		}
 		if (event.getSource() == cbMaDatPhong) {
-
 			for (PhieuDatPhong pdp : dsPhieuDatPhong.getList()) {
 				if (cbMaDatPhong.getSelectedItem().equals(pdp.getMaDatPhong())) {
 					Date ngayDen = pdp.getNgayDen();

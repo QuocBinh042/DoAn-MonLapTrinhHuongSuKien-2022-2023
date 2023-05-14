@@ -37,7 +37,7 @@ public class DanhSachDichVu {
 	
 	public int timDichVuTheoTen(String tenDichVu) {
 		for (int i = 0; i<ds.size(); i++ ) {
-			if (ds.get(i).getTenDichVu().equals(tenDichVu))
+			if (ds.get(i).getTenDichVu().equalsIgnoreCase(tenDichVu))
 				return i;
 		}
 		return -1;

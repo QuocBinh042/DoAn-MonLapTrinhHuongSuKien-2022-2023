@@ -312,7 +312,7 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 		DAO_NV = new DAONhanVien();
 		dsNhanVien = DAO_NV.getAll();
 		String cv;
-		
+		dsNhanVien.xoaNV(0);
 		for (NhanVien nv : dsNhanVien.getList()) {
 			if (nv.getChucVu().endsWith("0")) {
 				cv = "Lễ tân";
@@ -323,8 +323,6 @@ public class FrmNhanVien extends JFrame implements ActionListener, MouseListener
 					nv.getDiaChi(), nv.getGioiTinh(), cv, nv.getMatKhau() };
 			tableModel.addRow(row);
 		}
-		tableModel.removeRow(0);
-
 	}
 
 	@Override
