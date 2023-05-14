@@ -178,7 +178,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		b5.add(txtTongThanhToan = new JTextField());
 		txtTongThanhToan.setFont(new Font("Arial", Font.BOLD, 18));
 		txtTongThanhToan.setForeground(Color.red);
-		txtTongThanhToan.setBorder(null);  
+		txtTongThanhToan.setBorder(null);
 		b.add(b6 = Box.createHorizontalBox());
 		b.add(Box.createVerticalStrut(10));
 		b6.add(lblGhiChu = new JLabel("Ghi chú: "));
@@ -289,7 +289,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 
 	private void TXTedit_true() {
 		txtMaHoaDon.setEditable(true);
-		cbMaDatPhong.setEnabled(true);       
+		cbMaDatPhong.setEnabled(true);
 		radChuyenKhoan.setEnabled(true);
 		radTienMat.setEnabled(true);
 		dayTT.setEnabled(true);
@@ -374,15 +374,6 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		}
 		return Double.valueOf(tien);
 	}
-	public void testArr() {
-		DanhSachHoaDonDichVuPhong dsdvp = new DanhSachHoaDonDichVuPhong();
-		ArrayList<HoaDonDichVuPhong> arrdvp = new ArrayList<HoaDonDichVuPhong>();
-		arrdvp = dsdvp.getList();
-		for (int i = 0; i < arrdvp.size(); i++) {
-			System.out.println(i);
-			System.out.println(arrdvp.get(i).getThanhTienDichVu());
-		}
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -448,7 +439,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 	private void themHoaDonThanhToan() {
 		// TODO Auto-generated method stub
 		String maHDTT = txtMaHoaDon.getText();
-		String maDP = cbMaDatPhong.getSelectedItem().toString();	
+		String maDP = cbMaDatPhong.getSelectedItem().toString();
 		double thanhTienPhong = changeDigit(txtThanhTienPhong.getText());
 		double phiDV = changeDigit(txtTienDichVu.getText());
 		double tongTT = thanhTienPhong + phiDV;
@@ -469,8 +460,8 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 						ht = "Chuyển khoản";
 					} else
 						ht = "Tiền mặt";
-					String[] row = { maHDTT, maDP, ngayTT.toString(), ht, formatter.format(thanhTienPhong)+" VNĐ",
-							formatter.format(tongTT)+" VNĐ", ghiChu };
+					String[] row = { maHDTT, maDP, ngayTT.toString(), ht, formatter.format(thanhTienPhong) + " VNĐ",
+							formatter.format(tongTT) + " VNĐ", ghiChu };
 					tableModel.addRow(row);
 					xoaTrang();
 					JOptionPane.showMessageDialog(null, "Thêm hoá đơn thành công!");
@@ -509,21 +500,25 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		double tongTT = thanhTienPhong + phiDV;
 		String ghiChu = txtaGhiChu.getText();
 		Date ngayTT = Date.valueOf(getNgayTT());
-		String hinhThucTT = "";
-		if (radChuyenKhoan.isSelected())
-			hinhThucTT = radChuyenKhoan.getText();
-		if (radTienMat.isSelected())
-			hinhThucTT = radTienMat.getText();
-		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, maDP, ngayTT, hinhThucTT, thanhTienPhong, tongTT, ghiChu);
 
+		Boolean hinhThucTT = true;
+		if (radTienMat.isSelected())
+			hinhThucTT = false;
+		HoaDonThanhToan hd = new HoaDonThanhToan(maHDTT, maDP, ngayTT, hinhThucTT.toString(), thanhTienPhong, tongTT,
+				ghiChu);
+		String ht = "";
+		if (hinhThucTT) {
+			ht = "Chuyển khoản";
+		} else
+			ht = "Tiền mặt";
 		if (validData()) {
 			if (ds.suaHoaDon(hd)) {
 				int index = ds.getList().indexOf(hd);
 				tableModel.setValueAt(maDP, index, 1);
 				tableModel.setValueAt(ngayTT, index, 2);
-				tableModel.setValueAt(hinhThucTT, index, 3);
-				tableModel.setValueAt(thanhTienPhong, index, 4);
-				tableModel.setValueAt(tongTT, index, 5);
+				tableModel.setValueAt(ht, index, 3);
+				tableModel.setValueAt(formatter.format(thanhTienPhong) + " VNĐ", index, 4);
+				tableModel.setValueAt(formatter.format(tongTT) + " VNĐ", index, 5);
 				tableModel.setValueAt(ghiChu, index, 6);
 				DAO_hoaDon.updateHoaDonThanhToan(hd);
 				showMessage("Cập nhật thành công", txtMess);
@@ -586,7 +581,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 		}
 		Double pdv = changeDigit(table.getValueAt(row, 5).toString())
 				- changeDigit(table.getValueAt(row, 4).toString());
-		txtTienDichVu.setText(pdv + "");
+		txtTienDichVu.setText(formatter.format(pdv) + "VNĐ");
 		txtThanhTienPhong.setText(table.getValueAt(row, 4).toString());
 		txtTongThanhToan.setText(table.getValueAt(row, 5).toString());
 		txtaGhiChu.setText(table.getValueAt(row, 6).toString());
@@ -664,7 +659,7 @@ public class FrmHoaDonThanhToan extends JFrame implements ActionListener, MouseL
 					txtTienDichVu.setText(formatter.format(phiDichVu) + " VNĐ");
 					if (ngayDi.equals(ngayTT)) {
 						ghiChu += "\nThanh toán đúng hạn!";
-					} else if (ngayDi.before(ngayTT))
+					} else if (ngayDi.after(ngayTT))
 						ghiChu += "\nTrả phòng sớm!";
 					txtaGhiChu.setText(ghiChu);
 					txtTongThanhToan.setText(formatter.format(phiDichVu + tienPhong) + "VNĐ");

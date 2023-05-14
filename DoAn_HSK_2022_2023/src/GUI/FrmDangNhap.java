@@ -228,7 +228,7 @@ public class FrmDangNhap extends JFrame implements ActionListener {
 				} else {
 					JOptionPane.showMessageDialog(null, "Đăng nhập thành công Hotel Reception!");
 					frmLeTan.setVisible(true);
-					PhieuDatPhong pdp = new PhieuDatPhong("PDP000", user, "P015", "KH015", null, null, null, 0, null);
+					PhieuDatPhong pdp = new PhieuDatPhong("PDP000", user, "P000", "KH000", null, null, null, 0, null);
 					DAO_pdp.update(pdp);
 				}
 			} else {

@@ -94,7 +94,7 @@ create table HoaDonThanhToan(
 	--Tổng thanh toán = SUM(ThanhTienDichVuPhong) (HoaDonDichVuPhong) + ThanhTienPhong
 	TongThanhToan float,--Dynamic
 	---------------------------------------------
-	GhiChu nvarchar(200),
+	GhiChu nvarchar(MAX),
 
 	CONSTRAINT fk_dp FOREIGN KEY (MaDatPhong) REFERENCES PhieuDatPhong(MaDatPhong)
 )
@@ -245,21 +245,21 @@ select *from DichVu
 --InsertData
 INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
 values(N'PDP000',N'NV000',N'P000', N'KH000','2022/5/11','2022/5/11', '2022/5/11',0,''),
-	  (N'PDP001',N'NV001',N'P001', N'KH001','2023/5/16','2023/5/16', '2023/5/22',2,''),
-	  (N'PDP002',N'NV002',N'P002', N'KH002','2023/5/17','2023/5/18', '2023/5/19',6,''),
-	  (N'PDP003',N'NV003',N'P003', N'KH003','2023/5/18','2023/5/18', '2023/5/20',3,''),
-	  (N'PDP004',N'NV004',N'P004', N'KH004','2023/5/19','2023/5/20', '2023/5/23',4,''),
-	  (N'PDP005',N'NV005',N'P005', N'KH005','2023/2/25','2023/2/26', '2023/2/28',1,''),
-	  (N'PDP006',N'NV006',N'P006', N'KH006','2023/2/11','2023/2/12', '2023/2/22',2,''),
-	  (N'PDP007',N'NV007',N'P007', N'KH007','2023/2/12','2023/2/12', '2023/2/17',3,''),
-	  (N'PDP008',N'NV008',N'P008', N'KH008','2023/2/14','2023/2/15', '2023/2/20',3,''),
-	  (N'PDP009',N'NV009',N'P009', N'KH009','2023/5/15','2023/5/16', '2023/5/23',4,''),
-	  (N'PDP010',N'NV010',N'P010', N'KH010','2023/5/18','2023/5/18', '2023/5/22',1,''),
-	  (N'PDP011',N'NV011',N'P011', N'KH011','2023/5/21','2023/5/22', '2023/2/25',2,''),
-	  (N'PDP012',N'NV012',N'P012', N'KH012','2023/3/12','2023/3/12', '2023/3/17',5,''),
-	  (N'PDP013',N'NV013',N'P013', N'KH013','2023/5/20','2023/5/21', '2023/5/25',3,''),
-	  (N'PDP014',N'NV014',N'P014', N'KH014','2023/4/15','2023/4/16', '2023/4/30',4,''),
-	  (N'PDP015',N'NV015',N'P015', N'KH015','2023/4/25','2023/4/26', '2023/4/30',1,'')
+	  (N'PDP001',N'NV006',N'P006', N'KH006','2023/2/11','2023/2/12', '2023/2/22',2,''),
+	  (N'PDP002',N'NV007',N'P007', N'KH007','2023/2/12','2023/2/12', '2023/2/17',3,''),
+	  (N'PDP003',N'NV008',N'P008', N'KH008','2023/2/14','2023/2/15', '2023/2/20',3,''),
+	  (N'PDP004',N'NV005',N'P005', N'KH005','2023/2/25','2023/2/26', '2023/2/28',1,''),
+	  (N'PDP005',N'NV012',N'P012', N'KH012','2023/3/12','2023/3/12', '2023/3/17',5,''),	  
+	  (N'PDP006',N'NV014',N'P014', N'KH014','2023/4/15','2023/4/16', '2023/4/30',4,''),
+	  (N'PDP007',N'NV015',N'P015', N'KH015','2023/4/25','2023/4/26', '2023/4/30',1,''),
+	  (N'PDP008',N'NV001',N'P001', N'KH001','2023/5/6','2023/5/6', '2023/5/22',2,''),
+	  (N'PDP009',N'NV002',N'P002', N'KH002','2023/5/7','2023/5/8', '2023/5/19',6,''),
+	  (N'PDP010',N'NV003',N'P003', N'KH003','2023/5/8','2023/5/18', '2023/5/20',3,''),
+	  (N'PDP011',N'NV004',N'P004', N'KH004','2023/5/9','2023/5/20', '2023/5/23',4,''),
+	  (N'PDP012',N'NV013',N'P013', N'KH013','2023/5/10','2023/5/21', '2023/5/25',3,''),
+	  (N'PDP013',N'NV009',N'P009', N'KH009','2023/5/13','2023/5/16', '2023/5/23',4,''),
+	  (N'PDP014',N'NV010',N'P010', N'KH010','2023/5/13','2023/5/18', '2023/5/22',1,''),
+	  (N'PDP015',N'NV011',N'P011', N'KH011','2023/5/14','2023/5/18', '2023/2/25',2,'')
 	  
 --Phần test phòng trùng
 --INSERT INTO PhieuDatPhong (MaDatPhong,MaNV, MaPhong, IDNguoiDatPhong, NgayDatPhong, NgayCheckIn, NgayCheckOut, SoNguoi, GhiChu) 
@@ -289,10 +289,10 @@ INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP001',N'D
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV004',3)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP004',N'DV005',5)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP006',N'DV006',15)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV007',10)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV001',10)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV008',4)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV009',8)
-INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV010',20)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP005',N'DV009',8)
+INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP006',N'DV010',20)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP007',N'DV011',10)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'DV012',6)
 INSERT INTO HoaDonDichVuPhong (MaDatPhong,MaDichVu,SoLuong) values(N'PDP014',N'DV013',20)
@@ -320,21 +320,72 @@ select * from HoaDonDichVuPhong
 --------------------------------HoaDonThanhToan-----------------------------------------------
 --InsertData HoaDonThanhToan
 INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
-values(N'HD001',N'PDP001','2023/5/2',1, 2000000, 2030000, ''),
-	  (N'HD002',N'PDP002','2023/5/4',0, 3000000, 3050000, ''),
-	  (N'HD003',N'PDP003','2023/5/12',0, 1000000, 1020000, ''),
-	  (N'HD004',N'PDP004','2023/5/18',1, 3000000, 3050000, ''),
-	  (N'HD005',N'PDP005','2023/5/28',1, 1000000, 1060000, ''),
-	  (N'HD006',N'PDP006','2023/6/4',1, 2000000, 2030000, ''),
-	  (N'HD007',N'PDP007','2023/6/8',0, 3000000, 3050000, ''),
-	  (N'HD008',N'PDP008','2023/6/12',0, 1000000, 1020000, ''),
-	  (N'HD009',N'PDP009','2023/6/16',1, 3000000, 3050000, ''),
-	  (N'HD010',N'PDP010','2023/6/20',1, 1000000, 1060000, ''),
-	  (N'HD011',N'PDP011','2023/7/5',1, 2000000, 2030000, ''),
-	  (N'HD012',N'PDP012','2023/7/10',0, 3000000, 3050000, ''),
-	  (N'HD013',N'PDP013','2023/7/15',0, 1000000, 1020000, ''),
-	  (N'HD014',N'PDP014','2023/7/20',1, 3000000, 3050000, ''),
-	  (N'HD015',N'PDP015','2023/7/25',1, 1000000, 1060000, ''),
+values(N'HD001',N'PDP001','2023/2/22',0, 2000000, 2105000,
+N'Chi tiết dịch vụ:
+- Khăn giấy 
+	Số lượng: 9 
+	Thành tiền: 27,000
+- 7 Up 
+	Số lượng: 5 
+	Thành tiền: 50,000
+- Khăn ướt 
+	Số lượng: 7 
+	Thành tiền: 28,000
+Thanh toán đúng hạn!'),
+	  (N'HD002',N'PDP002','2023/2/17',0, 1000000, 1000000,
+N'Không sử dụng dịch vụ
+Thanh toán đúng hạn!'),
+	  (N'HD003',N'PDP003','2023/2/20',0, 1000000, 1000000,
+N'Không sử dụng dịch vụ
+Thanh toán đúng hạn!'),
+	  (N'HD004',N'PDP004','2023/2/28',1, 1000000, 1049000,
+N'Chi tiết dịch vụ:
+- Nước suối Aquafina 500ml 
+	Số lượng: 3 
+	Thành tiền: 9,000
+- Coca cola 
+	Số lượng: 5 
+	Thành tiền: 40,000
+Thanh toán đúng hạn!'),
+	  (N'HD005',N'PDP005','2023/3/17',1, 7500000, 7830000,
+N'Chi tiết dịch vụ:
+- Nước suối Aquafina 500ml 
+	Số lượng: 3 
+	Thành tiền: 9,000
+- Coca cola 
+	Số lượng: 5 
+	Thành tiền: 40,000
+Thanh toán đúng hạn!'),
+	  (N'HD006',N'PDP006','2023/4/30',1, 16800000, 16875000,
+N'Chi tiết dịch vụ:
+- Nước suối Lavie 500ml 
+	Số lượng: 15 
+	Thành tiền: 75,000
+Thanh toán đúng hạn!'),
+	  (N'HD007',N'PDP007','2023/4/30',0, 4000000, 4258000, 	  
+N'Chi tiết dịch vụ:
+- Khăn giấy 
+	Số lượng: 10 
+	Thành tiền: 30,000
+- Pepsi zero calo 350ml 
+	Số lượng: 4 
+	Thành tiền: 48,000
+- Cà phê sữa đá 
+	Số lượng: 10 
+	Thành tiền: 180,000
+Thanh toán đúng hạn!'),
+	  (N'HD008',N'PDP008','2023/5/16',0, 1000000, 1000000, 
+N'Không sử dụng dịch vụ
+Trả phòng sớm!'),
+	  (N'HD009',N'PDP009','2023/5/17',1, 1400000, 1400000, 
+N'Không sử dụng dịch vụ
+Trả phòng sớm!'),
+	  (N'HD010',N'PDP010','2023/6/20',1, 1000000, 1060000, N''),
+	  (N'HD011',N'PDP011','2023/7/5',1, 2000000, 2030000, N''),
+	  (N'HD012',N'PDP012','2023/7/10',0, 3000000, 3050000, N''),
+	  (N'HD013',N'PDP013','2023/7/15',0, 1000000, 1020000, N''),
+	  (N'HD014',N'PDP014','2023/7/20',1, 3000000, 3050000, N''),
+	  (N'HD015',N'PDP015','2023/7/25',1, 1000000, 1060000, N''),
 	  (N'HD000',N'PDP000','',0, 0, 0, '')
 	  -----TEST
 --INSERT INTO HoaDonThanhToan (MaHoaDon, MaDatPhong, NgayThanhToan, HinhThucThanhToan, ThanhTienPhong, TongThanhToan, GhiChu) 
